@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Kniebeuge",
+    "description": "Eine klassische Übung zur Stärkung der Beinmuskulatur. Was ist wenn hier eine längere Beschreibung steht? Die kann richtig lang werden und auch mal über mehrere Zeilen gehen...",
+    "repetitions": 10,
+    "sets": 3,
+    "duration": 60,
+    "difficulty": "Mittel"
+  },
+  {
+    "title": "Liegestütze",
+    "description": "Trainiert die Brust-, Arm- und Schultermuskulatur.",
+    "repetitions": 12,
+    "sets": 3,
+    "duration": 45,
+    "difficulty": "Schwierig"
+  },
+  {
+    "title": "Plank",
+    "description": "Eine Übung für den Core-Bereich und die Bauchmuskulatur.",
+    "repetitions": 1,
+    "sets": 3,
+    "duration": 30,
+    "difficulty": "Leicht"
+  }
+]

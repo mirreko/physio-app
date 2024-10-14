@@ -1,0 +1,34 @@
+<template>
+    <header class="bg-white">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">PhysioTool</h1>
+        <nav>
+          <ul class="flex space-x-4">
+            <router-link to="/physio-dashboard" class="hover:text-primary">Dashboard</router-link>
+            <router-link to="/trainingplans" class="hover:text-primary">Trainingspläne</router-link>
+            <li><a href="#" class="hover:text-primary">PatientInnen</a></li>
+            <div>
+      <button @click="logout" class="bg-secondary text-white p-btn rounded-full">Logout</button>
+    </div>
+          </ul>
+        </nav>
+      </div>
+    </header>
+  </template>
+  
+  <script>
+  export default {
+    name: 'Header',
+    methods: {
+    logout() {
+      localStorage.removeItem('token'); // Entfernt das gespeicherte Token
+      this.$router.push('/login'); // Leitet zur Login-Seite weiter
+    }
+  }
+  };
+  </script>
+  
+  <style scoped>
+  /* Custom Styles */
+  </style>
+  
