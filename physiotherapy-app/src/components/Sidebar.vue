@@ -20,11 +20,43 @@
         <a href="#" class="text-lg font-semibold hover:text-gray-400"
           >Extremität</a
         >
+        <label class="block pt-4">
+          <input type="checkbox" value="oEx" v-model="selectedExtremities" class="mr-2" />
+          Obere Extremität
+        </label>
+        <label class="block pt-4">
+          <input type="checkbox" value="uEx" v-model="selectedExtremities" class="mr-2" />
+          Untere Extremität
+        </label>
       </li>
       <li class="mb-4">
         <a href="#" class="text-lg font-semibold hover:text-gray-400"
           >Krankheitsbilder</a
         >
+        <label class="block pt-4">
+          <input type="checkbox" value="bsv" v-model="selectedDiseases" class="mr-2" />
+          Bandscheibenvorfall
+        </label>
+        <label class="block pt-4">
+          <input type="checkbox" value="vkb" v-model="selectedDiseases" class="mr-2" />
+          VKB-Ruptur
+        </label>
+        <label class="block pt-4">
+          <input type="checkbox" value="spg" v-model="selectedDiseases" class="mr-2" />
+          Sprunggelenksdistorsion
+        </label>
+        <label class="block pt-4">
+          <input type="checkbox" value="h-tep" v-model="selectedDiseases" class="mr-2" />
+          Hüft-TEP
+        </label>
+        <label class="block pt-4">
+          <input type="checkbox" value="k-tep" v-model="selectedDiseases" class="mr-2" />
+          Knie-TEP
+        </label>
+        <label class="block pt-4">
+          <input type="checkbox" value="rad-fraktur" v-model="selectedDiseases" class="mr-2" />
+          Distale Radiusfraktur
+        </label>
       </li>
       <li class="mb-4">
         <a href="#" class="text-lg font-semibold hover:text-gray-400"

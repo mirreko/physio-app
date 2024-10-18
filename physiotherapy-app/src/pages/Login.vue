@@ -29,6 +29,9 @@
           >
             Anmelden
           </button>
+          <div class="flex justify-center mt-4">
+    <router-link to="/register" class="text-sm underline underline-offset-4">Noch keinen Account? Hier registrieren.</router-link>
+  </div>
         </form>
         <div v-if="errorMessage" class="text-red-500 text-sm mt-4">{{ errorMessage }}</div>
       </div>

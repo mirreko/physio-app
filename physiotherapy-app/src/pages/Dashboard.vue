@@ -3,14 +3,12 @@
     <Header class="w-full p-6 sticky top-0" />
     <div class="flex flex-1">
       <Sidebar
-        class="sm:w-1/3 lg:w-1/5 md:w-1/3 p-4"
+        class="sm:w-1/3 lg:w-1/5 md:w-1/3 p-4 h-[calc(100vh-8rem)]"
         @update:search-query="updateSearchQuery"
         @update:selected-difficulty="updateSelectedDifficulty"
       />
       <main class="flex-1 p-6 min-h-screen">
-        <template v-if="$route.name === 'ExerciseDetail'">
-          <ExerciseDetail />
-        </template>
+        <router-view v-if="$route.name === 'ExerciseDetail'" />
         <template v-else>
           <h2 class="text-2xl font-bold mb-4">Willkommen, Physio!</h2>
           <PatientSelection :patients="patients" />
@@ -30,7 +28,6 @@ import Header from '../components/Header.vue';
 import Sidebar from '../components/Sidebar.vue';
 import ExerciseList from '../components/ExerciseList.vue';
 import PatientSelection from '../components/PatientSelection.vue';
-import ExerciseDetail from '../components/ExerciseDetail.vue';
 
 export default {
   name: 'Dashboard',
@@ -39,7 +36,6 @@ export default {
     Sidebar,
     ExerciseList,
     PatientSelection,
-    ExerciseDetail,
   },
   data() {
     return {
@@ -64,7 +60,7 @@ export default {
         const exerciseResponse = await fetch('http://localhost:5500/api/exercises');
         this.exercises = await exerciseResponse.json();
 
-        const patientResponse = await fetch('http://localhost:5500/api/users');
+        const patientResponse = await fetch('http://localhost:5500/api/patients');
         this.patients = await patientResponse.json();
       } catch (error) {
         console.error('Fehler beim Abrufen der Daten:', error);
