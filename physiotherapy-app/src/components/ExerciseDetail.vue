@@ -56,6 +56,12 @@
           >
             Hinzufügen
           </button>
+          <button
+            @click="resetTrainingPlan"
+            class="bg-secondary text-white ml-4 p-btn rounded-full"
+          >
+            Trainingsplan beenden
+          </button>
         </div>
       </div>
     </div>
@@ -63,7 +69,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   name: "ExerciseDetail",
@@ -81,8 +87,8 @@ export default {
     };
   },
   computed: {
-  ...mapGetters(['getSelectedPatient']),
-},
+    ...mapGetters(["getSelectedPatient"]),
+  },
   async created() {
     try {
       const response = await fetch(
@@ -110,34 +116,71 @@ export default {
 
       const patientId = patient._id;
       const patientName = patient.name;
+      const trainingPlanId = this.$store.getters.getTrainingPlanId;
 
-      try {
-        const response = await fetch(
-          "http://localhost:5500/api/trainingplans",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              patientId,
-              patientName,
-              exerciseId: this.exercise._id,
-              repetitions: this.editedExercise.repetitions,
-              duration: this.editedExercise.duration,
-              sets: this.editedExercise.sets,
-            }),
+      const body = {
+        patientId,
+        patientName,
+        exerciseId: this.exercise._id,
+        title: this.exercise.title,
+        repetitions: this.editedExercise.repetitions,
+        duration: this.editedExercise.duration,
+        sets: this.editedExercise.sets,
+      };
+
+      // Falls kein Trainingsplan existiert, erstelle einen neuen
+      if (!trainingPlanId) {
+        try {
+          const response = await fetch(
+            "http://localhost:5500/api/trainingplans",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(body),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Netzwerkantwort war nicht ok");
           }
-        );
 
-        if (!response.ok) {
-          throw new Error("Netzwerkantwort war nicht ok");
+          const result = await response.json();
+          console.log("Erstellter Trainingsplan:", result); // Debug
+          this.$store.commit("setTrainingPlanId", result.trainingPlanId);
+
+          alert("Trainingsplan erfolgreich erstellt und Übung hinzugefügt!");
+        } catch (error) {
+          console.error("Fehler beim Speichern des Trainingsplans:", error);
         }
+      } else {
+        // Falls ein Trainingsplan bereits existiert, füge die Übung hinzu
+        try {
+          const response = await fetch(
+            `http://localhost:5500/api/trainingplans/${trainingPlanId}/exercises`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(body),
+            }
+          );
 
-        alert("Trainingsplan erfolgreich gespeichert!");
-      } catch (error) {
-        console.error("Fehler beim Speichern des Trainingsplans:", error);
+          if (!response.ok) {
+            throw new Error("Netzwerkantwort war nicht ok");
+          }
+
+          alert("Übung erfolgreich zum Trainingsplan hinzugefügt!");
+        } catch (error) {
+          console.error("Fehler beim Hinzufügen der Übung:", error);
+        }
       }
+    },
+    resetTrainingPlan() {
+      this.$store.commit("clearTrainingPlan");
+      alert("Trainingsplan zurückgesetzt.");
     },
   },
 };

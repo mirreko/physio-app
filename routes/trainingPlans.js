@@ -3,22 +3,46 @@ const router = express.Router();
 const TrainingPlan = require("../models/TrainingPlan");
 
 // @route    POST /api/trainingplans
-// @desc     Trainingsplan erstellen
+// @desc     Trainingsplan erstellen oder Übung zu einem bestehenden Trainingsplan hinzufügen
 // @access   Privat (nur Physiotherapeuten)
 router.post("/", async (req, res) => {
-  const { patientId, patientName, exercises } = req.body;
+  const { patientId, patientName, exerciseId, title, repetitions, duration, sets } = req.body;
 
   try {
-    const newTrainingPlan = new TrainingPlan({
-      patientId,
-      patientName,
-      exercises,
-    });
+    // Überprüfen, ob der Trainingsplan bereits existiert
+    let trainingPlan = await TrainingPlan.findOne({ patientId });
 
-    const trainingPlan = await newTrainingPlan.save();
-    res.status(201).json(trainingPlan);
-  } catch (err) {
-    console.error(err.message);
+    if (!trainingPlan) {
+      // Wenn kein Trainingsplan existiert, neuen Trainingsplan erstellen
+      trainingPlan = new TrainingPlan({
+        patientId,
+        patientName,
+        exercises: [
+          {
+            exerciseId,
+            title,
+            repetitions,
+            sets,
+            duration,
+          },
+        ],
+      });
+      await trainingPlan.save();
+      return res.status(201).json({ success: true, trainingPlanId: trainingPlan._id });
+    } else {
+      // Andernfalls die neue Übung zum bestehenden Trainingsplan hinzufügen
+      trainingPlan.exercises.push({
+        exerciseId,
+        title,
+        repetitions,
+        sets,
+        duration,
+      });
+      await trainingPlan.save();
+      return res.json({ success: true, trainingPlanId: trainingPlan._id });
+    }
+  } catch (error) {
+    console.error(error);
     res.status(500).send("Serverfehler");
   }
 });
@@ -39,11 +63,11 @@ router.get("/:patientId", async (req, res) => {
   }
 });
 
-// @route    PUT /api/trainingplans/:id
-// @desc     Trainingsplan aktualisieren
+// @route    PUT /api/trainingplans/:id/exercises
+// @desc     Übungen zu einem bestehenden Trainingsplan hinzufügen
 // @access   Privat (nur Physiotherapeuten)
-router.put("/:id", async (req, res) => {
-  const { exercises } = req.body;
+router.put("/:id/exercises", async (req, res) => {
+  const { exerciseId, title, repetitions, duration, sets } = req.body;
 
   try {
     let trainingPlan = await TrainingPlan.findById(req.params.id);
@@ -52,38 +76,20 @@ router.put("/:id", async (req, res) => {
       return res.status(404).json({ msg: "Trainingsplan nicht gefunden" });
     }
 
-    // Update exercises array
-    trainingPlan.exercises = exercises;
+    // Neue Übung zum bestehenden Trainingsplan hinzufügen
+    trainingPlan.exercises.push({
+      exerciseId,
+      title,
+      repetitions,
+      sets,
+      duration,
+    });
 
     await trainingPlan.save();
     res.json(trainingPlan);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Serverfehler");
-  }
-});
-
-// @route    POST /api/trainingplans
-// @desc     Trainingsplan für einen Patienten speichern
-// @access   Öffentlich
-router.post("/", async (req, res) => {
-  const { patientId, pateintName, exerciseId, repetitions, duration, sets } = req.body;
-
-  try {
-    const trainingPlan = new TrainingPlan({
-      patientId,
-      patientName,
-      exerciseId,
-      repetitions,
-      duration,
-      sets,
-    });
-
-    await trainingPlan.save();
-    res.status(201).json(trainingPlan);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Serverfehler');
   }
 });
 
@@ -99,6 +105,25 @@ router.get("/", async (req, res) => {
     res.status(500).send("Serverfehler");
   }
 });
+
+// @route    DELETE /api/trainingplans/:id
+// @desc     Trainingsplan löschen
+// @access   Privat (nur Physiotherapeuten)
+router.delete("/:id", async (req, res) => {
+  try {
+    const trainingPlan = await TrainingPlan.findByIdAndDelete(req.params.id); 
+
+    if (!trainingPlan) {
+      return res.status(404).json({ msg: "Trainingsplan nicht gefunden" });
+    }
+
+    res.json({ msg: "Trainingsplan erfolgreich gelöscht" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Serverfehler");
+  }
+});
+
 
 
 module.exports = router;

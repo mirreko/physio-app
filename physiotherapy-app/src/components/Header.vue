@@ -1,9 +1,9 @@
 <template>
     <header class="bg-white">
-      <div class="container mx-auto flex justify-between items-center">
+      <div class="container mx-auto flex justify-between">
         <h1 class="text-2xl font-bold">PhysioTool</h1>
         <nav>
-          <ul class="flex space-x-4">
+          <ul class="flex space-x-4 items-center">
             <router-link to="/physio-dashboard" class="hover:text-primary">Dashboard</router-link>
             <router-link to="/trainingplans" class="hover:text-primary">Trainingspläne</router-link>
             <li><a href="#" class="hover:text-primary">PatientInnen</a></li>

@@ -6,10 +6,10 @@
             v-model="searchQuery"
             type="text"
             placeholder="Übung suchen..."
-            class="p-2 border rounded-full w-full mb-4"
+            class="p-input border rounded-full w-full mb-4"
             @input="updateSearchQuery"
           />
-          <select v-model="selectedDifficulty" @change="updateSelectedDifficulty" class="p-2 border rounded-full w-full">
+          <select v-model="selectedDifficulty" @change="updateSelectedDifficulty" class="p-input border rounded-full w-full">
             <option value="">Alle Schwierigkeitsgrade</option>
             <option value="leicht">Leicht</option>
             <option value="mittel">Mittel</option>

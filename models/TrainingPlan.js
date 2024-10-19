@@ -17,6 +17,10 @@ const TrainingPlanSchema = new mongoose.Schema({
         ref: "exercise",
         required: true,
       },
+      title: {
+        type: String,
+        required: true, 
+      },
       repetitions: {
         type: Number,
         required: true,
