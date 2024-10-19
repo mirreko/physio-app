@@ -3,9 +3,9 @@ import PhysioDashboard from '../pages/PhysioDashboard.vue';
 import PatientDashboard from '../pages/PatientDashboard.vue';
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue'; 
-import ExerciseDetail from '../components/ExerciseDetail.vue';
+import ExerciseDetail from '../components/physio/ExerciseDetail.vue';
 import Trainingplans from '../pages/Trainingplans.vue';
-import ExerciseList from '../components/ExerciseList.vue';
+import ExerciseList from '../components/physio/ExerciseList.vue';
 
 const routes = [
   {

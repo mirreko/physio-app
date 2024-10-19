@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const TrainingPlan = require("../models/TrainingPlan");
+const authMiddleware = require("../middleware/auth");
 
 // @route    POST /api/trainingplans
 // @desc     Trainingsplan erstellen oder Übung zu einem bestehenden Trainingsplan hinzufügen
@@ -123,6 +124,35 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send("Serverfehler");
   }
 });
+
+// @route    GET /api/trainingplans/:id
+// @desc     Trainingsplan für einen bestimmten Patienten abrufen
+// @access   Privat
+router.get("/:id", authMiddleware, async (req, res) => {
+  const patientId = req.params.id; // ID aus der URL extrahieren
+  console.log("Patient ID from URL:", patientId); // Debugging-Zeile
+
+  // Überprüfen, ob die ID gültig ist
+  if (!mongoose.Types.ObjectId.isValid(patientId)) {
+    return res.status(400).json({ msg: "Ungültige Benutzer-ID" });
+  }
+
+  try {
+    const trainingPlan = await TrainingPlan.findOne({ patientId: patientId })
+      .populate("exercises.exerciseId");
+
+    if (!trainingPlan) {
+      return res.status(404).json({ msg: "Kein Trainingsplan gefunden" });
+    }
+
+    res.json(trainingPlan);
+  } catch (err) {
+    console.error("Error fetching training plan:", err.message);
+    return res.status(500).json({ msg: "Serverfehler", error: err.message });
+  }
+});
+
+
 
 
 

@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 app.use("/api/exercises", exercisesRouter);
 app.use("/api/users", usersRoute);
 app.use("/api/trainingplans", trainingPlans);
-app.use("/api/auth", authRoutes);
+app.use("/api/authRoutes", authRoutes);
 
 // Starte den Server auf Port 5500
 const PORT = process.env.PORT || 5500;

@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import Header from "../components/Header.vue";
-import Sidebar from "../components/Sidebar.vue";
-import ExerciseList from "../components/ExerciseList.vue";
-import PatientSelection from "../components/PatientSelection.vue";
-import ExerciseDetail from "../components/ExerciseDetail.vue";
+import Header from "../components/physio/Header.vue";
+import Sidebar from "../components/physio/Sidebar.vue";
+import ExerciseList from "../components/physio/ExerciseList.vue";
+import PatientSelection from "../components/physio/PatientSelection.vue";
+import ExerciseDetail from "../components/physio/ExerciseDetail.vue";
 
 export default {
   name: "PhysioDashboard",

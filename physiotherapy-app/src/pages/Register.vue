@@ -59,7 +59,7 @@
     methods: {
       async registerUser() {
         try {
-          const response = await fetch('http://localhost:5500/api/auth/register', {
+          const response = await fetch('http://localhost:5500/api/authRoutes/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

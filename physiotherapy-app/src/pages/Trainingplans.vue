@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import Header from "../components/Header.vue";
-import TrainingsplanList from "../components/TrainingsplanList.vue";
+import Header from "../components/physio/Header.vue";
+import TrainingsplanList from "../components/physio/TrainingsplanList.vue";
 
 export default {
   name: "Trainingplans",
