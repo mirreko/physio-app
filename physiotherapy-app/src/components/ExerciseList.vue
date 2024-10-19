@@ -47,8 +47,7 @@ export default {
   },
   methods: {
     viewDetails(exercise) {
-      // Verwende Vue Router, um zur Detailseite zu navigieren
-      this.$router.push({ name: 'ExerciseDetail', params: { id: exercise._id } });
+      this.$emit('selectExercise', exercise._id);
     },
   },
 };

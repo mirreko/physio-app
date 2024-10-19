@@ -5,6 +5,7 @@ import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue'; 
 import ExerciseDetail from '../components/ExerciseDetail.vue';
 import Trainingplans from '../pages/Trainingplans.vue';
+import ExerciseList from '../components/ExerciseList.vue';
 
 const routes = [
   {
@@ -32,11 +33,15 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/exercises/:id', 
+    path: '/physio-dashboard/exercises',
+    name: 'ExerciseList',
+    component: ExerciseList
+  },
+  {
+    path: '/physio-dashboard/exercise/:id',
     name: 'ExerciseDetail',
     component: ExerciseDetail,
-    props: true,
-    meta: { requiresAuth: true }, // Diese Route benötigt Authentifizierung
+    props: true
   },
   {
     path: '/trainingplans', 

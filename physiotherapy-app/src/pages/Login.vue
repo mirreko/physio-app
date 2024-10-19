@@ -88,7 +88,7 @@
 
       redirectToDashboard(isPhysiotherapist) {
   if (isPhysiotherapist) {
-    this.$router.push('/'); // Weiterleitung zum Physiotherapie-Dashboard
+    this.$router.push('/physio-dashboard'); // Weiterleitung zum Physiotherapie-Dashboard
   } else {
     this.$router.push('/patient-dashboard'); // Weiterleitung zum Patienten-Dashboard
   }

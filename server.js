@@ -2,8 +2,11 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require('cors');
+const authRoutes = require("./routes/authRoutes");
+const usersRoute = require("./routes/users");
 const exercisesRouter = require("./routes/exercises");
-const usersRoute = require("./routes/users"); 
+const trainingPlans = require("./routes/trainingPlans");
+const mongoose = require("mongoose");
 
 // Initialisiere express und lade Umgebungsvariablen
 dotenv.config();
@@ -18,24 +21,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack); // Detaillierte Fehlerausgabe im Terminal
   res.status(500).json({ error: "Serverfehler" });
 });
-
-// Einfache Route zum Testen
-app.get("/", (req, res) => {
-  res.send("Hello World, der Server läuft!");
-});
-
-// Routen
-app.use("/api/exercises", exercisesRouter);
-app.use("/api/users", usersRoute);
-
-// Starte den Server auf Port 5500
-const PORT = process.env.PORT || 5500;
-app.listen(PORT, () => {
-  console.log(`Server läuft auf Port ${PORT}`);
-});
-
-// server.js
-const mongoose = require("mongoose");
 
 // Verbindungsfunktion für MongoDB
 // Verbindungsfunktion für MongoDB
@@ -52,14 +37,20 @@ const connectDB = async () => {
 // Rufe die Verbindungsfunktion auf
 connectDB();
 
-// User Authentifikation
-const authRoutes = require("./routes/authRoutes");
+// Einfache Route zum Testen
+app.get("/", (req, res) => {
+  res.send("Hello World, der Server läuft!");
+});
+
+// Routen
+app.use("/api/exercises", exercisesRouter);
+app.use("/api/users", usersRoute);
+app.use("/api/trainingplans", trainingPlans);
 app.use("/api/auth", authRoutes);
 
-// Übungen importieren
-const exercises = require("./routes/exercises");
-app.use("/api/exercises", exercises);
+// Starte den Server auf Port 5500
+const PORT = process.env.PORT || 5500;
+app.listen(PORT, () => {
+  console.log(`Server läuft auf Port ${PORT}`);
+});
 
-// Trainingsplaene importieren
-const trainingPlans = require("./routes/trainingPlans");
-app.use("/api/trainingplans", trainingPlans);
