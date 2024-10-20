@@ -25,7 +25,9 @@ const store = createStore({
       commit('setSelectedPatient', patient);
     },
     async fetchCurrentTrainingPlan({ commit }) {
+     
       const patientId = localStorage.getItem("patientId"); // Beispiel für das Abrufen der Patient-ID
+     
       try {
         const response = await fetch(`http://localhost:5500/api/trainingplans/${patientId}`, {
           method: "GET",
@@ -34,14 +36,13 @@ const store = createStore({
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-    
+        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
+        
         const data = await response.json();
-        console.log(data);
-        commit("SET_CURRENT_TRAINING_PLAN", data);
+        commit("SET_CURRENT_TRAINING_PLAN", data[0]);
       } catch (error) {
         console.error("Fehler beim Abrufen des Trainingsplans:", error);
       }

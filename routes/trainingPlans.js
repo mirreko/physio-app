@@ -130,8 +130,7 @@ router.delete("/:id", async (req, res) => {
 // @access   Privat
 router.get("/:id", authMiddleware, async (req, res) => {
   const patientId = req.params.id; // ID aus der URL extrahieren
-  console.log("Patient ID from URL:", patientId); // Debugging-Zeile
-
+  
   // Überprüfen, ob die ID gültig ist
   if (!mongoose.Types.ObjectId.isValid(patientId)) {
     return res.status(400).json({ msg: "Ungültige Benutzer-ID" });

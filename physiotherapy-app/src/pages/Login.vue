@@ -96,7 +96,13 @@ export default {
         }
         
         const user = await userResponse.json();
+
+        console.log(user);
         
+        if (user.isPhysiotherapist === false && user._id) { // Angenommen, die Benutzerinformationen enthalten die Rolle und die patientId
+      localStorage.setItem("patientId", user._id); // Speichern der patientId
+    }
+
         // Benutzerrolle und Dashboard weiterleiten
         this.redirectToDashboard(user.isPhysiotherapist); // Verwende die Rolle hier
         

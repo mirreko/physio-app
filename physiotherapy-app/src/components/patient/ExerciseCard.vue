@@ -1,0 +1,82 @@
+<template>
+    <div class="p-6 bg-gray-100 rounded-2xl mt-6 w-full">
+      <h1 class="text-2xl font-bold mb-6 text-center">Ihr Trainingsplan</h1>
+  
+      <div v-if="!trainingPlan" class="text-gray-600 text-center">
+        Kein Trainingsplan gefunden.
+      </div>
+  
+      <div v-else class="flex justify-center align-center">
+        <!-- Swiper für die Übungen -->
+        <swiper
+        :effect="'cards'"
+    :grabCursor="true"
+    :modules="modules"
+    class="w-96 h-fit"
+        >
+          <swiper-slide
+            v-for="exercise in trainingPlan.exercises"
+            :key="exercise._id" class="flex flex-col align-center justify-center text-start bg-white border rounded-2xl p-4 mb-4 gap-6"
+          >
+              <img
+                src="https://placehold.co/600x400"
+                alt="Exercise Image"
+              />
+              <div >
+                <h3 class="text-lg font-semibold mb-2">{{ exercise.exerciseId.title }}</h3>
+                <p class="text-sm text-gray-600 mb-4">{{ exercise.exerciseId.description }}</p>
+  
+                <div class="text-sm text-gray-800 space-y-2">
+                  <p><b>Wiederholungen:</b> {{ exercise.repetitions }}</p>
+                  <p><b>Sätze:</b> {{ exercise.sets }}</p>
+                  <p><b>Dauer:</b> {{ exercise.duration }} Sekunden</p>
+                </div>
+              </div>
+            
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  import { mapGetters } from 'vuex';
+  import { Swiper, SwiperSlide } from 'swiper/vue';
+  import { EffectCards } from 'swiper/modules';
+  import 'swiper/swiper-bundle.css'; // Swiper Styles importieren
+  
+  export default {
+    name: "ExerciseCard",
+    components: {
+      Swiper,
+      SwiperSlide,
+    },
+    setup() {
+      return {
+        modules: [EffectCards],
+      };
+    },
+    computed: {
+      ...mapGetters(['getCurrentTrainingPlan']),
+    },
+    data() {
+      return {
+        trainingPlan: null,
+      };
+    },
+    async created() {
+      const patientId = localStorage.getItem("patientId");
+      if (patientId) {
+        await this.$store.dispatch('fetchCurrentTrainingPlan', patientId);
+        this.trainingPlan = this.getCurrentTrainingPlan;
+      } else {
+        console.error("Patient ID nicht gefunden.");
+      }
+    },
+  };
+  </script>
+  
+  <style scoped>
+
+  </style>
+  
