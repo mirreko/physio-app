@@ -7,9 +7,9 @@
       <div class="flex-1 p-4 flex flex-col justify-between">
         <h1 class="text-2xl font-bold mb-4">{{ exercise.title }}</h1>
         <img
-          :src="exercise.image"
+          src="https://placehold.co/600x400"
           alt="Exercise Image"
-          class="w-full h-48 object-cover rounded-2xl mb-4"
+          class="w-full h-auto object-cover rounded-2xl mb-4"
         />
         <div class="text-sm text-gray-600 mb-2">
           Schwierigkeit:

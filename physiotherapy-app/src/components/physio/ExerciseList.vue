@@ -9,9 +9,9 @@
         @click="viewDetails(exercise)"
       >
         <img
-          :src="exercise.image"
+          src="https://placehold.co/600x400"
           alt="Uebung Bild"
-          class="w-full h-48 object-cover rounded-2xl mb-4"
+          class="w-full h-auto object-cover rounded-2xl mb-4"
         />
         <h3 class="text-lg font-semibold mb-2">{{ exercise.title }}</h3>
         <p class="text-gray-700 mb-2">{{ exercise.description }}</p>

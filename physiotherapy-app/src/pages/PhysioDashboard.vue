@@ -47,22 +47,35 @@ export default {
   },
   data() {
     return {
-      searchQuery: "",
-      selectedDifficulty: "",
       exercises: [],
       patients: [],
-      selectedExercise: null, // Neue Property für die ausgewählte Übung
+      filteredExercises: [],
+      searchQuery: "",
+      selectedDifficulty: ''
     };
   },
   async created() {
     await this.fetchData(); 
+    this.filteredExercises = this.exercises;
   },
   methods: {
     updateSearchQuery(query) {
       this.searchQuery = query;
+      this.filterExercises();
     },
     updateSelectedDifficulty(difficulty) {
       this.selectedDifficulty = difficulty;
+      this.filterExercises();
+    },
+    filterExercises() {
+      this.filteredExercises = this.exercises.filter(exercise => {
+        const matchesSearch = exercise.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+        const matchesDifficulty = this.selectedDifficulty ? exercise.difficulty === this.selectedDifficulty : true;
+        
+        // Weitere Filterbedingungen hier hinzufügen
+
+        return matchesSearch && matchesDifficulty;
+      });
     },
     async fetchData() {
       try {

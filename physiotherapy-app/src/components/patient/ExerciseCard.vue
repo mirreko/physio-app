@@ -1,5 +1,6 @@
 <template>
-    <div class="p-6 bg-gray-100 rounded-2xl mt-6 w-full">
+    <div class="flex items-center justify-center h-fit mt-6 "> 
+        <div class="flex flex-col justify-center w-2/3 bg-gray-100 rounded-2xl pt-6">
       <h1 class="text-2xl font-bold mb-6 text-center">Ihr Trainingsplan</h1>
   
       <div v-if="!trainingPlan" class="text-gray-600 text-center">
@@ -37,6 +38,7 @@
         </swiper>
       </div>
     </div>
+      </div>
   </template>
   
   <script>

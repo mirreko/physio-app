@@ -10,11 +10,11 @@
             @input="updateSearchQuery"
           />
           <select v-model="selectedDifficulty" @change="updateSelectedDifficulty" class="p-input border rounded-full w-full">
-            <option value="">Alle Schwierigkeitsgrade</option>
-            <option value="leicht">Leicht</option>
-            <option value="mittel">Mittel</option>
-            <option value="schwer">Schwer</option>
-          </select>
+    <option value="">Alle Wundheilungsphasen</option>
+    <option value="Leicht">Entzündungsphase</option>
+    <option value="Mittel">Proliferationsphase</option>
+    <option value="Schwierig">Umbauphase</option>
+  </select>
         </li>
         <li class="mb-4">
         <a href="#" class="text-lg font-semibold hover:text-gray-400"
@@ -29,6 +29,7 @@
           Untere Extremität
         </label>
       </li>
+
       <li class="mb-4">
         <a href="#" class="text-lg font-semibold hover:text-gray-400"
           >Krankheitsbilder</a
@@ -58,23 +59,7 @@
           Distale Radiusfraktur
         </label>
       </li>
-      <li class="mb-4">
-        <a href="#" class="text-lg font-semibold hover:text-gray-400"
-          >Wundheilungsphase</a
-        >
-        <label class="block pt-4">
-          <input type="checkbox" value="Entzündungsphase" v-model="selectedWoundHealing" class="mr-2" />
-          Entzündungsphase
-        </label>
-        <label class="block pt-4">
-          <input type="checkbox" value="Proliferationsphase" v-model="selectedWoundHealing" class="mr-2" />
-          Proliferationsphase
-        </label>
-        <label class="block pt-4">
-          <input type="checkbox" value="Umbauphase" v-model="selectedWoundHealing" class="mr-2" />
-          Umbauphase
-        </label>
-      </li>
+     
       <li class="mb-4">
         <a href="#" class="text-lg font-semibold hover:text-gray-400"
           >Woche post OP</a
@@ -105,12 +90,29 @@
     name: "Sidebar",
     data() {
         return {
-      searchQuery: "",
+          searchQuery: "",
       selectedDifficulty: "",
       selectedExtremities: [],
       selectedDiseases: [],
-      selectedWoundHealing: [],
       selectedPostOpWeeks: [],
+      extremityOptions: [
+        { value: "oEx", label: "Obere Extremität" },
+        { value: "uEx", label: "Untere Extremität" }
+      ],
+      diseaseOptions: [
+        { value: "bsv", label: "Bandscheibenvorfall" },
+        { value: "vkb", label: "VKB-Ruptur" },
+        { value: "spg", label: "Sprunggelenksdistorsion" },
+        { value: "h-tep", label: "Hüft-TEP" },
+        { value: "k-tep", label: "Knie-TEP" },
+        { value: "rad-fraktur", label: "Distale Radiusfraktur" }
+      ],
+      postOpWeeks: [
+        { value: "1", label: "1. Woche post OP" },
+        { value: "2", label: "2. Woche post OP" },
+        { value: "3", label: "3. Woche post OP" },
+        { value: "4", label: "4. bis 8. Woche post OP" }
+      ]
     };
     },
     methods: {
@@ -118,8 +120,8 @@
         this.$emit("update:search-query", this.searchQuery);
       },
       updateSelectedDifficulty() {
-        this.$emit("update:selected-difficulty", this.selectedDifficulty);
-      },
+      this.$emit("update:selected-difficulty", this.selectedDifficulty);
+    }
     },
   };
   </script>
