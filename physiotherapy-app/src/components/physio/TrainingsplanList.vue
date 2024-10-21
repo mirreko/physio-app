@@ -15,8 +15,8 @@
         <!-- Exercises Column -->
         <div class="flex-1">
           <ul>
-            <li v-for="exercise in plan.exercises" :key="exercise.exerciseId">
-              <b>Übung:</b> {{ exercise.title }} <b>Wiederholungen:</b> {{ exercise.repetitions }} <b>Sätze:</b> {{ exercise.sets }} <b>Dauer:</b> {{ exercise.duration }} Minuten
+            <li v-for="exercise in plan.exercises" :key="exercise.exerciseId" class="mb-4">
+              <b>Übung:</b> {{ exercise.title }} <br>Wiederholungen: {{ exercise.repetitions }} Sätze: {{ exercise.sets }} Dauer: {{ exercise.duration }} Minuten
             </li>
           </ul>
         </div>

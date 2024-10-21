@@ -17,7 +17,7 @@
     <!-- Reset Button -->
     <button
       v-if="selectedLetter"
-      class="mb-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+      class="mb-4 p-btn bg-primary text-white rounded-full"
       @click="resetFilter"
     >
       Filter zurücksetzen
@@ -49,7 +49,7 @@
     </div>
 
     <div v-if="selectedPatient" class="mt-6">
-      <h3 class="text-lg font-bold">Ausgewählter Patient:</h3>
+      <h3 class="text-lg font-bold">Übungsplan erstellen für:</h3>
       <p>{{ selectedPatient.name }}</p>
     </div>
   </div>
