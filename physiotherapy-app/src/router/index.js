@@ -9,6 +9,10 @@ import ExerciseList from '../components/physio/ExerciseList.vue';
 
 const routes = [
   {
+    path: '/',
+    redirect: '/login' // Weiterleitung von / auf /login
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login,

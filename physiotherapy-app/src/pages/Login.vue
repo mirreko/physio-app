@@ -28,7 +28,8 @@
           />
         </div>
         <button
-          class="bg-primary text-white w-full p-2 rounded-full font-semibold" @click="login()"
+          class="bg-primary text-white w-full p-2 rounded-full font-semibold"
+          @click="login()"
         >
           Anmelden
         </button>
@@ -79,7 +80,7 @@ export default {
         }
 
         const data = await response.json();
-        localStorage.setItem("token", data.token); 
+        localStorage.setItem("token", data.token);
 
         // Um Benutzerrolle abfragen
         const userResponse = await fetch(
@@ -96,16 +97,14 @@ export default {
         }
         
         const user = await userResponse.json();
+      
 
-        console.log(user);
-        
-        if (user.isPhysiotherapist === false && user._id) { // Angenommen, die Benutzerinformationen enthalten die Rolle und die patientId
-      localStorage.setItem("patientId", user._id); // Speichern der patientId
-    }
+        if (user.isPhysiotherapist === false && user._id) {
+          localStorage.setItem("patientId", user._id);
+          this.$store.commit("setPatientName", user.name);
+        }
 
-        // Benutzerrolle und Dashboard weiterleiten
-        this.redirectToDashboard(user.isPhysiotherapist); // Verwende die Rolle hier
-        
+        this.redirectToDashboard(user.isPhysiotherapist);
       } catch (error) {
         this.errorMessage =
           "Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Daten.";

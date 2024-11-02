@@ -1,0 +1,10 @@
+{
+  "appId": "com.physiotool.app",
+  "appName": "physio-app",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "cleartext": true,
+    "url": "http://localhost:5173"
+  }
+}

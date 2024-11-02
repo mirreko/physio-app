@@ -5,6 +5,7 @@ const store = createStore({
     selectedPatient: null,
     trainingPlanId: null,
     trainingPlan: null,
+    patientName: '',
   },
   mutations: {
     setSelectedPatient(state, patient) {
@@ -18,6 +19,9 @@ const store = createStore({
     },
     SET_CURRENT_TRAINING_PLAN(state, trainingPlan) {
       state.trainingPlan = trainingPlan;
+    },
+    setPatientName(state, name) {
+      state.patientName = name;
     },
   },
   actions: {
@@ -55,7 +59,9 @@ const store = createStore({
     },
     getTrainingPlanId: (state) => state.trainingPlanId,
     getCurrentTrainingPlan: (state) => state.trainingPlan,
+    getPatientName: (state) => state.patientName,
   },
+  
 });
 
 export default store; 

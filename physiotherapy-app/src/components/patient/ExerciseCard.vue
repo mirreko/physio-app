@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center justify-center h-fit mt-6 "> 
-        <div class="flex flex-col justify-center w-2/3 bg-gray-100 rounded-2xl pt-6">
-      <h1 class="text-2xl font-bold mb-6 text-center">Ihr Trainingsplan</h1>
+        <div class="flex flex-col justify-center w-full md:w-2/3 bg-gray-100 rounded-2xl pt-4">
+      <h1 class="text-xl md:text-2xl font-bold mb-4 text-center">Ihr Trainingsplan</h1>
   
       <div v-if="!trainingPlan" class="text-gray-600 text-center">
         Kein Trainingsplan gefunden.
@@ -13,7 +13,7 @@
         :effect="'cards'"
     :grabCursor="true"
     :modules="modules"
-    class="w-96 h-fit"
+    class="w-80 md:w-96 h-fit"
         >
           <swiper-slide
             v-for="exercise in trainingPlan.exercises"
