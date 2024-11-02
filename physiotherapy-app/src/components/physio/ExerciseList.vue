@@ -48,6 +48,7 @@ export default {
   methods: {
     viewDetails(exercise) {
       this.$emit('selectExercise', exercise._id);
+      console.log("hello");
     },
   },
 };

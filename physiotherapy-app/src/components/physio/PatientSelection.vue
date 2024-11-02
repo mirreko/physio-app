@@ -7,7 +7,7 @@
       <span
         v-for="letter in alphabet"
         :key="letter"
-        class="cursor-pointer mx-1 font-bold underline underline-offset-2 hover:text-primary"
+        class="cursor-pointer mx-1 underline underline-offset-2 hover:text-primary"
         @click="filterPatientsByLetter(letter)"
       >
         {{ letter }}

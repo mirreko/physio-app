@@ -51,7 +51,8 @@ export default {
       patients: [],
       filteredExercises: [],
       searchQuery: "",
-      selectedDifficulty: ''
+      selectedDifficulty: '',
+      selectedExercise: null,
     };
   },
   async created() {

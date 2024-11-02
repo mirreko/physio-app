@@ -180,7 +180,7 @@ export default {
     },
     resetTrainingPlan() {
       this.$store.commit("clearTrainingPlan");
-      alert("Trainingsplan zurückgesetzt.");
+      alert("Trainingsplan beenden.");
     },
   },
 };
