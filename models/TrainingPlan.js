@@ -35,6 +35,14 @@ const TrainingPlanSchema = new mongoose.Schema({
       },
     },
   ],
+  frequency: {
+    type: Number, 
+    default: 3,
+  },
+  durationWeeks: {
+    type: Number, 
+    default: 4,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

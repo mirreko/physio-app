@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-transparent">
+    <header class="bg-white">
       <div class="container mx-auto flex justify-between">
         <h1 class="text-2xl font-bold">PhysioTool</h1>
         <nav>

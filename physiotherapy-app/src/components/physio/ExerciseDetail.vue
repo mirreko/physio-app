@@ -19,9 +19,7 @@
       <div class="flex-1 p-4 flex flex-col justify-between">
         <p class="text-gray-700 mb-4">{{ exercise.description }}</p>
         <div class="mb-4">
-          <label for="repetitions" class="block text-gray-600"
-            >Wiederholungen:</label
-          >
+          <label for="repetitions" class="block text-gray-600">Wiederholungen:</label>
           <input
             id="repetitions"
             type="number"
@@ -30,9 +28,7 @@
           />
         </div>
         <div class="mb-4">
-          <label for="duration" class="block text-gray-600"
-            >Dauer (in Minuten):</label
-          >
+          <label for="duration" class="block text-gray-600">Dauer (in Minuten):</label>
           <input
             id="duration"
             type="number"
@@ -46,6 +42,24 @@
             id="sets"
             type="number"
             v-model="editedExercise.sets"
+            class="border rounded p-2 w-auto"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="frequency" class="block text-gray-600">Häufigkeit (pro Woche):</label>
+          <input
+            id="frequency"
+            type="number"
+            v-model="editedExercise.frequency"
+            class="border rounded p-2 w-auto"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="durationWeeks" class="block text-gray-600">Dauer (in Wochen):</label>
+          <input
+            id="durationWeeks"
+            type="number"
+            v-model="editedExercise.durationWeeks"
             class="border rounded p-2 w-auto"
           />
         </div>
@@ -83,6 +97,8 @@ export default {
         repetitions: 0,
         duration: 0,
         sets: 0,
+        frequency: 0, // Neues Feld für Häufigkeit
+        durationWeeks: 0, // Neues Feld für Dauer in Wochen
       },
     };
   },
@@ -98,6 +114,9 @@ export default {
       this.editedExercise.repetitions = this.exercise.repetitions || 0;
       this.editedExercise.duration = this.exercise.duration || 0;
       this.editedExercise.sets = this.exercise.sets || 0;
+      // Initialisieren der neuen Felder, falls sie Teil der Übungsdaten sind
+      this.editedExercise.frequency = this.exercise.frequency || 0;
+      this.editedExercise.durationWeeks = this.exercise.durationWeeks || 0;
     } catch (error) {
       console.error("Fehler beim Laden der Übung:", error);
     }
@@ -126,6 +145,8 @@ export default {
         repetitions: this.editedExercise.repetitions,
         duration: this.editedExercise.duration,
         sets: this.editedExercise.sets,
+        frequency: this.editedExercise.frequency, // Neues Feld hinzufügen
+        durationWeeks: this.editedExercise.durationWeeks, // Neues Feld hinzufügen
       };
 
       // Falls kein Trainingsplan existiert, erstelle einen neuen
