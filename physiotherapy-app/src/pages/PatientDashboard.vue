@@ -4,9 +4,9 @@
     <div class="flex flex-1">
       <main class="flex-1 p-6 min-h-screen">
         <div class="grid grid-cols-3 gap-6">
+          <ProgressBar />
           <Streak />
-          <div class="bg-gray-100 rounded-lg p-6"></div>
-          <div class="bg-gray-100 rounded-lg p-6"></div>
+          <WorkoutCounter />
         </div>
         <ExerciseCard />
 
@@ -18,15 +18,19 @@
 <script>
 import ExerciseCard from '../components/patient/ExerciseCard.vue';
 import HeaderPatient from '../components/patient/HeaderPatient.vue';
+import ProgressBar from '../components/patient/ProgressBar.vue';
 import Streak from '../components/patient/Streak.vue';
+import WorkoutCounter from '../components/patient/WorkoutCounter.vue';
 
 
 export default {
   name: 'PatientDashboard',
   components: {
     HeaderPatient,
+    ProgressBar,
     ExerciseCard,
     Streak,
+    WorkoutCounter,
   }
 };
 </script>

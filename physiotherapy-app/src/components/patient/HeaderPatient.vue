@@ -3,11 +3,9 @@
     <h2 class="text-xl md:text-2xl font-bold text-gray-800">
       Hallo, {{ getPatientName }}!
     </h2>
-    <img
-      src="https://placehold.co/40x40"
-      alt="Profilbild"
-      class="rounded-full w-10 h-10"
-    />
+    <div class="w-12 h-12 bg-secondary text-white flex items-center justify-center rounded-full font-bold">
+      {{ getInitials(getPatientName) }}
+    </div>
   </header>
 </template>
 
@@ -17,6 +15,16 @@ export default {
   name: "HeaderPatient",
   computed: {
     ...mapGetters(['getPatientName']),
+  },
+  methods: {
+    getInitials(name) {
+      // Teile den Namen in Worte und nimm die ersten Buchstaben der ersten und zweiten Worte
+      return name
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase())
+        .join('')
+        .substring(0, 2); // nur die ersten zwei Initialen
+    },
   },
 };
 </script>
