@@ -4,7 +4,10 @@
     <div class="flex flex-1">
       <main class="flex-1 p-6 min-h-screen">
         <div class="grid grid-cols-3 gap-2">
-          <ProgressBar />
+          <ProgressBar 
+            :totalWeeks="trainingPlan?.durationWeeks" 
+            :currentWeek="calculatedCurrentWeek"
+          />
           <Streak />
           <WorkoutCounter />
         </div>
@@ -16,6 +19,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ExerciseCard from '../components/patient/ExerciseCard.vue';
 import HeaderPatient from '../components/patient/HeaderPatient.vue';
 import ProgressBar from '../components/patient/ProgressBar.vue';
@@ -31,6 +35,30 @@ export default {
     ExerciseCard,
     Streak,
     WorkoutCounter,
-  }
+  },
+  computed: {
+    ...mapGetters(['getCurrentTrainingPlan']),
+    
+    // Zugang zu den Trainingsplan-Daten
+    trainingPlan() {
+      return this.getCurrentTrainingPlan;
+    },
+    
+    // Berechnung der aktuellen Woche seit Erstellung
+    calculatedCurrentWeek() {
+      if (!this.trainingPlan || !this.trainingPlan.createdAt) return 0;
+      
+      const createdAt = new Date(this.trainingPlan.createdAt);
+      const now = new Date();
+      const diffTime = Math.abs(now - createdAt);
+      
+      const currentWeek = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+      return Math.min(currentWeek, this.trainingPlan.durationWeeks || 0);
+    },
+  },
+  created() {
+    // Lade Trainingsplan-Daten beim Initialisieren der Komponente
+    this.$store.dispatch('fetchCurrentTrainingPlan');
+  },
 };
 </script>
