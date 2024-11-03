@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-col overflow-x-hidden">
+  <div class="flex flex-col bg-gradient-to-b from-white to-gray-300 overflow-x-hidden">
     <HeaderPatient class="p-6 sticky top-0 mt-16"/>
     <div class="flex flex-1">
       <main class="flex-1 p-6 min-h-screen">
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-3 gap-2">
           <ProgressBar />
           <Streak />
           <WorkoutCounter />

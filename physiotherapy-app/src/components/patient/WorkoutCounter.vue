@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gray-100 p-2 rounded-lg flex items-center justify-center h-full"
+    class="bg-white p-2 rounded-2xl flex items-center justify-center h-full"
   >
     <div class="flex flex-col items-center justify-center">
       <div class="text-xs">Noch</div>

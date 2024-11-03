@@ -5,7 +5,7 @@ const ExerciseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description_1: {
+  description: {
     type: String,
     required: true,
   },

@@ -21,6 +21,18 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    badges: {
+      type: [String], // Liste von Badges
+      default: [],
+    },
+    points: {
+      type: Number,
+      default: 0,
+    },
+    streak: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 rounded-lg flex items-center justify-center h-full">
+    <div class="bg-white rounded-2xl flex items-center justify-center h-full">
         <div class="relative flex justify-center items-center w-24 h-24">
            
             <svg class="-rotate-90" width="100" height="100">
@@ -18,9 +18,9 @@
                     stroke-width="6" 
                 />
             </svg>
-            <div class="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <div class="absolute flex flex-col items-center justify-center">
                 <div class="text-xs">Woche </div>
-                <div class="text-xl font-bold">{{ currentWeek }}</div>
+                <div class="text-3xl font-bold -mt-1 -mb-1">{{ currentWeek }}</div>
                 <div class="text-xs"> von {{ totalWeeks }}</div>
             </div>
 

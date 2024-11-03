@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const TrainingPlanSchema = new mongoose.Schema({
   patientId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Hier wird davon ausgegangen, dass du ein User-Modell hast, in dem die Patienten gespeichert sind
+    ref: "User",
     required: true,
   },
   patientName: {

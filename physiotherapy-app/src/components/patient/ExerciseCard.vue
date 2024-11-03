@@ -1,10 +1,10 @@
 <template>
     <div class="flex items-center justify-center h-fit mt-6 "> 
-        <div class="flex flex-col justify-center w-full md:w-2/3 bg-gray-100 rounded-2xl pt-4">
-      <h1 class="text-xl md:text-2xl font-bold mb-4 text-center">Ihr Trainingsplan</h1>
+        <div class="flex flex-col justify-center w-full md:w-2/3 bg-white rounded-2xl pt-4">
+      <h1 class="text-xl md:text-2xl font-bold pt-6 text-center">Ihr Trainingsplan</h1>
   
-      <div v-if="!trainingPlan" class="text-gray-600 text-center">
-        Kein Trainingsplan gefunden.
+      <div v-if="!trainingPlan" class="text-gray-600 text-center p-6">
+        <strong>Kein Trainingsplan gefunden.</strong> <br> Ihr Physio hat Ihnen wahrscheinlich noch keinen Trainingsplan zugewiesen.
       </div>
   
       <div v-else class="flex justify-center align-center">
@@ -17,7 +17,7 @@
         >
           <swiper-slide
             v-for="exercise in trainingPlan.exercises"
-            :key="exercise._id" class="flex flex-col align-center justify-center text-start bg-white border rounded-2xl p-4 mb-4 gap-6"
+            :key="exercise._id" class="flex flex-col align-center justify-center text-start bg-white border rounded-2xl p-4 mb-4 mt-4 gap-6"
           >
               <img
                 src="https://placehold.co/600x400"
@@ -70,6 +70,7 @@
       const patientId = localStorage.getItem("patientId");
       if (patientId) {
         await this.$store.dispatch('fetchCurrentTrainingPlan', patientId);
+        console.log(this.getCurrentTrainingPlan);
         this.trainingPlan = this.getCurrentTrainingPlan;
       } else {
         console.error("Patient ID nicht gefunden.");

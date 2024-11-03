@@ -1,8 +1,6 @@
 <template>
-    <div class="bg-gray-100 rounded-lg p-6 flex items-center justify-between">
-      <div>
-        
-      </div>
+    <div class="bg-white rounded-2xl flex items-center justify-center">
+      <img src="/Users/miriamkoch/Documents/HFU/Thesis/physio-app/physiotherapy-app/src/assets/badge.png" class="w-20 h-20 rounded-full"/>
       <div class="streak-icon flex items-center">
         
       </div>

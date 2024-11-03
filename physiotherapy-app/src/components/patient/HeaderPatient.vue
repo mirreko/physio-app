@@ -1,5 +1,5 @@
 <template>
-  <header class="flex bg-white p-4 flex justify-between items-center">
+  <header class="flex bg-transparent p-4 flex justify-between items-center">
     <h2 class="text-xl md:text-2xl font-bold text-gray-800">
       Hallo, {{ getPatientName }}!
     </h2>
