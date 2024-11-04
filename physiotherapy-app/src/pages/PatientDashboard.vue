@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col bg-gradient-to-b from-white to-gray-300 overflow-x-hidden">
+  <div class="flex flex-col bg-gradient-to-b from-white to-gray-300 overflow-y-hidden">
     <HeaderPatient class="p-6 sticky top-0 mt-16"/>
     <div class="flex flex-1">
       <main class="flex-1 p-6 min-h-screen">
@@ -16,6 +16,7 @@
         <ExerciseCard />
         
       </main>
+      <NavBar />
     </div>
   </div>
 </template>
@@ -28,6 +29,7 @@ import HeaderPatient from '../components/patient/HeaderPatient.vue';
 import ProgressBar from '../components/patient/ProgressBar.vue';
 import Streak from '../components/patient/Streak.vue';
 import WorkoutCounter from '../components/patient/WorkoutCounter.vue';
+import NavBar from '../components/patient/NavBar.vue';
 
 
 export default {
@@ -38,6 +40,7 @@ export default {
     ExerciseCard,
     Streak,
     WorkoutCounter,
+    NavBar,
   },
   computed: {
     ...mapGetters(['getCurrentTrainingPlan']),
