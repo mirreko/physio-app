@@ -7,7 +7,7 @@
         <strong>Kein Trainingsplan gefunden.</strong> <br> Ihr Physio hat Ihnen wahrscheinlich noch keinen Trainingsplan zugewiesen.
       </div>
   
-      <div v-else class="flex justify-center align-center">
+      <div v-else class="flex flex-col justify-center align-center">
         <!-- Swiper für die Übungen -->
         <swiper
         :effect="'cards'"
@@ -36,6 +36,11 @@
             
           </swiper-slide>
         </swiper>
+        <div class="flex justify-center mb-4">
+          <button @click="completeWorkout" class="bg-primary text-white p-btn rounded-full">
+            Workout erledigt!
+          </button>
+        </div>
       </div>
     </div>
       </div>
@@ -43,15 +48,19 @@
   
   <script>
   import { mapGetters } from 'vuex';
+  import { mapActions } from 'vuex';
   import { Swiper, SwiperSlide } from 'swiper/vue';
   import { EffectCards } from 'swiper/modules';
   import 'swiper/swiper-bundle.css'; // Swiper Styles importieren
+  import WorkoutCounter from './WorkoutCounter.vue';
+
   
   export default {
     name: "ExerciseCard",
     components: {
       Swiper,
       SwiperSlide,
+      WorkoutCounter,
     },
     setup() {
       return {
@@ -60,7 +69,26 @@
     },
     computed: {
       ...mapGetters(['getCurrentTrainingPlan']),
+
+      calculatedCurrentWeek() {
+      if (!this.trainingPlan || !this.trainingPlan.createdAt) return 0;
+      
+      const createdAt = new Date(this.trainingPlan.createdAt);
+      const now = new Date();
+      const diffTime = Math.abs(now - createdAt);
+      
+
+      const currentWeek = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+      
+      return Math.min(currentWeek, this.trainingPlan.durationWeeks || 0);
     },
+    },
+    methods: {
+    ...mapActions(['markWorkoutCompleted']),
+    completeWorkout() {
+      this.markWorkoutCompleted();
+    },
+  },
     data() {
       return {
         trainingPlan: null,

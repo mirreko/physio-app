@@ -59,8 +59,8 @@ export default {
 <style scoped>
 .progress-ring__circle {
     fill: transparent;
-    stroke-dasharray: 251.33; /* Umfang des Kreises (2 * π * r für r = 40) */
-    stroke-dashoffset: 0; /* Fortschrittswert */
+    stroke-dasharray: 251.33; 
+    stroke-dashoffset: 0; 
     stroke-linecap: round;
     transition: stroke-dashoffset 0.35s ease;
 }

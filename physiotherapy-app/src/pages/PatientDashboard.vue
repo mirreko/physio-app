@@ -4,15 +4,17 @@
     <div class="flex flex-1">
       <main class="flex-1 p-6 min-h-screen">
         <div class="grid grid-cols-3 gap-2">
-          <ProgressBar 
-            :totalWeeks="trainingPlan?.durationWeeks" 
-            :currentWeek="calculatedCurrentWeek"
-          />
+          <template v-if="trainingPlan">
+            <ProgressBar 
+              :totalWeeks="trainingPlan.durationWeeks" 
+              :currentWeek="calculatedCurrentWeek"
+            />
+          </template>
           <Streak />
           <WorkoutCounter />
         </div>
         <ExerciseCard />
-
+        
       </main>
     </div>
   </div>
@@ -20,6 +22,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import ExerciseCard from '../components/patient/ExerciseCard.vue';
 import HeaderPatient from '../components/patient/HeaderPatient.vue';
 import ProgressBar from '../components/patient/ProgressBar.vue';
@@ -52,8 +55,16 @@ export default {
       const now = new Date();
       const diffTime = Math.abs(now - createdAt);
       
+
       const currentWeek = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
+      
       return Math.min(currentWeek, this.trainingPlan.durationWeeks || 0);
+    },
+  },
+  methods: {
+    ...mapActions(['markWorkoutCompleted']),
+    completeWorkout() {
+      this.markWorkoutCompleted();
     },
   },
   created() {
