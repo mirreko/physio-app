@@ -10,14 +10,18 @@
               :currentWeek="calculatedCurrentWeek"
             />
           </template>
-          <Streak />
+          <Badge />
           <WorkoutCounter />
         </div>
+        <Streak />
         <ExerciseCard />
-        
+        <Badges />
+      
       </main>
+      
       <NavBar />
     </div>
+    
   </div>
 </template>
 
@@ -28,6 +32,8 @@ import ExerciseCard from '../components/patient/ExerciseCard.vue';
 import HeaderPatient from '../components/patient/HeaderPatient.vue';
 import ProgressBar from '../components/patient/ProgressBar.vue';
 import Streak from '../components/patient/Streak.vue';
+import Badge from '../components/patient/Badge.vue';
+import Badges from '../components/patient/Badges.vue';
 import WorkoutCounter from '../components/patient/WorkoutCounter.vue';
 import NavBar from '../components/patient/NavBar.vue';
 
@@ -39,6 +45,8 @@ export default {
     ProgressBar,
     ExerciseCard,
     Streak,
+    Badge,
+    Badges,
     WorkoutCounter,
     NavBar,
   },
