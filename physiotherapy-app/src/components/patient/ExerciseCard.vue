@@ -7,7 +7,7 @@
         <strong>Kein Trainingsplan gefunden.</strong> <br> Ihr Physio hat Ihnen wahrscheinlich noch keinen Trainingsplan zugewiesen.
       </div>
 
-      <div v-else class="flex flex-col justify-center align-center">
+      <div v-else class="flex flex-col justify-center align-center mt-4">
         <!-- Swiper für die Übungen -->
         <swiper
           :effect="'cards'"
@@ -19,7 +19,7 @@
           <swiper-slide
             v-for="exercise in trainingPlan.exercises"
             :key="exercise._id"
-            class="flex flex-col align-center justify-center text-start bg-white border rounded-2xl p-4 mb-4 mt-4 gap-6"
+            class="flex flex-col align-center justify-center text-start bg-white border rounded-2xl p-4 mb-4 gap-6"
           >
             <img
               src="https://placehold.co/600x400"
@@ -39,7 +39,7 @@
 
           <!-- "Geschafft!"-Slide -->
           <swiper-slide>
-            <div class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center mt-4">
+            <div class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center">
               <h2 class="text-2xl font-bold text-white mt-4">Geschafft! 🎉</h2>
               <p class="text-white mt-6">Wie war dein Workout?</p>
 
@@ -196,4 +196,5 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
   transition: background 0.3s ease;
 }
+
 </style>

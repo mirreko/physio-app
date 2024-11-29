@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Exercise = require("../models/Exercise");
+const User = require("../models/User");
+const TrainingPlan = require("../models/TrainingPlan");
 
 // @route    GET /api/exercises
 // @desc     Alle verfügbaren Übungen abrufen
@@ -51,5 +53,68 @@ router.get("/:id", async (req, res) => {
     res.status(500).send({ message: "Serverfehler" });
   }
 });
+
+router.post("/complete", async (req, res) => {
+  const { userId, completedDate } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const completedDateObj = new Date(completedDate);
+
+    // 1. Punkte vergeben
+    const pointsEarned = 10; // Beispielpunkte
+    user.points += pointsEarned;
+
+    // 2. Streak aktualisieren
+    const lastWorkoutDate = new Date(user.lastWorkoutDate);
+    const isNextDay = (completedDateObj - lastWorkoutDate) / (1000 * 60 * 60 * 24) === 1;
+
+    if (isNextDay) {
+      user.streak += 1;
+    } else if (completedDateObj > lastWorkoutDate) {
+      user.streak = 1; // Streak zurücksetzen
+    }
+
+    user.lastWorkoutDate = completedDateObj;
+
+    // 3. Badges prüfen
+    const newBadges = [];
+    const allBadges = await Badge.find(); // Lade alle Badge-Definitionen
+
+    allBadges.forEach((badge) => {
+      const condition = badge.condition;
+
+      if (
+        (condition === "streak >= 7" && user.streak >= 7) ||
+        (condition === "streak >= 14" && user.streak >= 14) ||
+        (condition === "streak >= 30" && user.streak >= 30) ||
+        (condition === "weekly_goal_completed" && user.weeklyGoalCompleted) ||
+        (condition === "monthly_goal_completed" && user.monthlyGoalCompleted)
+      ) {
+        if (!user.badges.includes(badge.id)) {
+          user.badges.push(badge.id);
+          newBadges.push(badge);
+        }
+      }
+    });
+
+    // Speichere Änderungen
+    await user.save();
+
+    res.json({
+      message: "Workout erfolgreich abgeschlossen!",
+      points: user.points,
+      streak: user.streak,
+      newBadges,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Serverfehler", error: err.message });
+  }
+});
+
+
 
 module.exports = router;

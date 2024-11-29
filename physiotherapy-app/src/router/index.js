@@ -6,6 +6,7 @@ import Register from '../pages/Register.vue';
 import ExerciseDetail from '../components/physio/ExerciseDetail.vue';
 import Trainingplans from '../pages/Trainingplans.vue';
 import ExerciseList from '../components/physio/ExerciseList.vue';
+import BadgeOverview from '../pages/BadgeOverview.vue';
 
 const routes = [
   {
@@ -53,6 +54,12 @@ const routes = [
     component: Trainingplans,
     meta: { requiresAuth: true }, // Diese Route benötigt Authentifizierung
   },
+  {
+    path: '/badges',
+    name: 'BadgeOverview',
+    component: BadgeOverview,
+    meta: { requiresAuth: true },
+  }
 ];
 
 const router = createRouter({

@@ -7,6 +7,7 @@ const usersRoute = require("./routes/users");
 const exercisesRouter = require("./routes/exercises");
 const trainingPlans = require("./routes/trainingPlans");
 const mongoose = require("mongoose");
+const badges = require("./routes/badges");
 
 // Initialisiere express und lade Umgebungsvariablen
 dotenv.config();
@@ -47,6 +48,7 @@ app.use("/api/exercises", exercisesRouter);
 app.use("/api/users", usersRoute);
 app.use("/api/trainingplans", trainingPlans);
 app.use("/api/authRoutes", authRoutes);
+app.use("/api/badges", badges);
 
 // Starte den Server auf Port 5500
 const PORT = process.env.PORT || 5500;
