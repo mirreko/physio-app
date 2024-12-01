@@ -10,7 +10,7 @@
               :currentWeek="calculatedCurrentWeek"
             />
           </template>
-          <Badge />
+          <Points />
           <WorkoutCounter />
         </div>
         <Streak />
@@ -32,7 +32,7 @@ import ExerciseCard from '../components/patient/ExerciseCard.vue';
 import HeaderPatient from '../components/patient/HeaderPatient.vue';
 import ProgressBar from '../components/patient/ProgressBar.vue';
 import Streak from '../components/patient/Streak.vue';
-import Badge from '../components/patient/Badge.vue';
+import Points from '../components/patient/Points.vue';
 import Badges from '../components/patient/Badges.vue';
 import WorkoutCounter from '../components/patient/WorkoutCounter.vue';
 import NavBar from '../components/patient/NavBar.vue';
@@ -45,7 +45,7 @@ export default {
     ProgressBar,
     ExerciseCard,
     Streak,
-    Badge,
+    Points,
     Badges,
     WorkoutCounter,
     NavBar,

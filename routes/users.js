@@ -30,4 +30,24 @@ router.get("/user", auth, async (req, res) => {
   }
 });
 
+// Route: GET /api/users/:id/points
+router.get('/:id/points', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Benutzer aus der Datenbank holen
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Benutzer nicht gefunden' });
+    }
+
+    // Punkte des Benutzers zurückgeben
+    res.json({ points: user.points });
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Punkte:', error);
+    res.status(500).json({ message: 'Interner Serverfehler' });
+  }
+});
+
 module.exports = router;

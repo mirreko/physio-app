@@ -4,9 +4,9 @@
     <HeaderPatient class="sticky top-0 mt-16"/>
     <div class="m-6">
     <p class="">Abzeichen <span class="text-primary text-xl">8</span>/32</p>
-    <div class="bg-white rounded-2xl p-4 shadow-md mt-2">
+    <div class="bg-white rounded-2xl p-4 shadow-md mt-2 mb-32">
     
-      <ul class="grid grid-cols-3 gap-2 sm:grid-cols-2 xs:grid-cols-1">
+      <ul class="grid grid-cols-3 gap-6 sm:grid-cols-2 xs:grid-cols-1">
       <!-- Durchlaufe alle Badges und stelle sie dar -->
       <li v-for="badge in badges" :key="badge._id" class="flex flex-col items-center text-center">
         <img :src="badge.imageUrl" alt="Badge Icon" class="w-20 h-20" />
@@ -16,10 +16,8 @@
   </div>
 </div>
 </div>
-
   <NavBar />
 </template>
-
 
 <script>
 import HeaderPatient from "../components/patient/HeaderPatient.vue";

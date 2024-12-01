@@ -18,6 +18,7 @@ const store = createStore({
     patientName: '',
     weeklyWorkoutsRemaining: null,
     lastResetDate: null,
+    points: 0,
   },
   mutations: {
     setSelectedPatient(state, patient) {
@@ -85,6 +86,9 @@ const store = createStore({
         this.commit('SAVE_WORKOUT_DATA');
       }
     },
+    SET_POINTS(state, points) {
+      state.points = points;
+    },
   },
   actions: {
     selectPatient({ commit }, patient) {
@@ -115,6 +119,27 @@ const store = createStore({
     markWorkoutCompleted({ commit }) {
       commit('DECREMENT_WORKOUT_COUNT');
     },
+    async fetchUserPoints({ commit }) {
+      const patientId = localStorage.getItem("patientId");
+      try {
+        const response = await fetch(`http://localhost:5500/api/users/${patientId}/points`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        commit("SET_POINTS", data.points);
+      } catch (error) {
+        console.error("Fehler beim Abrufen der Punkte:", error);
+      }
+    },
   },
   getters: {
     getSelectedPatient(state) {
@@ -124,6 +149,7 @@ const store = createStore({
     getCurrentTrainingPlan: (state) => state.trainingPlan,
     getPatientName: (state) => state.patientName,
     getRemainingWorkouts: (state) => state.weeklyWorkoutsRemaining,
+    getUserPoints: (state) => state.points,
   },
   plugins: [
     createPersistedState({
