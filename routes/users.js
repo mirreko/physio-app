@@ -122,4 +122,46 @@ router.put('/:id/streak', async (req, res) => {
   }
 });
 
+// Route: PUT /api/users/:id/workouts
+router.put('/:id/workouts', async (req, res) => {
+  const { id } = req.params;
+  const { workoutDate } = req.body; // Datum des erledigten Workouts
+
+  if (!workoutDate) {
+    return res.status(400).json({ message: 'Workout-Datum ist erforderlich.' });
+  }
+
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
+    }
+
+    // Füge das erledigte Workout-Datum hinzu
+    user.workouts.push(new Date(workoutDate));
+    
+    // Aktualisiere den Streak
+    const currentDate = new Date();
+    let newStreak = user.streak;
+
+    // Wenn der Tag des erledigten Workouts heute ist, erhöhe den Streak
+    if (user.workouts[user.workouts.length - 1].toDateString() === currentDate.toDateString()) {
+      newStreak += 1;
+    } else {
+      newStreak = 1; // Streak zurücksetzen, wenn es ein neues Workout ist
+    }
+    
+    // Speichere die Änderungen
+    user.streak = newStreak;
+    await user.save();
+
+    res.status(200).json({ message: 'Workout erfolgreich aktualisiert', streak: user.streak, workouts: user.workouts });
+  } catch (error) {
+    console.error('Fehler beim Aktualisieren des Workouts:', error);
+    res.status(500).json({ message: 'Interner Serverfehler' });
+  }
+});
+
+
 module.exports = router;

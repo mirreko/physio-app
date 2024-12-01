@@ -20,6 +20,7 @@ const store = createStore({
     lastResetDate: null,
     points: 0, 
     streak: 0,
+    feedbacks: [],
   },
   mutations: {
     setSelectedPatient(state, patient) {
@@ -113,7 +114,14 @@ const store = createStore({
       state.streak = newStreak;
       this.commit('SAVE_WORKOUT_DATA'); // Streak auch in localStorage speichern
     },
+    addFeedback(state, feedback) {
+      state.feedbacks.push(feedback);
+    },
   },
+
+
+
+
   actions: {
     // Hole den aktuellen Trainingsplan direkt aus der DB
     async fetchCurrentTrainingPlan({ commit }) {
@@ -144,51 +152,49 @@ const store = createStore({
       }
     },
 
-    // Markiere das Workout als erledigt und aktualisiere den Counter
-    async markWorkoutCompleted({ commit, state }) {
-      // Workout-Counter lokal im Vuex-Store aktualisieren
-      commit('DECREMENT_WORKOUT_COUNT');
-    
-      const trainingPlanId = state.trainingPlanId;
-      console.log("Trainingsplan-ID:", trainingPlanId);
-    
-      if (!trainingPlanId) {
-        console.error("Trainingsplan ID nicht gefunden.");
-        return;
-      }
-    
-      // Streak erhöhen
-      let newStreak = state.streak + 1; // Erhöhe den Streak um 1
-    
-      // Wenn der Benutzer die maximale Anzahl von wöchentlichen Workouts erreicht hat, 
-      // setzen wir den Streak auf 0 (woche zurückgesetzt)
-      if (state.weeklyWorkoutsRemaining <= 0) {
-        newStreak = 0;
-      }
-    
-      commit('UPDATE_STREAK', newStreak); // Den Streak im Vuex-Store aktualisieren
-    
-      // Workout-Counter auf dem Server aktualisieren
-      try {
-        const response = await fetch(`http://localhost:5500/api/trainingplans/${trainingPlanId}/workouts`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ frequency: state.weeklyWorkoutsRemaining }), // Sende den aktuellen Wert der verbleibenden Workouts
-        });
-    
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-    
-        console.log("Workout-Counter erfolgreich in der DB aktualisiert.");
-      } catch (error) {
-        console.error("Fehler beim Aktualisieren des Workout-Counters in der DB:", error);
-      }
-    },
-    
+   // In deiner markWorkoutCompleted Aktion, füge die Streak-Logik hinzu:
+async markWorkoutCompleted({ commit, state, dispatch }) {
+  // Workout-Counter lokal im Vuex-Store aktualisieren
+  commit('DECREMENT_WORKOUT_COUNT');
+
+  const trainingPlanId = state.trainingPlanId;
+  console.log("Trainingsplan-ID:", trainingPlanId);
+
+  if (!trainingPlanId) {
+    console.error("Trainingsplan ID nicht gefunden.");
+    return;
+  }
+
+  // Streak erhöhen, wenn das Workout erfolgreich abgeschlossen wurde
+  let newStreak = state.streak + 1;  // Erhöhe die Streak um 1
+
+  // Update die Streak in der DB
+  const patientId = localStorage.getItem("patientId");
+  if (patientId) {
+    await dispatch('updateStreak', { patientId, newStreak });
+  }
+
+  // Workout-Counter auf dem Server aktualisieren
+  try {
+    const response = await fetch(`http://localhost:5500/api/trainingplans/${trainingPlanId}/workouts`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ frequency: state.weeklyWorkoutsRemaining }), // Sende den aktuellen Wert der verbleibenden Workouts
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    console.log("Workout-Counter erfolgreich in der DB aktualisiert.");
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren des Workout-Counters in der DB:", error);
+  }
+},
+
     // Fetch-Punkte des Benutzers aus der DB
     async fetchUserPoints({ commit }) {
       const patientId = localStorage.getItem("patientId");
@@ -211,7 +217,6 @@ const store = createStore({
         console.error("Fehler beim Abrufen der Punkte:", error);
       }
     },
-    
     // Update die Punkte des Benutzers
     updatePoints({ commit, state }, points) {
       commit('SET_POINTS', points);
@@ -236,10 +241,12 @@ const store = createStore({
       }
     },
     async fetchStreak({ commit }) {
-      const patientId = localStorage.getItem('patientId');
-      if (!patientId) return;
-    
       try {
+        const patientId = localStorage.getItem("patientId");
+        if (!patientId) {
+          throw new Error("Patient ID nicht gefunden.");
+        }
+
         const response = await fetch(`http://localhost:5500/api/users/${patientId}/streak`, {
           method: 'GET',
           headers: {
@@ -247,15 +254,18 @@ const store = createStore({
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-    
-        if (!response.ok) throw new Error('Fehler beim Abrufen der Streak');
+
+        if (!response.ok) {
+          throw new Error('Fehler beim Abrufen des Streaks.');
+        }
+
         const data = await response.json();
         commit('SET_STREAK', data.streak);
       } catch (error) {
-        console.error('Fehler beim Abrufen der Streak:', error);
+        console.error('Fehler beim Abrufen des Streaks:', error);
       }
     },
-    
+    // Die updateStreak Aktion sorgt dafür, dass der Streak auch in der Datenbank gespeichert wird
     async updateStreak({ commit }, { patientId, newStreak }) {
       try {
         const response = await fetch(`http://localhost:5500/api/users/${patientId}/streak`, {
@@ -270,13 +280,23 @@ const store = createStore({
         if (!response.ok) throw new Error('Fehler beim Aktualisieren der Streak.');
     
         const data = await response.json();
-        commit('SET_STREAK', data.streak);
+        commit('SET_STREAK', data.streak); // Streak im Vuex-Store aktualisieren
       } catch (error) {
         console.error('Fehler beim Aktualisieren der Streak:', error);
       }
     },
     
+
+    async submitFeedback({ commit }, feedback) {
+      // Hier wird die Feedback-Daten an eine API oder DB gesendet
+      // Beispiel: await api.submitFeedback(feedback);
+      commit('addFeedback', feedback);
+    },
   },
+
+
+
+
   getters: {
     getSelectedPatient(state) {
       return state.selectedPatient;
@@ -289,6 +309,7 @@ const store = createStore({
     getPatientName: (state) => state.patientName,
     getRemainingWorkouts: (state) => state.weeklyWorkoutsRemaining,
     getStreak: (state) => state.streak,
+    getFeedbacks: (state) => state.feedbacks,
   },
   plugins: [
     createPersistedState({

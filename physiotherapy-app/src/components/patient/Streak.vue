@@ -16,22 +16,26 @@
 
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
-  computed: {
-    ...mapGetters(['getStreak']),
-  },
-  created() {
-  const patientId = localStorage.getItem('patientId');
-  if (!patientId) {
-    console.error('Patient ID nicht gefunden.');
-    return;
+  async created() {
+  const patientId = localStorage.getItem("patientId");
+  if (patientId) {
+    await this.$store.dispatch('fetchCurrentTrainingPlan', patientId);
+    this.trainingPlan = this.getCurrentTrainingPlan;
+
+    // Stelle sicher, dass der Streak nach dem Laden der Seite aus der DB geladen wird
+    await this.$store.dispatch('fetchStreak');
+  } else {
+    console.error("Patient ID nicht gefunden.");
   }
+},
 
-  this.$store.dispatch('fetchStreak');
-}
-
+  computed: {
+    // Getter für den Streak
+    getStreak() {
+      return this.$store.state.streak;
+    },
+  },
 };
 </script>
 
