@@ -1,28 +1,40 @@
 <template>
   <div class="bg-white rounded-2xl flex items-center justify-between p-4 mt-2 shadow-md">
-
-    <!-- Streak Info -->
     <div class="flex-1 ml-4">
-      <!-- Progress Bar -->
       <div class="w-full bg-gray-300 h-4 rounded-full relative">
-        <!-- Fortschritt -->
         <div
           class="bg-primary h-4 rounded-full"
-          style="width: 70%;"
+          :style="{ width: `${Math.min(getStreak * 10, 100)}%` }"
         ></div>
       </div>
-
-      <!-- Streak Text -->
       <div class="text-center mt-2 text-gray-700 font-semibold">
-        7-Day Streak 🔥
+        {{ getStreak }}-Day Streak 🔥
       </div>
     </div>
   </div>
 </template>
 
+
 <script>
-export default {};
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters(['getStreak']),
+  },
+  created() {
+  const patientId = localStorage.getItem('patientId');
+  if (!patientId) {
+    console.error('Patient ID nicht gefunden.');
+    return;
+  }
+
+  this.$store.dispatch('fetchStreak');
+}
+
+};
 </script>
+
 
 <style>
 /* Optional: Für zusätzliches Styling */

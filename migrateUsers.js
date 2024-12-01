@@ -11,12 +11,10 @@ async function migrateUsers() {
     });
 
     await User.updateMany(
-      { badges: { $exists: false } }, // Nur Nutzer ohne die neuen Felder aktualisieren
+      { workouts: { $exists: false } }, // Nur Nutzer ohne die neuen Felder aktualisieren
       {
         $set: {
-          badges: [],
-          points: 0,
-          streak: 0,
+          workouts: [], // Set 'workouts' field as an empty array
         },
       }
     );

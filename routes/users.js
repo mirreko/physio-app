@@ -78,4 +78,48 @@ router.put('/:id/points', async (req, res) => {
   }
 });
 
+// Route: GET /api/users/:id/streak
+router.get('/:id/streak', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
+    }
+
+    res.json({ streak: user.streak });
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Streak:', error);
+    res.status(500).json({ message: 'Interner Serverfehler' });
+  }
+});
+
+// Route: PUT /api/users/:id/streak
+router.put('/:id/streak', async (req, res) => {
+  const { id } = req.params;
+  const { streak } = req.body;
+
+  if (typeof streak !== 'number') {
+    return res.status(400).json({ message: 'Streak muss eine Zahl sein.' });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      id,
+      { streak: streak },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
+    }
+
+    res.status(200).json({ message: 'Streak erfolgreich aktualisiert.', streak: user.streak });
+  } catch (error) {
+    console.error('Fehler beim Aktualisieren der Streak:', error);
+    res.status(500).json({ message: 'Interner Serverfehler' });
+  }
+});
+
 module.exports = router;

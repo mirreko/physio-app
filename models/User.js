@@ -1,7 +1,5 @@
-// models/User.js
 const mongoose = require("mongoose");
 
-// Benutzer-Schema
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -22,7 +20,7 @@ const UserSchema = new mongoose.Schema(
       default: false,
     },
     badges: {
-      type: [String], // Liste von Badges
+      type: [String],
       default: [],
     },
     points: {
@@ -32,6 +30,10 @@ const UserSchema = new mongoose.Schema(
     streak: {
       type: Number,
       default: 0,
+    },
+    workouts: {
+      type: [Date],
+      default: [],
     },
   },
   { timestamps: true },
