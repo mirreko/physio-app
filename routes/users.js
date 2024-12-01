@@ -50,4 +50,32 @@ router.get('/:id/points', async (req, res) => {
   }
 });
 
+// Route: PUT /api/users/:id/points
+router.put('/:id/points', async (req, res) => {
+  const { id } = req.params; // Benutzer-ID aus der URL
+  const { points } = req.body; // Neue Punkte aus der Anfrage
+
+  if (typeof points !== 'number') {
+    return res.status(400).json({ message: 'Punkte müssen eine Zahl sein.' });
+  }
+
+  try {
+    // Benutzer in der Datenbank finden und Punkte aktualisieren
+    const user = await User.findByIdAndUpdate(
+      id,
+      { $inc: { points: points } }, // Punkte inkrementieren
+      { new: true } // Rückgabe des aktualisierten Dokuments
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
+    }
+
+    res.status(200).json({ message: 'Punkte erfolgreich aktualisiert.', points: user.points });
+  } catch (error) {
+    console.error('Fehler beim Aktualisieren der Punkte:', error);
+    res.status(500).json({ message: 'Interner Serverfehler.' });
+  }
+});
+
 module.exports = router;

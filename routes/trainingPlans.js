@@ -152,7 +152,38 @@ router.get("/:id", authMiddleware, async (req, res) => {
 });
 
 
+// @route    PUT /api/trainingplans/:id/workouts
+// @desc     Trainingsplan für einen bestimmten Patienten abrufen
+// @access   Privat
+router.put('/:id/workouts', async (req, res) => {
+  const { id } = req.params; // Trainingsplan-ID aus der URL
+  const { frequency } = req.body; // Neuer Wert für den Workout-Counter
 
+  // Validierung des Werts
+  if (typeof frequency !== 'number' || frequency < 0) {
+    return res.status(400).json({ message: 'Die Häufigkeit (frequency) muss eine positive Zahl sein.' });
+  }
 
+  try {
+    // Trainingsplan in der Datenbank finden und das Feld frequency aktualisieren
+    const trainingPlan = await TrainingPlan.findByIdAndUpdate(
+      id,
+      { frequency }, // Setze den neuen Wert für frequency
+      { new: true } // Rückgabe des aktualisierten Dokuments
+    );
+
+    if (!trainingPlan) {
+      return res.status(404).json({ message: 'Trainingsplan nicht gefunden.' });
+    }
+
+    res.status(200).json({
+      message: 'Workout-Counter (frequency) erfolgreich aktualisiert.',
+      frequency: trainingPlan.frequency,
+    });
+  } catch (error) {
+    console.error('Fehler beim Aktualisieren der frequency:', error);
+    res.status(500).json({ message: 'Interner Serverfehler.' });
+  }
+});
 
 module.exports = router;

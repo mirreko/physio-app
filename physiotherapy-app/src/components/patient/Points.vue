@@ -2,11 +2,14 @@
   <div class="bg-white p-2 rounded-2xl flex items-center justify-center shadow-md h-full">
     <div class="flex flex-col items-center justify-center">
       <div class="text-sm">🏅 Punkte</div>
-      <div v-if="points !== undefined">
-      <div class="text-4xl font-bold">{{ points }}</div>
+      <div v-if="points !== null">
+        <div class="text-4xl font-bold">{{ points }}</div>
       </div>
+      <div v-else>
+        <p>Lade Punkte...</p>
+      </div>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -14,19 +17,16 @@ export default {
   name: "Points",
   data() {
     return {
-      points: null, // Initialwert setzen (z. B. null oder 0)
+      points: null, // Punkte hier initialisieren
     };
   },
   async created() {
     const patientId = localStorage.getItem("patientId");
     if (patientId) {
       try {
-        // Punkte vom Server laden
+        // Lade die Punkte vom Server
         await this.$store.dispatch("fetchUserPoints");
-
-        // Punkte aus dem Store abrufen
-        this.points = this.$store.getters.getUserPoints;
-        console.log(`Punkte: ${this.points}`);
+        this.points = this.$store.getters.getPoints; // Punkte aus dem Store holen
       } catch (error) {
         console.error("Fehler beim Laden der Punkte:", error);
       }
@@ -36,5 +36,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

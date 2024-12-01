@@ -18,7 +18,7 @@ const store = createStore({
     patientName: '',
     weeklyWorkoutsRemaining: null,
     lastResetDate: null,
-    points: 0,
+    points: 0, // Gesamtpunkte
   },
   mutations: {
     setSelectedPatient(state, patient) {
@@ -34,6 +34,9 @@ const store = createStore({
     },
     SET_CURRENT_TRAINING_PLAN(state, trainingPlan) {
       state.trainingPlan = trainingPlan;
+      const trainingPlanId = trainingPlan._id;
+      state.trainingPlanId = trainingPlanId;
+
       const patientId = state.selectedPatient?.id;
       const savedData = localStorage.getItem(`workoutData_${patientId}`);
       
@@ -45,17 +48,14 @@ const store = createStore({
     
         // Prüfen, ob die Woche gewechselt hat
         if (!savedStartOfWeek || currentStartOfWeek > savedStartOfWeek) {
-          // Setze den Counter auf den initialen Wert
           state.weeklyWorkoutsRemaining = trainingPlan.frequency;
           state.lastResetDate = new Date();
           localStorage.setItem(`startOfWeek_${patientId}`, currentStartOfWeek.toISOString());
         } else {
-          // Setze den Counter auf den gespeicherten Wert
           state.weeklyWorkoutsRemaining = weeklyWorkoutsRemaining;
           state.lastResetDate = lastResetDate;
         }
       } else if (trainingPlan.frequency) {
-        // Wenn kein gespeichertes Workout existiert, setze den initialen Wert
         state.weeklyWorkoutsRemaining = trainingPlan.frequency;
         state.lastResetDate = new Date();
         localStorage.setItem(`startOfWeek_${patientId}`, currentStartOfWeek.toISOString());
@@ -63,9 +63,9 @@ const store = createStore({
     
       this.commit('SAVE_WORKOUT_DATA');
     },
-    
     SAVE_WORKOUT_DATA(state) {
       const patientId = state.selectedPatient?.id;
+      
       if (!patientId) return;
       
       const data = {
@@ -73,10 +73,10 @@ const store = createStore({
         lastResetDate: state.lastResetDate,
       };
     
+      // Speichern in localStorage
       localStorage.setItem(`workoutData_${patientId}`, JSON.stringify(data));
     },
     
-
     setPatientName(state, name) {
       state.patientName = name;
     },
@@ -88,14 +88,26 @@ const store = createStore({
     },
     SET_POINTS(state, points) {
       state.points = points;
+      this.commit('SAVE_POINTS');
+    },
+    UPDATE_POINTS(state, points) {
+      state.points += points;
+    },
+    SAVE_POINTS(state) {
+      const patientId = state.selectedPatient?.id;
+      if (patientId) {
+        localStorage.setItem(`points_${patientId}`, state.points);
+      }
     },
   },
   actions: {
-    selectPatient({ commit }, patient) {
-      commit('setSelectedPatient', patient);
-    },
+    // Hole den aktuellen Trainingsplan direkt aus der DB
     async fetchCurrentTrainingPlan({ commit }) {
       const patientId = localStorage.getItem("patientId");
+      if (!patientId) {
+        console.error("Patient ID nicht gefunden.");
+        return;
+      }
 
       try {
         const response = await fetch(`http://localhost:5500/api/trainingplans/${patientId}`, {
@@ -112,13 +124,49 @@ const store = createStore({
 
         const data = await response.json();
         commit("SET_CURRENT_TRAINING_PLAN", data[0]);
+        commit("SET_POINTS", data[0].points || 0); // Punkte aus DB setzen
       } catch (error) {
         console.error("Fehler beim Abrufen des Trainingsplans:", error);
       }
     },
-    markWorkoutCompleted({ commit }) {
+
+    // Markiere das Workout als erledigt und aktualisiere den Counter
+    async markWorkoutCompleted({ commit, state }) {
+
+      // Workout-Counter lokal im Vuex-Store aktualisieren
       commit('DECREMENT_WORKOUT_COUNT');
+
+      const trainingPlanId = state.trainingPlanId;
+      console.log("Trainingsplan-ID:", trainingPlanId);
+
+      if (!trainingPlanId) {
+        console.error("Trainingsplan ID nicht gefunden.");
+        return;
+      }
+    
+      // Workout-Counter auf dem Server aktualisieren
+      try {
+        const response = await fetch(`http://localhost:5500/api/trainingplans/${trainingPlanId}/workouts`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ frequency: state.weeklyWorkoutsRemaining }), // Sende den aktuellen Wert der verbleibenden Workouts
+        });
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    
+        console.log("Workout-Counter erfolgreich in der DB aktualisiert.");
+      } catch (error) {
+        console.error("Fehler beim Aktualisieren des Workout-Counters in der DB:", error);
+      }
     },
+    
+    
+    // Fetch-Punkte des Benutzers aus der DB
     async fetchUserPoints({ commit }) {
       const patientId = localStorage.getItem("patientId");
       try {
@@ -140,6 +188,30 @@ const store = createStore({
         console.error("Fehler beim Abrufen der Punkte:", error);
       }
     },
+    
+    // Update die Punkte des Benutzers
+    updatePoints({ commit, state }, points) {
+      commit('SET_POINTS', points);
+      // Update auf dem Server
+      const patientId = localStorage.getItem("patientId");
+      if (patientId) {
+        fetch(`http://localhost:5500/api/users/${patientId}/points`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ points }),
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('Fehler beim Aktualisieren der Punkte');
+          console.log('Punkte erfolgreich auf dem Server aktualisiert');
+        })
+        .catch(error => {
+          console.error('Fehler beim Synchronisieren der Punkte', error);
+        });
+      }
+    },
   },
   getters: {
     getSelectedPatient(state) {
@@ -149,11 +221,13 @@ const store = createStore({
     getCurrentTrainingPlan: (state) => state.trainingPlan,
     getPatientName: (state) => state.patientName,
     getRemainingWorkouts: (state) => state.weeklyWorkoutsRemaining,
-    getUserPoints: (state) => state.points,
+    getPoints(state) {
+      return state.points;
+    },
   },
   plugins: [
     createPersistedState({
-      paths: ['patientName', 'selectedPatient', 'weeklyWorkoutsRemaining'], // Spezifiziere, welche Daten gespeichert werden sollen
+      paths: ['patientName', 'selectedPatient', 'weeklyWorkoutsRemaining','points'],
     }),
   ],
 });

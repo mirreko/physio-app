@@ -124,7 +124,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['markWorkoutCompleted']),
+    ...mapActions(['markWorkoutCompleted', 'updatePoints']),
     
     completeWorkout() {
       // Daten für das abgeschlossene Workout vorbereiten
@@ -136,6 +136,9 @@ export default {
 
       // Hier sendest du die Daten an die DB
       this.markWorkoutCompleted(workoutResult);
+
+      // Punkte um 10 erhöhen
+      this.updatePoints(10);
 
       // Optional: Benachrichtigung oder Rückmeldung
       alert("Workout erfolgreich abgeschlossen! 🎉");
@@ -152,7 +155,6 @@ export default {
     const patientId = localStorage.getItem("patientId");
     if (patientId) {
       await this.$store.dispatch('fetchCurrentTrainingPlan', patientId);
-      console.log(this.getCurrentTrainingPlan);
       this.trainingPlan = this.getCurrentTrainingPlan;
     } else {
       console.error("Patient ID nicht gefunden.");
