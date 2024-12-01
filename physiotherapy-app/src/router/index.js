@@ -7,6 +7,7 @@ import ExerciseDetail from '../components/physio/ExerciseDetail.vue';
 import Trainingplans from '../pages/Trainingplans.vue';
 import ExerciseList from '../components/physio/ExerciseList.vue';
 import BadgeOverview from '../pages/BadgeOverview.vue';
+import Statistics from '../pages/Statistics.vue';
 
 const routes = [
   {
@@ -59,7 +60,13 @@ const routes = [
     name: 'BadgeOverview',
     component: BadgeOverview,
     meta: { requiresAuth: true },
-  }
+  },
+  {
+    path: '/statistics',
+    name: 'Statistics',
+    component: Statistics,
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = createRouter({

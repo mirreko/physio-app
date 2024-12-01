@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col bg-gradient-to-b from-white to-gray-300 overflow-y-hidden">
+  <div class="flex flex-col bg-gray-200 overflow-y-hidden">
     <HeaderPatient class="p-6 sticky top-0 mt-16"/>
     <div class="flex flex-1">
       <main class="flex-1 p-6 min-h-screen">

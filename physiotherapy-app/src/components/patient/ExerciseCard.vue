@@ -124,25 +124,37 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['markWorkoutCompleted', 'updatePoints']),
+    ...mapActions(['markWorkoutCompleted', 'updatePoints', 'submitFeedback']),
     
-    completeWorkout() {
-      // Daten für das abgeschlossene Workout vorbereiten
-      const workoutResult = {
-        workoutRating: this.workoutRating,
-        painRating: this.painRating,
-        completedAt: new Date().toISOString(),
-      };
+    async completeWorkout() {
+  // Daten für das abgeschlossene Workout vorbereiten
+  const workoutResult = {
+    workoutRating: this.workoutRating,
+    painRating: this.painRating,
+    completedAt: new Date().toISOString(),
+    patientId: localStorage.getItem("patientId"),
+  };
 
-      // Hier sendest du die Daten an die DB
-      this.markWorkoutCompleted(workoutResult);
+  // Hier sendest du die Daten an die DB
+  this.markWorkoutCompleted(workoutResult);
 
-      // Punkte um 10 erhöhen
-      this.updatePoints(10);
+  await this.submitFeedback(workoutResult);
 
-      // Optional: Benachrichtigung oder Rückmeldung
-      alert("Workout erfolgreich abgeschlossen! 🎉");
-    },
+  // Punkte um 10 erhöhen
+  this.updatePoints(10);
+
+  // Optional: Benachrichtigung oder Rückmeldung
+  alert("Workout erfolgreich abgeschlossen! 🎉");
+
+  // Streak muss nun auch in der DB aktualisiert werden
+  const patientId = localStorage.getItem("patientId");
+  if (patientId) {
+    const newStreak = this.$store.state.streak + 1;  // Erhöhe die Streak
+    // Statt this.updateStreak() sollte dispatch genutzt werden
+    this.$store.dispatch('updateStreak', { patientId, newStreak });
+  }
+},
+
   },
   data() {
     return {
