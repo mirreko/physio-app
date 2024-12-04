@@ -1,10 +1,16 @@
 <template>
-  <div class="flex items-center justify-center h-fit mt-6"> 
-    <div class="flex flex-col justify-center w-full md:w-2/3 bg-white rounded-2xl pt-4">
-      <h1 class="text-xl md:text-2xl font-bold pt-6 text-center">Ihr Trainingsplan</h1>
+  <div class="flex items-center justify-center h-fit mt-6">
+    <div
+      class="flex flex-col justify-center w-full md:w-2/3 bg-white rounded-2xl pt-4"
+    >
+      <h1 class="text-xl md:text-2xl font-bold pt-6 text-center">
+        Ihr Trainingsplan
+      </h1>
 
       <div v-if="!trainingPlan" class="text-gray-600 text-center p-6">
-        <strong>Kein Trainingsplan gefunden.</strong> <br> Ihr Physio hat Ihnen wahrscheinlich noch keinen Trainingsplan zugewiesen.
+        <strong>Kein Trainingsplan gefunden.</strong> <br />
+        Ihr Physio hat Ihnen wahrscheinlich noch keinen Trainingsplan
+        zugewiesen.
       </div>
 
       <div v-else class="flex flex-col justify-center align-center mt-4">
@@ -21,13 +27,14 @@
             :key="exercise._id"
             class="flex flex-col align-center justify-center text-start bg-white border rounded-2xl p-4 mb-4 gap-6"
           >
-            <img
-              src="https://placehold.co/600x400"
-              alt="Exercise Image"
-            />
+            <img src="https://placehold.co/600x400" alt="Exercise Image" />
             <div>
-              <h3 class="text-lg font-semibold mb-2">{{ exercise.exerciseId.title }}</h3>
-              <p class="text-sm text-gray-600 mb-4">{{ exercise.exerciseId.description }}</p>
+              <h3 class="text-lg font-semibold mb-2">
+                {{ exercise.exerciseId.title }}
+              </h3>
+              <p class="text-sm text-gray-600 mb-4">
+                {{ exercise.exerciseId.description }}
+              </p>
 
               <div class="text-sm text-gray-800 space-y-2">
                 <p><b>Wiederholungen:</b> {{ exercise.repetitions }}</p>
@@ -39,13 +46,17 @@
 
           <!-- "Geschafft!"-Slide -->
           <swiper-slide>
-            <div class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center">
+            <div
+              class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center"
+            >
               <h2 class="text-2xl font-bold text-white mt-4">Geschafft! 🎉</h2>
               <p class="text-white mt-6">Wie war dein Workout?</p>
 
               <!-- Slider für die Workout-Bewertung -->
               <div class="workout-slider mt-4">
-                <label for="workout-rating" class="text-sm text-white">Schwierigkeit (0 bis 10):</label>
+                <label for="workout-rating" class="text-sm text-white"
+                  >Schwierigkeit (0 bis 10):</label
+                >
                 <input
                   id="workout-rating"
                   type="range"
@@ -55,12 +66,16 @@
                   step="1"
                   class="w-full mt-2"
                 />
-                <div class="text-center text-sm text-white">{{ workoutRating }}</div>
+                <div class="text-center text-sm text-white">
+                  {{ workoutRating }}
+                </div>
               </div>
 
               <!-- Slider für die Schmerzbewertung -->
               <div class="pain-slider mt-6">
-                <label for="pain-rating" class="text-sm text-white">Schmerzintensität (0 bis 10):</label>
+                <label for="pain-rating" class="text-sm text-white"
+                  >Schmerzintensität (0 bis 10):</label
+                >
                 <input
                   id="pain-rating"
                   type="range"
@@ -70,32 +85,35 @@
                   step="1"
                   class="w-full mt-2"
                 />
-                <div class="text-center text-sm text-white">{{ painRating }}</div>
+                <div class="text-center text-sm text-white">
+                  {{ painRating }}
+                </div>
               </div>
 
               <!-- Abhaken Button -->
               <div class="flex justify-center m-4">
-          <button @click="completeWorkout" class="bg-primary text-white p-btn rounded-full">
-            Workout erledigt!
-          </button>
-        </div>
+                <button
+                  @click="completeWorkout"
+                  class="bg-primary text-white p-btn rounded-full"
+                >
+                  Workout erledigt!
+                </button>
+              </div>
             </div>
           </swiper-slide>
-
         </swiper>
-        
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { mapActions } from 'vuex';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { EffectCards } from 'swiper/modules';
-import 'swiper/swiper-bundle.css'; // Swiper Styles importieren
-import WorkoutCounter from './WorkoutCounter.vue';
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { EffectCards } from "swiper/modules";
+import "swiper/swiper-bundle.css"; // Swiper Styles importieren
+import WorkoutCounter from "./WorkoutCounter.vue";
 
 export default {
   name: "ExerciseCard",
@@ -110,11 +128,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getCurrentTrainingPlan']),
+    ...mapGetters(["getCurrentTrainingPlan"]),
 
     calculatedCurrentWeek() {
       if (!this.trainingPlan || !this.trainingPlan.createdAt) return 0;
-      
+
       const createdAt = new Date(this.trainingPlan.createdAt);
       const now = new Date();
       const diffTime = Math.abs(now - createdAt);
@@ -124,37 +142,36 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['markWorkoutCompleted', 'updatePoints', 'submitFeedback']),
-    
+    ...mapActions(["markWorkoutCompleted", "updatePoints", "submitFeedback"]),
+
     async completeWorkout() {
-  // Daten für das abgeschlossene Workout vorbereiten
-  const workoutResult = {
-    workoutRating: this.workoutRating,
-    painRating: this.painRating,
-    completedAt: new Date().toISOString(),
-    patientId: localStorage.getItem("patientId"),
-  };
+      // Daten für das abgeschlossene Workout vorbereiten
+      const workoutResult = {
+        workoutRating: this.workoutRating,
+        painRating: this.painRating,
+        completedAt: new Date().toISOString(),
+        patientId: localStorage.getItem("patientId"),
+      };
 
-  // Hier sendest du die Daten an die DB
-  this.markWorkoutCompleted(workoutResult);
+      // Hier sendest du die Daten an die DB
+      this.markWorkoutCompleted(workoutResult);
+      // Sende das Feedback an den Store
+      await this.$store.dispatch("submitFeedback", workoutResult);
 
-  await this.submitFeedback(workoutResult);
+      // Punkte um 10 erhöhen
+      this.updatePoints(10);
 
-  // Punkte um 10 erhöhen
-  this.updatePoints(10);
+      // Optional: Benachrichtigung oder Rückmeldung
+      alert("Workout erfolgreich abgeschlossen! 🎉");
 
-  // Optional: Benachrichtigung oder Rückmeldung
-  alert("Workout erfolgreich abgeschlossen! 🎉");
-
-  // Streak muss nun auch in der DB aktualisiert werden
-  const patientId = localStorage.getItem("patientId");
-  if (patientId) {
-    const newStreak = this.$store.state.streak + 1;  // Erhöhe die Streak
-    // Statt this.updateStreak() sollte dispatch genutzt werden
-    this.$store.dispatch('updateStreak', { patientId, newStreak });
-  }
-},
-
+      // Streak muss nun auch in der DB aktualisiert werden
+      const patientId = localStorage.getItem("patientId");
+      if (patientId) {
+        const newStreak = this.$store.state.streak + 1; // Erhöhe die Streak
+        // Statt this.updateStreak() sollte dispatch genutzt werden
+        this.$store.dispatch("updateStreak", { patientId, newStreak });
+      }
+    },
   },
   data() {
     return {
@@ -166,7 +183,7 @@ export default {
   async created() {
     const patientId = localStorage.getItem("patientId");
     if (patientId) {
-      await this.$store.dispatch('fetchCurrentTrainingPlan', patientId);
+      await this.$store.dispatch("fetchCurrentTrainingPlan", patientId);
       this.trainingPlan = this.getCurrentTrainingPlan;
     } else {
       console.error("Patient ID nicht gefunden.");
@@ -184,7 +201,8 @@ export default {
   text-align: center;
 }
 
-.workout-slider, .pain-slider {
+.workout-slider,
+.pain-slider {
   width: 100%;
 }
 
@@ -206,9 +224,8 @@ input[type="range"]::-webkit-slider-thumb {
   width: 20px; /* Breite des Schiebereglers */
   height: 20px; /* Höhe des Schiebereglers */
   border-radius: 50%; /* Rundes Aussehen für den Schieberegler */
-  background: #0FF2B2; /* Farbe des Schiebereglers */
+  background: #0ff2b2; /* Farbe des Schiebereglers */
   cursor: pointer;
   transition: background 0.3s ease;
 }
-
 </style>

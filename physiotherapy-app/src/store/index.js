@@ -117,6 +117,9 @@ const store = createStore({
     addFeedback(state, feedback) {
       state.feedbacks.push(feedback);
     },
+    setFeedbacks(state, feedbacks) {
+      state.feedbacks = feedbacks;
+    }
   },
 
 
@@ -158,7 +161,6 @@ async markWorkoutCompleted({ commit, state, dispatch }) {
   commit('DECREMENT_WORKOUT_COUNT');
 
   const trainingPlanId = state.trainingPlanId;
-  console.log("Trainingsplan-ID:", trainingPlanId);
 
   if (!trainingPlanId) {
     console.error("Trainingsplan ID nicht gefunden.");
@@ -285,13 +287,52 @@ async markWorkoutCompleted({ commit, state, dispatch }) {
         console.error('Fehler beim Aktualisieren der Streak:', error);
       }
     },
-    
-
-    async submitFeedback({ commit }, feedback) {
-      // Hier wird die Feedback-Daten an eine API oder DB gesendet
-      // Beispiel: await api.submitFeedback(feedback);
-      commit('addFeedback', feedback);
+    async fetchFeedbacks({ commit }) {
+      try {
+        const response = await fetch('http://localhost:5500/api/users/feedbacks', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Fehler beim Abrufen der Feedbacks');
+        }
+        const feedbacks = await response.json();
+        commit('setFeedbacks', feedbacks);
+      } catch (error) {
+        console.error('Fehler beim Laden der Feedbacks:', error);
+      }
     },
+
+   // In deinem Vuex-Store
+
+async submitFeedback({ commit }, feedback) {
+
+  try {
+    const response = await fetch('http://localhost:5500/api/users/feedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,  // Authentifizierung
+      },
+      body: JSON.stringify(feedback),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Fehler beim Senden:', response.status, errorText);
+    }
+
+    const data = await response.json();
+    console.log('Feedback erfolgreich gespeichert:', data);
+    
+    commit('addFeedback', feedback); // Füge Feedback zum Vuex-Store hinzu (optional)
+
+  } catch (error) {
+    console.error('Fehler beim Senden des Feedbacks:', error);
+  }
+},
+
   },
 
 

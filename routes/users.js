@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const auth = require("../middleware/auth");
+const Feedback = require('../models/Feedback');
 
 // @route    GET /api/users
 // @desc     Alle Benutzer abrufen
@@ -163,5 +164,47 @@ router.put('/:id/workouts', async (req, res) => {
   }
 });
 
+// POST-Endpunkt für das Speichern von Feedback
+router.post('/feedback', async (req, res) => {
+  try {
+    const { workoutRating, painRating, completedAt, patientId } = req.body;  
+
+    // Neues Feedback-Dokument erstellen
+    const newFeedback = new Feedback({
+      workoutRating,
+      painRating,
+      completedAt,
+      patientId
+    });
+
+    // Speichern in der DB
+    await newFeedback.save();
+
+    res.status(201).json({ message: 'Feedback erfolgreich gespeichert!', feedback: newFeedback });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Interner Serverfehler' });
+  }
+});
+
+// GET-Route zum Abrufen der Feedbacks
+router.get('/feedbacks', async (req, res) => {
+  try {
+    // Holen der Feedback-Daten aus der Datenbank
+    const feedbacks = await Feedback.find();
+
+    // Wenn keine Feedbacks gefunden werden, sende eine leere Liste
+    if (!feedbacks || feedbacks.length === 0) {
+      return res.status(404).json({ message: 'Keine Feedbacks gefunden.' });
+    }
+
+    // Feedback-Daten als Antwort zurückgeben
+    res.status(200).json(feedbacks);
+  } catch (err) {
+    // Fehlerbehandlung, wenn etwas schiefgeht
+    console.error(err);
+    res.status(500).json({ error: 'Interner Serverfehler' });
+  }
+});
 
 module.exports = router;

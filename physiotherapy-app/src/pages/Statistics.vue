@@ -121,6 +121,10 @@
         };
       },
     },
+    async created() {
+    // Feedbacks aus der Datenbank laden
+    await this.$store.dispatch('fetchFeedbacks');
+  },
   };
   </script>
   
