@@ -11,7 +11,6 @@ const BadgeSchema = new mongoose.Schema({
   },
   condition: {
     type: String, // Speichert die Bedingung als String
-    required: true,
   },
   imageUrl: { // URL oder Dateipfad des Badge-Bilds
     type: String,

@@ -1,11 +1,11 @@
 <template>
   <div class="flex items-center justify-center h-fit mt-6">
     <div
-      class="flex flex-col justify-center w-full md:w-2/3 bg-white rounded-2xl pt-4"
+      class="flex flex-col justify-center w-full md:w-2/3 bg-white rounded-2xl shadow-md"
     >
-      <h1 class="text-xl md:text-2xl font-bold pt-6 text-center">
+      <h2 class="text-xl md:text-2xl font-nunito pt-8 text-center  text-gray-800">
         Ihr Trainingsplan
-      </h1>
+      </h2>
 
       <div v-if="!trainingPlan" class="text-gray-600 text-center p-6">
         <strong>Kein Trainingsplan gefunden.</strong> <br />
@@ -49,7 +49,7 @@
             <div
               class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center"
             >
-              <h2 class="text-2xl font-bold text-white mt-4">Geschafft! 🎉</h2>
+              <h2 class="text-3xl font-nunito text-white mt-4">Geschafft! 🎉</h2>
               <p class="text-white mt-6">Wie war dein Workout?</p>
 
               <!-- Slider für die Workout-Bewertung -->

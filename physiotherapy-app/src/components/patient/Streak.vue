@@ -7,9 +7,17 @@
           :style="{ width: `${Math.min(getStreak * 10, 100)}%` }"
         ></div>
       </div>
-      <div class="text-center mt-2 text-gray-700 font-semibold">
+      
+      <div v-if="getStreak !== null">
+        <div class="text-center mt-2 text-gray-700 font-semibold">
         {{ getStreak }}-Day Streak 🔥
       </div>
+</div>
+<div v-else>
+  <!-- Ladeanzeige -->
+  Lade Streak...
+</div>
+
     </div>
   </div>
 </template>

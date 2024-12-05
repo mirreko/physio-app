@@ -1,41 +1,60 @@
 const mongoose = require("mongoose");
 const Exercise = require("./models/Exercise");
-const exercisesData = require("./data/exercisesData.json");
-require("dotenv").config(); // Um Zugriff auf die DB-Umgebungseinstellungen zu haben
+require("dotenv").config();
 
-// Verbindung zur MongoDB herstellen
+// Verbindungsaufbau zur MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    console.log("MongoDB verbunden...");
-  } catch (err) {
-    console.error(err.message);
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB verbunden");
+  } catch (error) {
+    console.error("Fehler bei der MongoDB Verbindung:", error.message);
     process.exit(1);
   }
 };
 
 // Übungen in die DB importieren
 const importExercises = async () => {
+  const exercises = [
+    {
+      title: "Kniebeuge",
+    description: "Eine klassische Übung zur Stärkung der Beinmuskulatur. Was ist wenn hier eine längere Beschreibung steht? Die kann richtig lang werden und auch mal über mehrere Zeilen gehen...",
+    repetitions: 10,
+    sets: 3,
+    duration: 60,
+    difficulty: "Mittel",
+    imgUrl: "/src/assets/squads.jpg"
+    },
+    {
+      title: "Liegestütze",
+      description: "Trainiert die Brust-, Arm- und Schultermuskulatur.",
+      repetitions: 12,
+      sets: 3,
+      duration: 45,
+      difficulty: "Schwierig",
+      imgUrl: "/src/assets/push-up.jpeg"
+    },
+    {
+      title: "Plank",
+      description: "Eine Übung für den Core-Bereich und die Bauchmuskulatur.",
+      repetitions: 1,
+      sets: 3,
+      duration: 30,
+      difficulty: "Leicht",
+      imgUrl: "/src/assets/plank.webp"
+    },
+  ];
+
   try {
-    await connectDB();
-
-    // Alle bisherigen Übungen löschen, wenn du sicherstellen willst, dass es keine doppelten Einträge gibt
-    await Exercise.deleteMany();
-
     // Übungen aus der JSON-Datei importieren
-    await Exercise.insertMany(exercisesData);
-
+    await Exercise.insertMany(exercises);
     console.log("Übungen erfolgreich importiert!");
-    process.exit();
-  } catch (err) {
-    console.error(err.message);
+    process.exit(0);
+  } catch (error) {
+    console.error("Fehler beim Hinzufügen der Badges:", error.message);
     process.exit(1);
   }
 };
 
 // Import-Skript ausführen
-importExercises();
+connectDB().then(importExercises);

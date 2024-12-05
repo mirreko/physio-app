@@ -15,7 +15,11 @@ module.exports = {
       padding: {
         'btn': '0.5rem 1.5rem',
         'input': '0.5rem 1rem',
-      }
+      },
+      fontFamily: {
+        nunito: ['Nunito Sans', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
+      },
     },
   },
   plugins: [],

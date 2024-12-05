@@ -20,7 +20,7 @@
             </svg>
             <div class="absolute flex flex-col items-center justify-center">
                 <div class="text-xs">Woche</div>
-                <div class="text-3xl font-bold -mt-1 -mb-1">{{ currentWeek }}</div>
+                <div class="text-3xl font-bold -mt-1 -mb-1">{{ currentWeek +1 }}</div>
                 <div class="text-xs">von {{ totalWeeks }}</div>
             </div>
         </div>

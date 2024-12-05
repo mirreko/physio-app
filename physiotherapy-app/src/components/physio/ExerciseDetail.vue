@@ -3,28 +3,28 @@
     <button class="bg-secondary text-white p-btn rounded-full" @click="goBack">
       Zurück
     </button>
-    <div class="p-6 bg-background rounded-2xl mt-6 flex flex-row">
-      <div class="flex-1 p-4 flex flex-col justify-between">
-        <h1 class="text-2xl font-bold mb-4">{{ exercise.title }}</h1>
-        <img
-          src="https://placehold.co/600x400"
-          alt="Exercise Image"
-          class="w-full h-auto object-cover rounded-2xl mb-4"
-        />
-        <div class="text-sm text-gray-600 mb-2">
-          Schwierigkeit:
-          <span class="font-medium">{{ exercise.difficulty }}</span>
-        </div>
-      </div>
-      <div class="flex-1 p-4 flex flex-col justify-between">
-        <p class="text-gray-700 mb-4">{{ exercise.description }}</p>
+    <div class="p-6 bg-background rounded-2xl mt-6 mb-4">
+      <!-- Titel -->
+      <h1 class="text-2xl font-bold mb-4">{{ exercise.title }}</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Bild -->
+      <img
+        src="https://placehold.co/600x400"
+        alt="Exercise Image"
+        class="w-full h-auto object-cover rounded-2xl mb-4"
+      />
+      
+      <!-- Beschreibung und Eingabefelder -->
+      <p class="text-gray-700 mb-4">{{ exercise.description }}</p>
+    </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="mb-4">
           <label for="repetitions" class="block text-gray-600">Wiederholungen:</label>
           <input
             id="repetitions"
             type="number"
             v-model="editedExercise.repetitions"
-            class="border rounded p-2 w-auto"
+            class="border rounded p-2 w-full"
           />
         </div>
         <div class="mb-4">
@@ -33,7 +33,7 @@
             id="duration"
             type="number"
             v-model="editedExercise.duration"
-            class="border rounded p-2 w-auto"
+            class="border rounded p-2 w-full"
           />
         </div>
         <div class="mb-4">
@@ -42,7 +42,7 @@
             id="sets"
             type="number"
             v-model="editedExercise.sets"
-            class="border rounded p-2 w-auto"
+            class="border rounded p-2 w-full"
           />
         </div>
         <div class="mb-4">
@@ -51,7 +51,7 @@
             id="frequency"
             type="number"
             v-model="editedExercise.frequency"
-            class="border rounded p-2 w-auto"
+            class="border rounded p-2 w-full"
           />
         </div>
         <div class="mb-4">
@@ -60,27 +60,30 @@
             id="durationWeeks"
             type="number"
             v-model="editedExercise.durationWeeks"
-            class="border rounded p-2 w-auto"
+            class="border rounded p-2 w-full"
           />
         </div>
-        <div class="flex justify-start">
-          <button
-            @click="saveToTrainingPlan"
-            class="bg-primary text-white p-btn rounded-full"
-          >
-            Hinzufügen
-          </button>
-          <button
-            @click="resetTrainingPlan"
-            class="bg-secondary text-white ml-4 p-btn rounded-full"
-          >
-            Trainingsplan beenden
-          </button>
-        </div>
+      </div>
+      
+      <!-- Buttons -->
+      <div class="flex justify-start mt-4">
+        <button
+          @click="saveToTrainingPlan"
+          class="bg-primary text-white p-btn rounded-full"
+        >
+          Hinzufügen
+        </button>
+        <button
+          @click="resetTrainingPlan"
+          class="bg-secondary text-white ml-4 p-btn rounded-full"
+        >
+          Trainingsplan beenden
+        </button>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import { mapGetters } from "vuex";

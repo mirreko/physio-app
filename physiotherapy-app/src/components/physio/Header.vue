@@ -1,7 +1,7 @@
 <template>
     <header class="bg-white">
       <div class="container mx-auto flex justify-between">
-        <h1 class="text-2xl font-bold">PhysioTool</h1>
+        <div class="text-3xl font-nunito align-center">PhysioTool</div>
         <nav>
           <ul class="flex space-x-4 items-center">
             <router-link to="/physio-dashboard" class="hover:text-primary">Dashboard</router-link>

@@ -1,17 +1,15 @@
 <template>
     <div class="flex flex-col bg-gray-200 overflow-y-hidden h-screen">
-      <HeaderPatient class="sticky top-0 mt-16" />
+      <HeaderPatient class="p-6 sticky top-0 mt-16" />
       <div class="m-6">
         <div class="bg-white rounded-2xl p-4 shadow-md mb-32">
           <div class="feedback-charts">
-            <h1 class="text-xl md:text-2xl font-bold pt-6 text-center">Ihre Fortschritte</h1>
+            <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center  text-gray-800">Ihre Fortschritte</h2>
   
             <!-- Kombiniertes Diagramm für Wohlbefinden und Schmerzintensität -->
-            <div class="chart-container mt-6">
-              <div class="chart-item">
-                <LineChart :data="combinedChartData" :options="chartOptions" />
+            <div class="mt-4 h-96">
+                <LineChart class="" :data="combinedChartData" :options="chartOptions" />
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -68,18 +66,17 @@
           labels,
           datasets: [
             {
-              label: "Wohlbefinden",
+              label: "Schwierigkeit",
               data: workoutData,
               borderColor: "#6B71F2",
-              fill: false,
-              tension: 0.4, // Cubic Interpolation für glatte Linien
+              tension: 0.4, 
             },
             {
               label: "Schmerzintensität",
               data: painData,
               borderColor: "#0FF2B2",
               fill: false,
-              tension: 0.4, // Cubic Interpolation für glatte Linien
+              tension: 0.4, 
             },
           ],
         };
@@ -88,11 +85,13 @@
       // Diagramm-Optionen
       chartOptions() {
         return {
-          responsive: true,
+          
+            maintainAspectRatio: false,
+    
           plugins: {
-            title: {
+            legend: {
               display: true,
-              text: "Feedback über die Zeit",
+              position: "bottom",
             },
             tooltip: {
               callbacks: {
@@ -115,6 +114,7 @@
               max: 10, // Setzt den maximalen Wert der Y-Achse auf 10
               ticks: {
                 stepSize: 1, // Die Y-Achse zeigt Werte von 0 bis 10 in Schritten von 1
+
               },
             },
           },

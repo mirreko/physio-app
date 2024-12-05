@@ -1,6 +1,6 @@
 <template>
   <div class="mt-6 p-6 bg-background rounded-2xl">
-    <h2 class="text-2xl font-bold mb-4">Übungen</h2>
+    <h2 class="text-xl font-nunito mb-4">Übungen</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
         v-for="exercise in filteredExercises"

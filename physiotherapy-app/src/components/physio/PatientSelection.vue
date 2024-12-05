@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 bg-background rounded-2xl">
-    <h2 class="text-2xl font-bold mb-4">Bitte wählen Sie eine Person aus</h2>
+    <div class="text-xl font-nunito mb-4">Bitte wählen Sie eine Person aus</div>
 
     <!-- Buchstaben Filter -->
     <div class="mb-4">

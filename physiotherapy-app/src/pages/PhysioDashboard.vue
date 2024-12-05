@@ -3,12 +3,12 @@
     <Header class="w-full p-6 sticky top-0" />
     <div class="flex flex-1">
       <Sidebar
-        class="sm:w-1/3 lg:w-1/5 md:w-1/3 p-4 "
+        class="sm:w-1/3 lg:w-1/4 md:w-1/3"
         @update:search-query="updateSearchQuery"
         @update:selected-difficulty="updateSelectedDifficulty"
       />
-      <main class="flex-1 p-6 min-h-screen">
-        <h2 class="text-2xl font-bold mb-4">Willkommen, Physio!</h2>
+      <main class="flex-1 sm:pr-4 pr-4 lg:pr-6 min-h-screen">
+        <div class="text-2xl font-nunito mb-4">Willkommen, Physio!</div>
         <PatientSelection :patients="patients" />
         <template v-if="!selectedExercise">
           <ExerciseList

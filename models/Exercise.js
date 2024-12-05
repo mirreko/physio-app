@@ -30,6 +30,10 @@ const ExerciseSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  imgUrl: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("exercise", ExerciseSchema);

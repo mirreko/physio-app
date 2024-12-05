@@ -1,6 +1,6 @@
 <template>
   <aside class="bg-background m-4 rounded-2xl">
-    <ul class="p-6">
+    <ul class="sm:p-6 md:p-6 lg:p-12">
       <li class="mb-6">
         <input
           v-model="searchQuery"
@@ -55,7 +55,7 @@
             v-model="selectedDiseases"
             class="mr-2"
           />
-          Bandscheibenvorfall
+          Bandscheiben&shy;vorfall
         </label>
         <label class="block pt-4">
           <input
@@ -73,7 +73,7 @@
             v-model="selectedDiseases"
             class="mr-2"
           />
-          Sprunggelenksdistorsion
+          Sprunggelenks&shy;distorsion
         </label>
         <label class="block pt-4">
           <input
@@ -142,7 +142,7 @@
             v-model="selectedPostOpWeeks"
             class="mr-2"
           />
-          4. bist 8. Woche post OP
+          4. bis 8. Woche post OP
         </label>
       </li>
     </ul>
