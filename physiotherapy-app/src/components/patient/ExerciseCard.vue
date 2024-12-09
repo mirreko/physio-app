@@ -244,6 +244,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 20px; /* Breite des Schiebereglers */
   height: 20px; /* Höhe des Schiebereglers */
   border-radius: 50%; /* Rundes Aussehen für den Schieberegler */
+  background: #0ff2b2; /* Farbe des Schiebereglers */
   cursor: pointer;
   transition: background 0.3s ease;
 }

@@ -8,6 +8,7 @@ import Trainingplans from '../pages/Trainingplans.vue';
 import ExerciseList from '../components/physio/ExerciseList.vue';
 import BadgeOverview from '../pages/BadgeOverview.vue';
 import Statistics from '../pages/Statistics.vue';
+import PatientProfile from '../pages/PatientProfile.vue';
 
 const routes = [
   {
@@ -65,6 +66,12 @@ const routes = [
     path: '/statistics',
     name: 'Statistics',
     component: Statistics,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/profile',
+    name: 'PatientProfile',
+    component: PatientProfile,
     meta: { requiresAuth: true },
   },
 ];

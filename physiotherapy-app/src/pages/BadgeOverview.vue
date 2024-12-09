@@ -104,8 +104,14 @@
             <img
               :src="badge.imageUrl"
               alt="Badge Icon"
-              class="w-20 h-20 mx-auto grayscale"
+              class="w-20 h-20 mx-auto"
+              :class="{
+                grayscale: !userBadges.some(
+                  (userBadge) => userBadge.badgeId._id === badge._id
+                ),
+              }"
             />
+
             <p class="text-sm text-center mt-2">
               {{ badge.name }}
             </p>

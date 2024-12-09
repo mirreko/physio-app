@@ -19,7 +19,7 @@ const store = createStore({
     weeklyWorkoutsRemaining: null,
     lastResetDate: null,
     points: 0,
-    streak: 0,
+    streak: null,
     feedbacks: [],
     userBadges: [],
     allBadges: [],
@@ -40,24 +40,25 @@ const store = createStore({
       state.trainingPlan = trainingPlan;
       const trainingPlanId = trainingPlan._id;
       state.trainingPlanId = trainingPlanId;
-
+    
       const patientId = state.selectedPatient?.id;
       const savedData = localStorage.getItem(`workoutData_${patientId}`);
-
+    
       const currentStartOfWeek = getStartOfCurrentWeek();
       const savedStartOfWeek = new Date(
         localStorage.getItem(`startOfWeek_${patientId}`)
       );
-
+    
       if (savedData) {
         const { weeklyWorkoutsRemaining, lastResetDate, streak } =
           JSON.parse(savedData);
-
+    
         // Prüfen, ob die Woche gewechselt hat
         if (!savedStartOfWeek || currentStartOfWeek > savedStartOfWeek) {
           state.weeklyWorkoutsRemaining = trainingPlan.frequency;
           state.lastResetDate = new Date();
-          state.streak = 0; // Streak zurücksetzen, wenn die Woche neu beginnt
+          state.streak = streak || 0; // Sicherstellen, dass streak definiert ist
+          
           localStorage.setItem(
             `startOfWeek_${patientId}`,
             currentStartOfWeek.toISOString()
@@ -65,20 +66,25 @@ const store = createStore({
         } else {
           state.weeklyWorkoutsRemaining = weeklyWorkoutsRemaining;
           state.lastResetDate = lastResetDate;
-          state.streak = streak; // Streak aus gespeicherten Daten laden
+          state.streak = streak || 0; // Streak aus gespeicherten Daten laden
         }
       } else if (trainingPlan.frequency) {
         state.weeklyWorkoutsRemaining = trainingPlan.frequency;
         state.lastResetDate = new Date();
-        state.streak = 0; // Initialisieren, wenn keine gespeicherten Daten vorhanden sind
+    
+        // Überprüfen, ob ein anderer Fallback für streak existiert
+        const fallbackStreak = state.streak || 0;
+        state.streak = fallbackStreak;
+    
         localStorage.setItem(
           `startOfWeek_${patientId}`,
           currentStartOfWeek.toISOString()
         );
       }
-
+    
       this.commit("SAVE_WORKOUT_DATA");
     },
+    
 
     SAVE_WORKOUT_DATA(state) {
       const patientId = state.selectedPatient?.id;
