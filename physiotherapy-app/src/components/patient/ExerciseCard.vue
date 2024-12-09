@@ -29,7 +29,7 @@
             :key="exercise._id"
             class="flex flex-col align-center justify-center text-start bg-white border rounded-2xl p-4 mb-4 gap-6"
           >
-            <img src="https://placehold.co/600x400" alt="Exercise Image" />
+          <img :src="exercise.exerciseId.imgUrl" alt="Exercise Image" />
             <div>
               <h3 class="text-lg font-semibold mb-2">
                 {{ exercise.exerciseId.title }}
