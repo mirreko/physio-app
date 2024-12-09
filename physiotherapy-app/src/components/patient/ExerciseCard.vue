@@ -47,7 +47,7 @@
           </swiper-slide>
 
           <!-- "Geschafft!"-Slide -->
-          <swiper-slide>
+          <swiper-slide class="swiper-no-swiping">
             <div
               class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center"
             >
@@ -128,7 +128,10 @@ export default {
   },
   setup() {
     return {
-      modules: [EffectCards],
+    modules: [EffectCards],
+    swiperOptions: {
+      noSwipingClass: 'swiper-no-swiping',
+    },
     };
   },
   computed: {
@@ -248,4 +251,9 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
   transition: background 0.3s ease;
 }
+
+.swiper-no-swiping {
+  pointer-events: auto; /* Damit Interaktionen innerhalb des Slides wie Slider funktionieren */
+}
+
 </style>
