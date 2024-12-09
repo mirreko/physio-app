@@ -1,16 +1,35 @@
 <template>
     <div class="flex flex-row justify-between items-center mt-6 mb-2">
-        <p class="text-md">Abzeichen <span class="text-primary text-xl">8</span>/32</p>
-        <p class="text-md text-secondary underline">Alle Abzeichen</p>
+      <p class="text-center">
+          Abzeichen
+          <span class="text-primary text-xl">{{ userBadges.length }}</span>
+          /{{ allBadges.length }}
+        </p>
+        <a href="./badges" class="text-md text-secondary underline">Alle Abzeichen</a>
     </div>
     <div class="bg-white rounded-2xl p-4 shadow-md mt-2 mb-32">
-    <ul class="grid grid-cols-3 gap-6 sm:grid-cols-2 xs:grid-cols-1">
-    <li v-for="badge in badges.slice(0, 3)" :key="badge._id" class="flex flex-col items-center text-center">
-  <img :src="badge.imageUrl" alt="Badge Icon" class="w-20 h-20" />
-  <p class="text-sm">{{ badge.name }}</p>
-</li>
-</ul>
+      <div v-if="userBadges.length === 0" class="text-center text-gray-500">
+          Du hast noch keine Badges.
+        </div>
+        <div v-else>
+          <ul class="grid grid-cols-3 gap-6 sm:grid-cols-2 xs:grid-cols-1">
+            <li
+              v-for="badge in userBadges.slice(0, 3)"
+              :key="badge.badgeId._id"
+            >
+              <img
+                :src="badge.badgeId.imageUrl"
+                :alt="badge.badgeId.name"
+                class="w-20 h-20 mx-auto"
+              />
+              <h3 class="text-sm text-center mt-2">
+                {{ badge.badgeId.name }}
+              </h3>
+            </li>
+          </ul>
+        </div>
 </div>
+
   </template>
   
   <script>
@@ -21,18 +40,21 @@
       badges: [],
     };
   },
-  async mounted() {
-  try {
-    const response = await fetch("http://localhost:5500/api/badges");
-    if (!response.ok) {
-      throw new Error(`HTTP-Error: ${response.status}`);
+  computed: {
+    userBadges() {
+      return this.$store.getters.getUserBadges;
+    },
+    allBadges() {
+      return this.$store.state.allBadges || [];
+    },
+  },
+  created() {
+    const patientId = localStorage.getItem("patientId");
+    if (patientId) {
+      this.$store.dispatch("fetchUserBadges", { patientId });
     }
-    const badges = await response.json();
-    this.badges = badges; // Badges in deiner Komponente speichern
-  } catch (err) {
-    console.error("Fehler beim Abrufen der Badges:", err.message);
-  }
-},
+    this.$store.dispatch("fetchAllBadges");
+  },
    
     };
   

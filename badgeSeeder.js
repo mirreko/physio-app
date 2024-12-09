@@ -19,21 +19,25 @@ const seedBadges = async () => {
       name: "Consistency Starter",
       description:
         "Erhalte diesen Badge, wenn du 7 Tage hintereinander Übungen gemacht hast.",
+      criteria: { streak: 7 },
       imageUrl: "/src/assets/badge_01.png",
     },
     {
       name: "Two-Week Wonder",
       description: "Absolviere 14 Tage in Folge Übungen.",
+      criteria: { streak: 14 },
       imageUrl: "/src/assets/badge_02.png",
     },
     {
       name: "Habit Hero",
       description: "Halte eine 30-Tage-Streak aufrecht.",
+      criteria: { streak: 30 },
       imageUrl: "/src/assets/badge_03.png",
     },
     {
       name: "Week Warrior",
       description: "Schließe alle Workouts eines Wochenplans ab.",
+      criteria: { frequency: 0 },
       imageUrl: "/src/assets/badge_04.png",
     },
     {
@@ -43,8 +47,7 @@ const seedBadges = async () => {
     },
     {
       name: "Plan Champion",
-      description:
-        "Beende einen kompletten Therapieplan (z. B. 8 oder 12 Wochen).",
+      description: "Beende einen kompletten Therapieplan (z. B. 8 oder 12 Wochen).",
       imageUrl: "/src/assets/badge(1).png",
     },
     {
@@ -73,6 +76,7 @@ const seedBadges = async () => {
     {
       name: "Feedback Friend",
       description: "Gib Feedback nach 10 Workouts.",
+      criteria: { feedbacks: 10 },
       imageUrl: "/src/assets/badge_feedback.png",
     },
     {
@@ -88,22 +92,30 @@ const seedBadges = async () => {
     {
       name: "Overcome the Hurdle",
       description: "Absolviere dein erstes Workout.",
+      criteria: { firstWorkout: true },
       imageUrl: "/src/assets/badge.png",
     },
     {
       name: "The Great 100",
       description: "Erreiche 100 Punkte durch Workouts.",
+      criteria: { points: 100 },
       imageUrl: "/src/assets/badge(4).png",
     },
     
   ];
 
   try {
-    await Badge.insertMany(badges);
-    console.log("Badges erfolgreich hinzugefügt!");
+    for (const badge of badges) {
+      await Badge.updateOne(
+        { name: badge.name }, // Suche Badge per Name
+        { $set: badge },      // Aktualisiere oder füge hinzu
+        { upsert: true }      // Insert, wenn nicht vorhanden
+      );
+    }
+    console.log("Badges erfolgreich migriert!");
     process.exit(0);
   } catch (error) {
-    console.error("Fehler beim Hinzufügen der Badges:", error.message);
+    console.error("Fehler bei der Migration der Badges:", error.message);
     process.exit(1);
   }
 };

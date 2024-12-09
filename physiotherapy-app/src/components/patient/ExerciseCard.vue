@@ -3,7 +3,9 @@
     <div
       class="flex flex-col justify-center w-full md:w-2/3 bg-white rounded-2xl shadow-md"
     >
-      <h2 class="text-xl md:text-2xl font-nunito pt-8 text-center  text-gray-800">
+      <h2
+        class="text-xl md:text-2xl font-nunito pt-8 text-center text-gray-800"
+      >
         Ihr Trainingsplan
       </h2>
 
@@ -49,7 +51,9 @@
             <div
               class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center"
             >
-              <h2 class="text-3xl font-nunito text-white mt-4">Geschafft! 🎉</h2>
+              <h2 class="text-3xl font-nunito text-white mt-4">
+                Geschafft! 🎉
+              </h2>
               <p class="text-white mt-6">Wie war dein Workout?</p>
 
               <!-- Slider für die Workout-Bewertung -->
@@ -145,7 +149,6 @@ export default {
     ...mapActions(["markWorkoutCompleted", "updatePoints", "submitFeedback"]),
 
     async completeWorkout() {
-      // Daten für das abgeschlossene Workout vorbereiten
       const workoutResult = {
         workoutRating: this.workoutRating,
         painRating: this.painRating,
@@ -153,23 +156,40 @@ export default {
         patientId: localStorage.getItem("patientId"),
       };
 
-      // Hier sendest du die Daten an die DB
+      try {
+        // Hier sendest du die Daten an die DB
       this.markWorkoutCompleted(workoutResult);
       // Sende das Feedback an den Store
       await this.$store.dispatch("submitFeedback", workoutResult);
 
-      // Punkte um 10 erhöhen
-      this.updatePoints(10);
+        // Punkte erhöhen
+        await this.updatePoints(10);
 
-      // Optional: Benachrichtigung oder Rückmeldung
-      alert("Workout erfolgreich abgeschlossen! 🎉");
+        // Streak aktualisieren
+        const patientId = localStorage.getItem("patientId");
+        const newStreak = this.$store.state.streak + 1;
+        await this.$store.dispatch("updateStreak", { patientId, newStreak });
 
-      // Streak muss nun auch in der DB aktualisiert werden
-      const patientId = localStorage.getItem("patientId");
-      if (patientId) {
-        const newStreak = this.$store.state.streak + 1; // Erhöhe die Streak
-        // Statt this.updateStreak() sollte dispatch genutzt werden
-        this.$store.dispatch("updateStreak", { patientId, newStreak });
+        // Badges prüfen
+        const response = await fetch(
+          `http://localhost:5500/api/users/${patientId}/check-badges`,
+          {
+            method: "POST",
+          }
+        );
+
+        const { newBadges } = await response.json();
+
+        if (newBadges && newBadges.length > 0) {
+          alert(
+            `Herzlichen Glückwunsch! Du hast ${newBadges.length} neue Badges verdient! 🎉`
+          );
+        } else {
+          alert("Workout erfolgreich abgeschlossen! 🎉");
+        }
+      } catch (error) {
+        console.error("Fehler beim Abschließen des Workouts:", error);
+        alert("Etwas ist schiefgelaufen. Bitte versuche es erneut.");
       }
     },
   },
@@ -224,7 +244,6 @@ input[type="range"]::-webkit-slider-thumb {
   width: 20px; /* Breite des Schiebereglers */
   height: 20px; /* Höhe des Schiebereglers */
   border-radius: 50%; /* Rundes Aussehen für den Schieberegler */
-  background: #0ff2b2; /* Farbe des Schiebereglers */
   cursor: pointer;
   transition: background 0.3s ease;
 }

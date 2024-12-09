@@ -1,53 +1,175 @@
 <template>
-  <div class="flex flex-col bg-gray-200 overflow-y-hidden">
-    <HeaderPatient class="p-6 sticky top-0 mt-16"/>
+  <div class="flex flex-col bg-gray-200 overflow-y-hidden min-h-screen">
+    <HeaderPatient class="p-6 sticky top-0 mt-16" />
+
     <div class="m-6">
-    <p class="">Abzeichen <span class="text-primary text-xl">8</span>/32</p>
-    <div class="bg-white rounded-2xl p-4 shadow-md mt-2 mb-32">
-      <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center mb-6  text-gray-800">Ihre Abzeichen</h2>
-      <ul class="grid grid-cols-3 gap-6 sm:grid-cols-2 xs:grid-cols-1">
-      <!-- Durchlaufe alle Badges und stelle sie dar -->
-      <li v-for="badge in badges" :key="badge._id" class="flex flex-col items-center text-center">
-        <img :src="badge.imageUrl" alt="Badge Icon" class="w-20 h-20" />
-        <p class="text-sm">{{ badge.name }}</p>
-      </li>
-    </ul>
+      <div class="flex justify-center mb-6">
+        <div
+          class="bg-white shadow-lg rounded-full w-full max-w-[400px] flex relative"
+        >
+          <!-- Highlighter, der sowohl die Hintergrundfarbe als auch den Text mitbewegt -->
+          <div
+            class="absolute top-0 left-0 w-1/2 h-full bg-secondary transition-transform duration-300 flex justify-center items-center rounded-full"
+            :style="{
+              transform:
+                activeTab === 'user' ? 'translateX(0)' : 'translateX(100%)',
+            }"
+          >
+            <span
+              class="text-white font-medium"
+              :class="{
+                'translate-x-[-10%]': activeTab === 'all',
+              }"
+            >
+              {{ activeTab === "user" ? "Deine Abzeichen" : "Alle Abzeichen" }}
+            </span>
+          </div>
+
+          <!-- Tab-Buttons -->
+          <button
+            :class="{
+              'bg-secondary text-white': activeTab === 'user',
+              'bg-white text-gray-400': activeTab !== 'user',
+            }"
+            @click="activeTab = 'user'"
+            class="flex-1 py-2 rounded-full text-center font-medium transition"
+          >
+            Deine Abzeichen
+          </button>
+          <button
+            :class="{
+              'bg-secondary text-white': activeTab === 'all',
+              'bg-white text-gray-400': activeTab !== 'all',
+            }"
+            @click="activeTab = 'all'"
+            class="flex-1 py-2 rounded-full text-center font-medium transition"
+          >
+            Alle Abzeichen
+          </button>
+        </div>
+      </div>
+
+      <!-- User Badges -->
+      <div
+        v-show="activeTab === 'user'"
+        class="bg-white rounded-2xl p-4 shadow-md mb-32"
+      >
+        <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center">
+          Deine Abzeichen
+        </h2>
+        <p class="text-center mb-6">
+          Abzeichen
+          <span class="text-primary text-xl">{{ userBadges.length }}</span>
+          /{{ allBadges.length }}
+        </p>
+        <div v-if="userBadges.length === 0" class="text-center text-gray-500">
+          Du hast noch keine Badges.
+        </div>
+        <div v-else>
+          <ul class="grid grid-cols-3 gap-6 sm:grid-cols-2 xs:grid-cols-1">
+            <li
+              v-for="badge in userBadges"
+              :key="badge.badgeId._id"
+              class="cursor-pointer"
+              @click="openBadgeDetail(badge.badgeId, true)"
+            >
+              <img
+                :src="badge.badgeId.imageUrl"
+                :alt="badge.badgeId.name"
+                class="w-20 h-20 mx-auto"
+              />
+              <h3 class="text-sm text-center mt-2">
+                {{ badge.badgeId.name }}
+              </h3>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- All Badges -->
+      <div
+        v-show="activeTab === 'all'"
+        class="bg-white rounded-2xl p-4 shadow-md mb-32"
+      >
+        <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center mb-6">
+          Alle Abzeichen
+        </h2>
+        <ul class="grid grid-cols-3 gap-6 sm:grid-cols-2 xs:grid-cols-1">
+          <li
+            v-for="badge in allBadges"
+            :key="badge._id"
+            class="cursor-pointer"
+            @click="openBadgeDetail(badge, true)"
+          >
+            <img
+              :src="badge.imageUrl"
+              alt="Badge Icon"
+              class="w-20 h-20 mx-auto grayscale"
+            />
+            <p class="text-sm text-center mt-2">
+              {{ badge.name }}
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <NavBar />
+
+    <!-- Badge Detail Modal -->
+    <BadgeDetail
+      v-if="selectedBadge"
+      :badge="selectedBadge"
+      :showAwardedAt="showAwardedAt"
+      @close="closeBadgeDetail"
+    />
   </div>
-</div>
-</div>
-  <NavBar />
 </template>
 
 <script>
 import HeaderPatient from "../components/patient/HeaderPatient.vue";
 import NavBar from "../components/patient/NavBar.vue";
+import BadgeDetail from "../components/patient/BadgeDetail.vue";
 
 export default {
   name: "BadgeOverview",
   components: {
     HeaderPatient,
     NavBar,
+    BadgeDetail,
   },
   data() {
     return {
-      badges: [],
+      activeTab: "user", // Default tab
+      selectedBadge: null, // Speichert das ausgewählte Badge
+      showAwardedAt: true, // Steuerung, ob "Erhalten am" angezeigt wird
     };
   },
-  async mounted() {
-  try {
-    const response = await fetch("http://localhost:5500/api/badges");
-    if (!response.ok) {
-      throw new Error(`HTTP-Error: ${response.status}`);
+  computed: {
+    userBadges() {
+      return this.$store.getters.getUserBadges;
+    },
+    allBadges() {
+      return this.$store.state.allBadges || [];
+    },
+  },
+  methods: {
+    openBadgeDetail(badge, showAwardedAt) {
+      this.selectedBadge = badge;
+      console.log(this.selectedBadge);
+      this.showAwardedAt = showAwardedAt;
+    },
+    closeBadgeDetail() {
+      this.selectedBadge = null;
+      this.showAwardedAt = false;
+    },
+  },
+  created() {
+    const patientId = localStorage.getItem("patientId");
+    if (patientId) {
+      this.$store.dispatch("fetchUserBadges", { patientId });
     }
-    const badges = await response.json();
-    this.badges = badges; // Badges in deiner Komponente speichern
-  } catch (err) {
-    console.error("Fehler beim Abrufen der Badges:", err.message);
-  }
-},
-
-
+    this.$store.dispatch("fetchAllBadges");
+  },
 };
-
 </script>
-

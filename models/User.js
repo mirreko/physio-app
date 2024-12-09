@@ -20,7 +20,12 @@ const UserSchema = new mongoose.Schema(
       default: false,
     },
     badges: {
-      type: [String],
+      type: [
+        {
+          badgeId: { type: mongoose.Schema.Types.ObjectId, ref: "Badge" }, // Badge ID
+          awardedAt: { type: Date, required: true }, // Datum der Vergabe
+        },
+      ],
       default: [],
     },
     points: {

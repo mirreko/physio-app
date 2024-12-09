@@ -11,10 +11,13 @@ async function migrateUsers() {
     });
 
     await User.updateMany(
-      { workouts: { $exists: false } }, // Nur Nutzer ohne die neuen Felder aktualisieren
+      { $or: [{ workouts: { $exists: false } }, { points: { $exists: false } }, { streak: { $exists: false } }] }, // Nutzer ohne neue Felder
       {
         $set: {
-          workouts: [], // Set 'workouts' field as an empty array
+          workouts: [],      // Standardwert für Workouts
+          badges: [],        // Standardwert für Badges
+          points: 0,         // Standardwert für Punkte
+          streak: 0,         // Standardwert für Streak
         },
       }
     );
