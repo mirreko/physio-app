@@ -9,6 +9,7 @@ import ExerciseList from '../components/physio/ExerciseList.vue';
 import BadgeOverview from '../pages/BadgeOverview.vue';
 import Statistics from '../pages/Statistics.vue';
 import PatientProfile from '../pages/PatientProfile.vue';
+import WorkoutPage from '../pages/WorkoutPage.vue';
 
 const routes = [
   {
@@ -74,6 +75,12 @@ const routes = [
     component: PatientProfile,
     meta: { requiresAuth: true },
   },
+  {
+    path: "/workout",
+    name: "WorkoutPage",
+    component: WorkoutPage,
+  },
+  
 ];
 
 const router = createRouter({

@@ -1,213 +1,78 @@
 <template>
   <div class="flex items-center justify-center h-fit mt-6">
-    <div
-      class="flex flex-col justify-center w-full md:w-2/3 bg-white rounded-2xl shadow-md"
-    >
-      <h2
-        class="text-xl md:text-2xl font-nunito pt-8 text-center text-gray-800"
-      >
-        Ihr Trainingsplan
+    <div class="flex flex-col justify-center w-full md:w-2/3 bg-white rounded-2xl shadow-md">
+      <h2 class="text-xl md:text-2xl font-nunito pt-8 text-center text-gray-800">
+        Trainingsplan
       </h2>
-
       <div v-if="!trainingPlan" class="text-gray-600 text-center p-6">
         <strong>Kein Trainingsplan gefunden.</strong> <br />
         Ihr Physio hat Ihnen wahrscheinlich noch keinen Trainingsplan
         zugewiesen.
       </div>
-
-      <div v-else class="flex flex-col justify-center align-center mt-4">
-        <!-- Swiper für die Übungen -->
-        <swiper
-          :effect="'cards'"
-          :grabCursor="true"
-          :modules="modules"
-          class="w-80 md:w-96 h-fit"
-        >
-          <!-- Übungen aus dem Trainingsplan -->
-          <swiper-slide
+      <div v-else class="text-gray-800 p-6 space-y-6">
+        <p class="text-sm text-gray-600">
+              Hier ist eine Übersicht über die Übungen, die dich heute erwarten.
+            </p>
+        <ul class="exercise-overview space-y-4">
+          <li
             v-for="exercise in trainingPlan.exercises"
             :key="exercise._id"
-            class="flex flex-col align-center justify-center text-start bg-white border rounded-2xl p-4 mb-4 gap-6"
+            class="flex items-center p-4 bg-gray-100 rounded-md shadow-sm"
           >
-          <img :src="exercise.exerciseId.imgUrl" alt="Exercise Image" />
+            <img
+              :src="exercise.exerciseId.imgUrl"
+              alt="Exercise Image"
+              class="w-20 h-20 object-cover rounded-md mr-4"
+            />
             <div>
-              <h3 class="text-lg font-semibold mb-2">
-                {{ exercise.exerciseId.title }}
-              </h3>
-              <p class="text-sm text-gray-600 mb-4">
-                {{ exercise.exerciseId.description }}
+              <h5 class="text-sm font-semibold">{{ exercise.exerciseId.title }}</h5>
+              <p class="text-xs text-gray-600 mt-2">
+                <b>Sätze:</b> {{ exercise.sets }} |
+                <b>Wdh.:</b> {{ exercise.repetitions }}
               </p>
-
-              <div class="text-sm text-gray-800 space-y-2">
-                <p><b>Wiederholungen:</b> {{ exercise.repetitions }}</p>
-                <p><b>Sätze:</b> {{ exercise.sets }}</p>
-                <p><b>Dauer:</b> {{ exercise.duration }} Sekunden</p>
-              </div>
             </div>
-          </swiper-slide>
-
-          <!-- "Geschafft!"-Slide -->
-          <swiper-slide class="swiper-no-swiping">
-            <div
-              class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center"
-            >
-              <h2 class="text-3xl font-nunito text-white mt-4">
-                Geschafft! 🎉
-              </h2>
-              <p class="text-white mt-6">Wie war dein Workout?</p>
-
-              <!-- Slider für die Workout-Bewertung -->
-              <div class="workout-slider mt-4">
-                <label for="workout-rating" class="text-sm text-white"
-                  >Schwierigkeit (0 bis 10):</label
-                >
-                <input
-                  id="workout-rating"
-                  type="range"
-                  v-model="workoutRating"
-                  min="0"
-                  max="10"
-                  step="1"
-                  class="w-full mt-2"
-                />
-                <div class="text-center text-sm text-white">
-                  {{ workoutRating }}
-                </div>
-              </div>
-
-              <!-- Slider für die Schmerzbewertung -->
-              <div class="pain-slider mt-6">
-                <label for="pain-rating" class="text-sm text-white"
-                  >Schmerzintensität (0 bis 10):</label
-                >
-                <input
-                  id="pain-rating"
-                  type="range"
-                  v-model="painRating"
-                  min="0"
-                  max="10"
-                  step="1"
-                  class="w-full mt-2"
-                />
-                <div class="text-center text-sm text-white">
-                  {{ painRating }}
-                </div>
-              </div>
-
-              <!-- Abhaken Button -->
-              <div class="flex justify-center m-4">
-                <button
-                  @click="completeWorkout"
-                  class="bg-primary text-white p-btn rounded-full"
-                >
-                  Workout erledigt!
-                </button>
-              </div>
-            </div>
-          </swiper-slide>
-        </swiper>
+          </li>
+        </ul>
+        <div class="flex justify-center mt-6">
+          <button @click="startWorkout" class="bg-primary text-white p-btn rounded-full">
+            Training starten
+          </button>
+        </div>
       </div>
+      <!-- Start-Animation -->
+      <div v-if="isTransitioning" class="start-animation"></div>
     </div>
   </div>
 </template>
 
+
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
-import { Swiper, SwiperSlide } from "swiper/vue";
-import { EffectCards } from "swiper/modules";
-import "swiper/swiper-bundle.css"; // Swiper Styles importieren
-import WorkoutCounter from "./WorkoutCounter.vue";
+import WorkoutModal from "../patient/WorkoutModal.vue";
 
 export default {
   name: "ExerciseCard",
-  components: {
-    Swiper,
-    SwiperSlide,
-    WorkoutCounter,
-  },
-  setup() {
-    return {
-    modules: [EffectCards],
-    swiperOptions: {
-      noSwipingClass: 'swiper-no-swiping',
-    },
-    };
-  },
-  computed: {
-    ...mapGetters(["getCurrentTrainingPlan"]),
-
-    calculatedCurrentWeek() {
-      if (!this.trainingPlan || !this.trainingPlan.createdAt) return 0;
-
-      const createdAt = new Date(this.trainingPlan.createdAt);
-      const now = new Date();
-      const diffTime = Math.abs(now - createdAt);
-
-      const currentWeek = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
-      return Math.min(currentWeek, this.trainingPlan.durationWeeks || 0);
-    },
-  },
-  methods: {
-    ...mapActions(["markWorkoutCompleted", "updatePoints", "submitFeedback"]),
-
-    async completeWorkout() {
-      const workoutResult = {
-        workoutRating: this.workoutRating,
-        painRating: this.painRating,
-        completedAt: new Date().toISOString(),
-        patientId: localStorage.getItem("patientId"),
-      };
-
-      try {
-        // Hier sendest du die Daten an die DB
-      this.markWorkoutCompleted(workoutResult);
-      // Sende das Feedback an den Store
-      await this.$store.dispatch("submitFeedback", workoutResult);
-
-        // Punkte erhöhen
-        await this.updatePoints(10);
-
-        // Streak aktualisieren
-        const patientId = localStorage.getItem("patientId");
-        const newStreak = this.$store.state.streak + 1;
-        await this.$store.dispatch("updateStreak", { patientId, newStreak });
-
-        // Badges prüfen
-        const response = await fetch(
-          `http://localhost:5500/api/users/${patientId}/check-badges`,
-          {
-            method: "POST",
-          }
-        );
-
-        const { newBadges } = await response.json();
-
-        if (newBadges && newBadges.length > 0) {
-          alert(
-            `Herzlichen Glückwunsch! Du hast ${newBadges.length} neue Badges verdient! 🎉`
-          );
-        } else {
-          alert("Workout erfolgreich abgeschlossen! 🎉");
-        }
-      } catch (error) {
-        console.error("Fehler beim Abschließen des Workouts:", error);
-        alert("Etwas ist schiefgelaufen. Bitte versuche es erneut.");
-      }
-    },
-  },
+  components: { WorkoutModal },
   data() {
     return {
       trainingPlan: null,
-      workoutRating: 0, // Slider für die Bewertung des Workouts
-      painRating: 0, // Slider für die Schmerzbewertung
+      isWorkoutActive: false, // Zustand für das Workout
+      isTransitioning: false,
     };
+  },
+  methods: {
+    startWorkout() {
+    this.isTransitioning = true;
+    setTimeout(() => {
+      this.$router.push("/workout");
+    }, 1000); // Wartezeit für die Animation
+  },
+
   },
   async created() {
     const patientId = localStorage.getItem("patientId");
     if (patientId) {
       await this.$store.dispatch("fetchCurrentTrainingPlan", patientId);
-      this.trainingPlan = this.getCurrentTrainingPlan;
+      this.trainingPlan = this.$store.getters.getCurrentTrainingPlan;
     } else {
       console.error("Patient ID nicht gefunden.");
     }
@@ -216,44 +81,29 @@ export default {
 </script>
 
 <style scoped>
-.finish-slide {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+/* Custom Styles */
+@keyframes spreadOut {
+  0% {
+    transform: scale(0);
+
+  }
+  100% {
+    transform: scale(50); /* Groß genug, um den gesamten Bildschirm zu bedecken */
+ 
+  }
 }
 
-.workout-slider,
-.pain-slider {
-  width: 100%;
-}
-
-/* Slider - Gesamte Bahn */
-input[type="range"] {
-  -webkit-appearance: none;
-  width: 100%; /* Weite anpassen */
-  height: 12px; /* Dicke der Bahn */
-  background: #f2f2f2; /* Hintergrundfarbe der Bahn */
-  border-radius: 8px; /* Abgerundete Ecken der Bahn */
-  outline: none;
-  transition: background 0.3s ease;
-}
-
-/* Slider - Schieberegler (Thumb) */
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px; /* Breite des Schiebereglers */
-  height: 20px; /* Höhe des Schiebereglers */
-  border-radius: 50%; /* Rundes Aussehen für den Schieberegler */
-  background: #0ff2b2; /* Farbe des Schiebereglers */
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.swiper-no-swiping {
-  pointer-events: auto; /* Damit Interaktionen innerhalb des Slides wie Slider funktionieren */
+.start-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: #0ff2b2;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: spreadOut 0.25s ease-out forwards;
+  z-index: 1000;
 }
 
 </style>
