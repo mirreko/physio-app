@@ -151,216 +151,60 @@
 </template>
 
 <script setup>
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
-</script>
-
-<script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
+import { ref, onMounted, computed } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { EffectCards } from "swiper/modules";
-import "swiper/swiper-bundle.css"; // Swiper Styles importieren
-import WorkoutCounter from "../components/patient/WorkoutCounter.vue";
-import confetti from "canvas-confetti";
+import "swiper/swiper-bundle.css"; // Importiere Swiper Styles
 
-export default {
-  name: "WorkoutPage",
-  components: {
-    Swiper,
-    SwiperSlide,
-    WorkoutCounter,
-  },
-  setup() {
-    return {
-      modules: [EffectCards],
-      swiperOptions: {
-        noSwipingClass: "swiper-no-swiping",
-      },
-    };
-  },
-  computed: {
-    ...mapGetters(["getCurrentTrainingPlan"]),
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const store = useStore();
+const router = useRouter();
 
-    calculatedCurrentWeek() {
-      if (!this.trainingPlan || !this.trainingPlan.createdAt) return 0;
+const trainingPlan = ref(null);
+const workoutRating = ref(2);
+const painRating = ref(0);
+const currentExerciseIndex = ref(1);
 
-      const createdAt = new Date(this.trainingPlan.createdAt);
-      const now = new Date();
-      const diffTime = Math.abs(now - createdAt);
+const modules = [EffectCards];
 
-      const currentWeek = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
-      return Math.min(currentWeek, this.trainingPlan.durationWeeks || 0);
-    },
-  },
-  methods: {
-    ...mapActions(["markWorkoutCompleted", "updatePoints", "submitFeedback"]),
+const workoutLabels = [
+  "Sehr Leicht",
+  "Leicht",
+  "Angemessen",
+  "Schwer",
+  "Sehr Schwer",
+];
 
-    updateCurrentExercise(swiper) {
-      const maxExercises = this.trainingPlan.exercises.length;
-      this.currentExerciseIndex = Math.min(swiper.realIndex + 1, maxExercises);
-    },
+// Berechnung der aktuellen Woche
+const calculatedCurrentWeek = computed(() => {
+  if (!trainingPlan.value || !trainingPlan.value.createdAt) return 0;
+  const createdAt = new Date(trainingPlan.value.createdAt);
+  const now = new Date();
+  const diffTime = Math.abs(now - createdAt);
+  return Math.min(Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)), trainingPlan.value.durationWeeks || 0);
+});
 
-    goToDashboard() {
-      console.log("Go to Dashboard");
-      this.$router.push("/patient-dashboard");
-    },
-    async completeWorkout() {
-      const workoutResult = {
-        workoutRating: this.workoutRating,
-        painRating: this.painRating,
-        completedAt: new Date().toISOString(),
-        patientId: localStorage.getItem("patientId"),
-      };
-
-      try {
-        // Starte Konfetti-Animation
-        this.launchConfetti();
-
-        // Hier sendest du die Daten an die DB
-        this.markWorkoutCompleted(workoutResult);
-        await this.$store.dispatch("submitFeedback", workoutResult);
-
-        await this.updatePoints(10);
-
-        const patientId = localStorage.getItem("patientId");
-        const newStreak = this.$store.state.streak + 1;
-        await this.$store.dispatch("updateStreak", { patientId, newStreak });
-
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/check-badges`,
-          {
-            method: "POST",
-          }
-        );
-
-        const { newBadges } = await response.json();
-
-        if (newBadges && newBadges.length > 0) {
-          alert(
-            `Herzlichen Glückwunsch! Du hast ${newBadges.length} neue Badges verdient! 🎉`
-          );
-          this.$router.push("/patient-dashboard");
-        } else {
-          this.$router.push("/patient-dashboard");
-          alert("Workout erfolgreich abgeschlossen! 🎉");
-        }
-      } catch (error) {
-        console.error("Fehler beim Abschließen des Workouts:", error);
-        alert("Etwas ist schiefgelaufen. Bitte versuche es erneut.");
-      }
-    },
-
-    launchConfetti() {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-
-      // Optional: Für längere Animation mehrere Konfetti-Schüsse
-      const duration = 2 * 1000;
-      const end = Date.now() + duration;
-
-      const interval = setInterval(() => {
-        if (Date.now() > end) {
-          clearInterval(interval);
-        } else {
-          confetti({
-            particleCount: 50,
-            spread: 100,
-            origin: { x: Math.random(), y: Math.random() - 0.2 },
-          });
-        }
-      }, 250);
-    },
-  },
-  data() {
-    return {
-      trainingPlan: null,
-      workoutRating: 2, // Default auf "Angemessen"
-      painRating: 0, // Schmerzbewertung bleibt wie vorher
-      workoutLabels: [
-        "Sehr Leicht",
-        "Leicht",
-        "Angemessen",
-        "Schwer",
-        "Sehr Schwer",
-      ], // Neue Labels
-      currentExerciseIndex: 1,
-    };
-  },
-
-  async created() {
-    const patientId = localStorage.getItem("patientId");
-    if (patientId) {
-      await this.$store.dispatch("fetchCurrentTrainingPlan", patientId);
-      this.trainingPlan = this.getCurrentTrainingPlan;
-    } else {
-      console.error("Patient ID nicht gefunden.");
-    }
-  },
+// Methode für Dashboard-Navigation
+const goToDashboard = () => {
+  router.push("/patient-dashboard");
 };
+
+// Methode zur Aktualisierung des aktuellen Trainings
+const updateCurrentExercise = (swiper) => {
+  const maxExercises = trainingPlan.value.exercises.length;
+  currentExerciseIndex.value = Math.min(swiper.realIndex + 1, maxExercises);
+};
+
+// Trainingsplan beim Laden der Seite abrufen
+onMounted(async () => {
+  const patientId = localStorage.getItem("patientId");
+  if (patientId) {
+    await store.dispatch("fetchCurrentTrainingPlan", patientId);
+    trainingPlan.value = store.getters.getCurrentTrainingPlan;
+  } else {
+    console.error("Patient ID nicht gefunden.");
+  }
+});
 </script>
-
-<style scoped>
-.finish-slide {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.workout-slider,
-.pain-slider {
-  width: 100%;
-}
-
-/* Slider - Gesamte Bahn */
-input[type="range"] {
-  -webkit-appearance: none;
-  width: 100%; /* Weite anpassen */
-  height: 12px; /* Dicke der Bahn */
-  background: #f2f2f2; /* Hintergrundfarbe der Bahn */
-  border-radius: 8px; /* Abgerundete Ecken der Bahn */
-  outline: none;
-  transition: background 0.3s ease;
-}
-
-/* Slider - Schieberegler (Thumb) */
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px; /* Breite des Schiebereglers */
-  height: 20px; /* Höhe des Schiebereglers */
-  border-radius: 50%; /* Rundes Aussehen für den Schieberegler */
-  background: #0ff2b2; /* Farbe des Schiebereglers */
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.swiper-no-swiping {
-  pointer-events: auto; /* Damit Interaktionen innerhalb des Slides wie Slider funktionieren */
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    z-index: 0;
-  }
-}
-
-.animation-container {
-  position: fixed;
-  background-color: #0ff2b2;
-  height: 100vh;
-  width: 100vw;
-  top: 0;
-  left: 0;
-  animation: fadeOut 2s ease-out forwards;
-  z-index: 1000;
-}
-</style>

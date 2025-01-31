@@ -20,7 +20,7 @@
             class="flex items-center p-4 bg-gray-100 rounded-md shadow-sm"
           >
             <img
-              :src="exercise.exerciseId.imgUrl"
+              :src="`${baseUrl}${exercise.exerciseId.imgUrl}`"
               alt="Exercise Image"
               class="w-20 h-20 object-cover rounded-md mr-4"
             />
@@ -45,6 +45,9 @@
   </div>
 </template>
 
+<script setup>
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+</script>
 
 <script>
 
