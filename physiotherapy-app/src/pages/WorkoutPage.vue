@@ -223,7 +223,7 @@ export default {
         await this.$store.dispatch("updateStreak", { patientId, newStreak });
 
         const response = await fetch(
-          `http://localhost:5500/api/users/${patientId}/check-badges`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/check-badges`,
           {
             method: "POST",
           }

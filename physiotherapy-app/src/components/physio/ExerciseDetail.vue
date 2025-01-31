@@ -111,7 +111,7 @@ export default {
   async created() {
     try {
       const response = await fetch(
-        `http://localhost:5500/api/exercises/${this.exerciseId}`
+        `${import.meta.env.VITE_API_BASE_URL}/api/exercises/${this.exerciseId}`
       );
       this.exercise = await response.json();
       this.editedExercise.repetitions = this.exercise.repetitions || 0;
@@ -156,7 +156,7 @@ export default {
       if (!trainingPlanId) {
         try {
           const response = await fetch(
-            "http://localhost:5500/api/trainingplans",
+            "${import.meta.env.VITE_API_BASE_URL}/api/trainingplans",
             {
               method: "POST",
               headers: {
@@ -182,7 +182,7 @@ export default {
         // Falls ein Trainingsplan bereits existiert, füge die Übung hinzu
         try {
           const response = await fetch(
-            `http://localhost:5500/api/trainingplans/${trainingPlanId}/exercises`,
+            `${import.meta.env.VITE_API_BASE_URL}/api/trainingplans/${trainingPlanId}/exercises`,
             {
               method: "PUT",
               headers: {

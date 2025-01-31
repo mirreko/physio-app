@@ -84,7 +84,7 @@ export default {
   methods: {
     async fetchPatients() {
       try {
-        const response = await fetch("http://localhost:5500/api/users");
+        const response = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/users");
         this.patients = await response.json();
       } catch (error) {
         console.error("Fehler beim Abrufen der Patienten:", error);

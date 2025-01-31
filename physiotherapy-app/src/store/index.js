@@ -163,7 +163,7 @@ const store = createStore({
 
       try {
         const response = await fetch(
-          `http://localhost:5500/api/trainingplans/${patientId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/trainingplans/${patientId}`,
           {
             method: "GET",
             headers: {
@@ -199,7 +199,7 @@ const store = createStore({
       try {
         // Workout-Counter aktualisieren
         await fetch(
-          `http://localhost:5500/api/trainingplans/${trainingPlanId}/workouts`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/trainingplans/${trainingPlanId}/workouts`,
           {
             method: "PUT",
             headers: {
@@ -216,7 +216,7 @@ const store = createStore({
 
         // Badges überprüfen
         const response = await fetch(
-          `http://localhost:5500/api/users/${patientId}/check-badges`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/check-badges`,
           {
             method: "POST",
             headers: {
@@ -243,7 +243,7 @@ const store = createStore({
       const patientId = localStorage.getItem("patientId");
       try {
         const response = await fetch(
-          `http://localhost:5500/api/users/${patientId}/points`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/points`,
           {
             method: "GET",
             headers: {
@@ -269,7 +269,7 @@ const store = createStore({
       // Update auf dem Server
       const patientId = localStorage.getItem("patientId");
       if (patientId) {
-        fetch(`http://localhost:5500/api/users/${patientId}/points`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/points`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -295,7 +295,7 @@ const store = createStore({
         }
 
         const response = await fetch(
-          `http://localhost:5500/api/users/${patientId}/streak`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/streak`,
           {
             method: "GET",
             headers: {
@@ -319,7 +319,7 @@ const store = createStore({
     async updateStreak({ commit }, { patientId, newStreak }) {
       try {
         const response = await fetch(
-          `http://localhost:5500/api/users/${patientId}/streak`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/streak`,
           {
             method: "PUT",
             headers: {
@@ -342,7 +342,7 @@ const store = createStore({
     async fetchFeedbacks({ commit }) {
       try {
         const response = await fetch(
-          "http://localhost:5500/api/users/feedbacks",
+          "${import.meta.env.VITE_API_BASE_URL}/api/users/feedbacks",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -364,7 +364,7 @@ const store = createStore({
     async submitFeedback({ commit }, feedback) {
       try {
         const response = await fetch(
-          "http://localhost:5500/api/users/feedback",
+          "${import.meta.env.VITE_API_BASE_URL}/api/users/feedback",
           {
             method: "POST",
             headers: {
@@ -392,7 +392,7 @@ const store = createStore({
     async fetchUserBadges({ commit }, { patientId }) {
       try {
         const response = await fetch(
-          `http://localhost:5500/api/users/${patientId}/badges`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/badges`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -422,7 +422,7 @@ const store = createStore({
 
     async fetchAllBadges({ commit }) {
       try {
-        const response = await fetch("http://localhost:5500/api/badges", {
+        const response = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/badges", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`, // Falls nötig
           },
@@ -442,7 +442,7 @@ const store = createStore({
 
     async fetchNewBadges({ commit }, patientId) {
       try {
-        const response = await fetch(`http://localhost:5500/api/users/${patientId}/check-badges`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/check-badges`, {
           method: "POST",
         });
     

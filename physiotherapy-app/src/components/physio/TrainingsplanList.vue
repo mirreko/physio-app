@@ -44,7 +44,7 @@ export default {
     methods: {
   async deleteTrainingPlan(planId) {
     try {
-      const response = await fetch(`http://localhost:5500/api/trainingplans/${planId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/trainingplans/${planId}`, {
         method: 'DELETE',
       });
 
