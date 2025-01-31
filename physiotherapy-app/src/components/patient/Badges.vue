@@ -46,6 +46,7 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL;
   },
   computed: {
     userBadges() {
+      console.log(this.$store.getters.getUserBadges);
       return this.$store.getters.getUserBadges;
     },
     allBadges() {

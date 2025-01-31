@@ -33,7 +33,6 @@
         </div>
 
         <div v-else class="flex flex-col justify-center align-center mt-4">
-          <!-- Swiper für die Übungen -->
           <h2
             class="text-xl md:text-2xl font-nunito pt-8 text-center text-white"
           >
@@ -53,7 +52,6 @@
             class="w-80 md:w-96 h-fit"
             @slideChange="updateCurrentExercise"
           >
-            <!-- Übungen aus dem Trainingsplan -->
             <swiper-slide
               v-for="(exercise, index) in trainingPlan.exercises"
               :key="exercise._id"
@@ -76,7 +74,6 @@
               </div>
             </swiper-slide>
 
-            <!-- "Geschafft!"-Slide -->
             <swiper-slide class="swiper-no-swiping">
               <div
                 class="finish-slide bg-secondary p-6 rounded-xl shadow-md flex flex-col items-center"
@@ -85,8 +82,6 @@
                   Geschafft! 🎉
                 </h2>
                 <p class="text-white mt-6">Wie war dein Workout?</p>
-
-                <!-- Slider für die Workout-Bewertung -->
                 <div class="workout-slider mt-4">
                   <label for="workout-rating" class="text-sm text-white">
                     Schwierigkeit:
@@ -112,7 +107,6 @@
                   </div>
                 </div>
 
-                <!-- Slider für die Schmerzbewertung -->
                 <div class="pain-slider mt-6">
                   <label for="pain-rating" class="text-sm text-white"
                     >Schmerzintensität (0 bis 10):</label
@@ -131,7 +125,6 @@
                   </div>
                 </div>
 
-                <!-- Abhaken Button -->
                 <div class="flex justify-center m-4">
                   <button
                     @click="completeWorkout"
@@ -147,62 +140,113 @@
       </div>
     </div>
   </div>
-  <div class="animation-container"></div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { EffectCards } from "swiper/modules";
-import "swiper/swiper-bundle.css"; // Importiere Swiper Styles
+import { useRouter } from "vue-router";
+import "swiper/swiper-bundle.css"; // Swiper Styles importieren
+import confetti from "canvas-confetti";
 
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
+// Daten und Computed Properties
 const store = useStore();
-const router = useRouter();
-
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const trainingPlan = ref(null);
+const currentExerciseIndex = ref(1);
 const workoutRating = ref(2);
 const painRating = ref(0);
-const currentExerciseIndex = ref(1);
+const workoutLabels = ref(["Sehr Leicht", "Leicht", "Angemessen", "Schwer", "Sehr Schwer"]);
+const router = useRouter();
 
+// Swiper Module
 const modules = [EffectCards];
 
-const workoutLabels = [
-  "Sehr Leicht",
-  "Leicht",
-  "Angemessen",
-  "Schwer",
-  "Sehr Schwer",
-];
+// Computed für den aktuellen Trainingsplan
+const getCurrentTrainingPlan = computed(() => store.getters.getCurrentTrainingPlan);
 
-// Berechnung der aktuellen Woche
-const calculatedCurrentWeek = computed(() => {
-  if (!trainingPlan.value || !trainingPlan.value.createdAt) return 0;
-  const createdAt = new Date(trainingPlan.value.createdAt);
-  const now = new Date();
-  const diffTime = Math.abs(now - createdAt);
-  return Math.min(Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)), trainingPlan.value.durationWeeks || 0);
-});
-
-// Methode für Dashboard-Navigation
-const goToDashboard = () => {
-  router.push("/patient-dashboard");
-};
-
-// Methode zur Aktualisierung des aktuellen Trainings
+// Methoden
 const updateCurrentExercise = (swiper) => {
   const maxExercises = trainingPlan.value.exercises.length;
   currentExerciseIndex.value = Math.min(swiper.realIndex + 1, maxExercises);
 };
 
-// Trainingsplan beim Laden der Seite abrufen
+const goToDashboard = () => {
+  console.log("Go to Dashboard");
+  router.push("/patient-dashboard");
+};
+
+const completeWorkout = async () => {
+  const workoutResult = {
+    workoutRating: workoutRating.value,
+    painRating: painRating.value,
+    completedAt: new Date().toISOString(),
+    patientId: localStorage.getItem("patientId"),
+  };
+
+  try {
+    launchConfetti();
+
+    // Hier sendest du die Daten an die DB
+    await store.dispatch("markWorkoutCompleted", workoutResult);
+    await store.dispatch("submitFeedback", workoutResult);
+
+    await store.dispatch("updatePoints", 10);
+
+    const patientId = localStorage.getItem("patientId");
+    const newStreak = store.state.streak + 1;
+    await store.dispatch("updateStreak", { patientId, newStreak });
+
+    const response = await fetch(
+      `${baseUrl}/api/users/${patientId}/check-badges`,
+      { method: "POST" }
+    );
+
+    const { newBadges } = await response.json();
+
+    if (newBadges && newBadges.length > 0) {
+      alert(`Herzlichen Glückwunsch! Du hast ${newBadges.length} neue Badges verdient! 🎉`);
+      router.push("/patient-dashboard");
+    } else {
+      router.push("/patient-dashboard");
+      alert("Workout erfolgreich abgeschlossen! 🎉");
+    }
+  } catch (error) {
+    console.error("Fehler beim Abschließen des Workouts:", error);
+    alert("Etwas ist schiefgelaufen. Bitte versuche es erneut.");
+  }
+};
+
+const launchConfetti = () => {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+  });
+
+  const duration = 2 * 1000;
+  const end = Date.now() + duration;
+
+  const interval = setInterval(() => {
+    if (Date.now() > end) {
+      clearInterval(interval);
+    } else {
+      confetti({
+        particleCount: 50,
+        spread: 100,
+        origin: { x: Math.random(), y: Math.random() - 0.2 },
+      });
+    }
+  }, 250);
+};
+
 onMounted(async () => {
   const patientId = localStorage.getItem("patientId");
   if (patientId) {
     await store.dispatch("fetchCurrentTrainingPlan", patientId);
-    trainingPlan.value = store.getters.getCurrentTrainingPlan;
+    trainingPlan.value = getCurrentTrainingPlan.value;
   } else {
     console.error("Patient ID nicht gefunden.");
   }
