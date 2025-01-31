@@ -62,7 +62,7 @@ export default {
     async login() {
       try {
         const response = await fetch(
-          "${import.meta.env.VITE_API_BASE_URL}/api/authRoutes/login",
+          `${import.meta.env.VITE_API_BASE_URL}/api/authRoutes/login`,
           {
             method: "POST",
             headers: {
@@ -84,7 +84,7 @@ export default {
 
         // Um Benutzerrolle abfragen
         const userResponse = await fetch(
-          "${import.meta.env.VITE_API_BASE_URL}/api/authRoutes/user",
+          `${import.meta.env.VITE_API_BASE_URL}/api/authRoutes/user`,
           {
             headers: {
               Authorization: `Bearer ${data.token}`,

@@ -81,11 +81,11 @@ export default {
     async fetchData() {
       try {
         const exerciseResponse = await fetch(
-          "${import.meta.env.VITE_API_BASE_URL}/api/exercises"
+          `${import.meta.env.VITE_API_BASE_URL}/api/exercises`
         );
         this.exercises = await exerciseResponse.json();
 
-        const patientResponse = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/users");
+        const patientResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users`);
         this.patients = await patientResponse.json();
       } catch (error) {
         console.error("Fehler beim Abrufen der Daten:", error);

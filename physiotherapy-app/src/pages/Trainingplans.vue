@@ -31,7 +31,7 @@ export default {
   methods: {
     async fetchTrainingPlans() {
       try {
-        const response = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/trainingplans");
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/trainingplans`);
         this.trainingPlans = await response.json();
       } catch (error) {
         console.error("Fehler beim Abrufen der Trainingspläne:", error);

@@ -342,7 +342,7 @@ const store = createStore({
     async fetchFeedbacks({ commit }) {
       try {
         const response = await fetch(
-          "${import.meta.env.VITE_API_BASE_URL}/api/users/feedbacks",
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/feedbacks`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -364,7 +364,7 @@ const store = createStore({
     async submitFeedback({ commit }, feedback) {
       try {
         const response = await fetch(
-          "${import.meta.env.VITE_API_BASE_URL}/api/users/feedback",
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/feedback`,
           {
             method: "POST",
             headers: {
@@ -422,7 +422,7 @@ const store = createStore({
 
     async fetchAllBadges({ commit }) {
       try {
-        const response = await fetch("${import.meta.env.VITE_API_BASE_URL}/api/badges", {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/badges`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`, // Falls nötig
           },
