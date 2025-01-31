@@ -7,7 +7,7 @@
       >
         ×
       </button>
-      <img :src="`${import.meta.env.VITE_API_BASE_URL}${badge.imageUrl}`" alt="Badge" class="w-24 h-24 mx-auto mb-4" />
+      <img :src="`${baseUrl}${badge.imageUrl}`" alt="Badge" class="w-24 h-24 mx-auto mb-4" />
       <h3 class="text-xl font-bold text-center mb-2">{{ badge.name }}</h3>
       <p class="text-sm text-gray-600 text-center mb-4">{{ badge.description }}</p>
 
@@ -21,6 +21,10 @@
     </div>
   </div>
 </template>
+
+<script setup>
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+</script>
 
 <script>
 export default {

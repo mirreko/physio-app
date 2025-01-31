@@ -16,7 +16,7 @@
         <Streak />
         <ExerciseCard />
         <Badges />
-        <BadgeOverlay /> <!-- Hier wird die Badges-Komponente eingebunden -->
+        <BadgeOverlay />
       </main>
       <NavBar />
     </div>

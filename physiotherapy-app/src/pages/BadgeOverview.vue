@@ -74,7 +74,7 @@
               @click="openBadgeDetail(badge.badgeId, true)"
             >
               <img
-                :src="badge.badgeId.imageUrl"
+                :src="`${baseUrl}${badge.badgeId.imageUrl}`"
                 :alt="badge.badgeId.name"
                 class="w-20 h-20 mx-auto"
               />
@@ -102,7 +102,7 @@
             @click="openBadgeDetail(badge, true)"
           >
             <img
-              :src="`${import.meta.env.VITE_API_BASE_URL}${badge.imageUrl}`"
+              :src="`${baseUrl}${badge.imageUrl}`"
               alt="Badge Icon"
               class="w-20 h-20 mx-auto"
               :class="{
@@ -131,6 +131,10 @@
     />
   </div>
 </template>
+
+<script setup>
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+</script>
 
 <script>
 import HeaderPatient from "../components/patient/HeaderPatient.vue";

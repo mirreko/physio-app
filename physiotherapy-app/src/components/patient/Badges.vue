@@ -18,7 +18,7 @@
               :key="badge.badgeId._id"
             >
               <img
-                :src="`${import.meta.env.VITE_API_BASE_URL}${badge.imageUrl}`"
+                :src="`${baseUrl}${badge.badgeId.imageUrl}`"
                 :alt="badge.badgeId.name"
                 class="w-20 h-20 mx-auto"
               />
@@ -32,6 +32,10 @@
 
   </template>
   
+  <script setup>
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+</script>
+
   <script>
   export default {
     name: "Badge",
