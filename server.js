@@ -48,6 +48,11 @@ app.get("/", (req, res) => {
   res.send("Hello World, der Server läuft!");
 });
 
+app.get("/test", (req, res) => {
+  res.send("API funktioniert!");
+});
+
+
 // Routen
 app.use("/api/exercises", exercisesRouter);
 app.use("/api/users", usersRoute);
@@ -56,7 +61,7 @@ app.use("/api/authRoutes", authRoutes);
 app.use("/api/badges", badges);
 
 // Starte den Server auf Port 5500
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);
 });
