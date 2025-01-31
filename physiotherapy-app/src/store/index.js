@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import { createRouter, createWebHistory } from "vue-router";
 
 function getStartOfCurrentWeek() {
   const now = new Date();
