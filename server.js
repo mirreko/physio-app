@@ -14,7 +14,12 @@ dotenv.config();
 const app = express();
 
 // CORS aktivieren
-app.use(cors());
+app.use(cors({
+  origin: "*", 
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization"
+}));
+
 // Middleware
 app.use(express.json()); // Um JSON-Daten im Request-Body zu verarbeiten
 
