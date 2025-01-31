@@ -56,10 +56,12 @@ app.use("/api/authRoutes", authRoutes);
 app.use("/api/badges", badges);
 
 // Starte den Server auf Port 5500
-const PORT = process.env.PORT || 5500;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);
 });
+
+
 
 
 
