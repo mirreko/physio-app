@@ -18,7 +18,7 @@
               :key="badge.badgeId._id"
             >
               <img
-                :src="badge.badgeId.imageUrl"
+                :src="`${import.meta.env.VITE_API_BASE_URL}${badge.imageUrl}`"
                 :alt="badge.badgeId.name"
                 class="w-20 h-20 mx-auto"
               />

@@ -30,7 +30,7 @@ app.use((err, req, res, next) => {
 });
 
 // Statische Bereitstellung der Bilder aus /uploads
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static("uploads"));
 
 // Verbindungsfunktion für MongoDB
 // Verbindungsfunktion für MongoDB

@@ -102,7 +102,7 @@
             @click="openBadgeDetail(badge, true)"
           >
             <img
-              :src="badge.imageUrl"
+              :src="`${import.meta.env.VITE_API_BASE_URL}${badge.imageUrl}`"
               alt="Badge Icon"
               class="w-20 h-20 mx-auto"
               :class="{

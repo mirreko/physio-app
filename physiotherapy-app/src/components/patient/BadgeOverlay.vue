@@ -4,7 +4,7 @@
       <h3 class="badge-header">Deine Badges</h3>
       <ul class="badge-list">
         <li v-for="badge in badges" :key="badge.id" class="badge-item">
-          <img :src="badge.imageUrl" alt="Badge" class="badge-icon" />
+          <img :src="`${import.meta.env.VITE_API_BASE_URL}${badge.imageUrl}`" alt="Badge" class="badge-icon" />
           <p>{{ badge.name }}</p>
         </li>
       </ul>

@@ -59,7 +59,8 @@
               :key="exercise._id"
               class="flex flex-col align-center justify-center text-start bg-white shadow-md rounded-2xl p-4 mb-6 gap-6"
             >
-              <img :src="exercise.exerciseId.imgUrl" alt="Exercise Image" />
+              <img :src="`${import.meta.env.VITE_API_BASE_URL}${exercise.exerciseId.imgUrl}`" alt="Exercise Image" />
+             
               <div>
                 <h3 class="text-lg font-semibold mb-2">
                   {{ exercise.exerciseId.title }}
