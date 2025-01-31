@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-2xl flex items-center justify-center h-full shadow-md">
+    <div class="bg-white rounded-2xl flex items-center justify-center h-full shadow-md md:pt-4 md:pb-4">
         <div class="relative flex justify-center items-center w-24 h-24">
             <svg class="-rotate-90" width="100" height="100">
                 <circle 

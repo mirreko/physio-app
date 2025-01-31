@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed bottom-0 bg-white m-4 mb-10 h-16 w-11/12 shadow-2xl rounded-2xl flex items-center justify-around z-10"
+    class="fixed bottom-0 left-0 right-0 mx-auto bg-white m-4 mb-10 h-16 md:w-2/4 w-11/12 shadow-2xl rounded-2xl flex items-center justify-around z-10"
   >
     <router-link
       v-for="item in navItems"

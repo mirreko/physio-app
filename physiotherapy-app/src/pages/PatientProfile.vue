@@ -2,7 +2,7 @@
   <div class="flex flex-col bg-gray-200 h-screen">
     <div class="m-6 mt-16 mb-32 content-center">
       <!-- Inhalt -->
-      <div class="flex flex-col bg-white rounded-2xl p-4 shadow-md p-6 h-full">
+      <div class="flex flex-col bg-white rounded-2xl md:w-1/3 left-0 right-0 mx-auto p-4 shadow-md p-6 h-full">
         <div class="flex flex-col items-center justify-between mb-6">
           <div
             class="w-40 h-40 bg-secondary text-white flex items-center justify-center rounded-full font-bold text-4xl mb-6 mt-16"

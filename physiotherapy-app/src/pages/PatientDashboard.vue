@@ -1,9 +1,10 @@
 <template>
   <div class="flex flex-col bg-gray-200 overflow-x-hidden">
-    <HeaderPatient class="p-6 sticky top-0 mt-16"/>
+    <div class="md:w-2/3 left-0 right-0 mx-auto">
+    <HeaderPatient class="p-6 md:w-2/3 left-0 right-0 mx-auto sticky top-0 mt-16"/>
     <div class="flex flex-1">
       <main class="flex-1 p-6 min-h-screen">
-        <div class="grid grid-cols-3 gap-2">
+        <div class="md:w-2/3 left-0 right-0 mx-auto grid grid-cols-3 gap-2">
           <template v-if="trainingPlan">
             <ProgressBar 
               :totalWeeks="trainingPlan.durationWeeks" 
@@ -21,6 +22,7 @@
       <NavBar />
     </div>
   </div>
+</div>
 </template>
 
 <script>

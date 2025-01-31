@@ -52,7 +52,7 @@
       <!-- User Badges -->
       <div
         v-show="activeTab === 'user'"
-        class="bg-white rounded-2xl p-4 shadow-md mb-32"
+        class="bg-white md:w-1/3 left-0 right-0 mx-auto rounded-2xl p-4 shadow-md mb-32"
       >
         <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center">
           Deine Abzeichen
@@ -66,7 +66,7 @@
           Du hast noch keine Badges.
         </div>
         <div v-else>
-          <ul class="grid grid-cols-3 gap-6 sm:grid-cols-2 xs:grid-cols-1">
+          <ul class="grid grid-cols-3 gap-6 sm:grid-cols-3 xs:grid-cols-2">
             <li
               v-for="badge in userBadges"
               :key="badge.badgeId._id"
@@ -89,12 +89,12 @@
       <!-- All Badges -->
       <div
         v-show="activeTab === 'all'"
-        class="bg-white rounded-2xl p-4 shadow-md mb-32"
+        class="bg-white md:w-1/3 left-0 right-0 mx-auto rounded-2xl p-4 shadow-md mb-32"
       >
         <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center mb-6">
           Alle Abzeichen
         </h2>
-        <ul class="grid grid-cols-3 gap-6 sm:grid-cols-2 xs:grid-cols-1">
+        <ul class="grid grid-cols-3 gap-6 sm:grid-cols-3 xs:grid-cols-2">
           <li
             v-for="badge in allBadges"
             :key="badge._id"
