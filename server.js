@@ -8,6 +8,7 @@ const exercisesRouter = require("./routes/exercises");
 const trainingPlans = require("./routes/trainingPlans");
 const mongoose = require("mongoose");
 const badges = require("./routes/badges");
+const path = require('path');
 
 // Initialisiere express und lade Umgebungsvariablen
 dotenv.config();
@@ -27,6 +28,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack); // Detaillierte Fehlerausgabe im Terminal
   res.status(500).json({ error: "Serverfehler" });
 });
+
+// Statische Bereitstellung der Bilder aus /uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Verbindungsfunktion für MongoDB
 // Verbindungsfunktion für MongoDB
