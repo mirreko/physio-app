@@ -23,6 +23,7 @@ const store = createStore({
     feedbacks: [],
     userBadges: [],
     allBadges: [],
+    badges: [],
   },
   mutations: {
     setSelectedPatient(state, patient) {
@@ -142,6 +143,12 @@ const store = createStore({
     SET_ALL_BADGES(state, badges) {
       state.allBadges = badges;
     },
+    SET_BADGES(state, badges) {
+      state.badges = badges;
+    },
+    ADD_BADGE(state, badge) {
+      state.badges.push(badge);
+    },
   },
 
   actions: {
@@ -221,6 +228,8 @@ const store = createStore({
         const data = await response.json();
         if (data.newBadges.length > 0) {
           console.log("Neue Badges erhalten:", data.newBadges);
+          await dispatch("fetchNewBadges", patientId);
+          console.log("Badges aktualisiert");
           // Hier könnte eine Benachrichtigung an den Benutzer ausgelöst werden
         }
       } catch (error) {
@@ -429,6 +438,25 @@ const store = createStore({
         commit("SET_ALL_BADGES", []); // Fallback bei Fehler
       }
     },
+
+    async fetchNewBadges({ commit }, patientId) {
+      try {
+        const response = await fetch(`http://localhost:5500/api/users/${patientId}/check-badges`, {
+          method: "POST",
+        });
+    
+        const { newBadges } = await response.json();
+        if (newBadges && newBadges.length > 0) {
+          console.log("Neue Badges erhalten:", newBadges);  // Logge die neuen Badges zur Überprüfung
+          commit("SET_BADGES", newBadges);  // Badges im Store speichern
+          return newBadges;
+        }
+      } catch (error) {
+        console.error("Fehler beim Abrufen der Badges:", error);
+        return [];
+      }
+    },    
+    
   },
 
   getters: {
@@ -450,6 +478,9 @@ const store = createStore({
     getRemainingWorkouts: (state) => state.weeklyWorkoutsRemaining,
     getStreak: (state) => state.streak,
     getFeedbacks: (state) => state.feedbacks,
+    getBadges(state) {
+      return state.badges;
+    },
   },
   plugins: [
     createPersistedState({
@@ -459,6 +490,7 @@ const store = createStore({
         "weeklyWorkoutsRemaining",
         "points",
         "streak",
+        "badges",
       ],
     }),
   ],

@@ -16,12 +16,10 @@
         <Streak />
         <ExerciseCard />
         <Badges />
-      
+        <BadgeOverlay /> <!-- Hier wird die Badges-Komponente eingebunden -->
       </main>
-      
       <NavBar />
     </div>
-    
   </div>
 </template>
 
@@ -33,10 +31,10 @@ import HeaderPatient from '../components/patient/HeaderPatient.vue';
 import ProgressBar from '../components/patient/ProgressBar.vue';
 import Streak from '../components/patient/Streak.vue';
 import Points from '../components/patient/Points.vue';
-import Badges from '../components/patient/Badges.vue';
 import WorkoutCounter from '../components/patient/WorkoutCounter.vue';
 import NavBar from '../components/patient/NavBar.vue';
-
+import BadgeOverlay from '../components/patient/BadgeOverlay.vue';
+import Badges from '../components/patient/Badges.vue';
 
 export default {
   name: 'PatientDashboard',
@@ -46,12 +44,13 @@ export default {
     ExerciseCard,
     Streak,
     Points,
-    Badges,
     WorkoutCounter,
     NavBar,
+    BadgeOverlay,
+    Badges,
   },
   computed: {
-    ...mapGetters(['getCurrentTrainingPlan']),
+    ...mapGetters(['getCurrentTrainingPlan', 'getBadges']),
     
     // Zugang zu den Trainingsplan-Daten
     trainingPlan() {
@@ -65,10 +64,7 @@ export default {
       const createdAt = new Date(this.trainingPlan.createdAt);
       const now = new Date();
       const diffTime = Math.abs(now - createdAt);
-      
-
       const currentWeek = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
-      
       return Math.min(currentWeek, this.trainingPlan.durationWeeks || 0);
     },
   },

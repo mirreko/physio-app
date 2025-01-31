@@ -47,11 +47,9 @@
 
 
 <script>
-import WorkoutModal from "../patient/WorkoutModal.vue";
 
 export default {
   name: "ExerciseCard",
-  components: { WorkoutModal },
   data() {
     return {
       trainingPlan: null,

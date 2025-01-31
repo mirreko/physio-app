@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col bg-gray-200 overflow-y-hidden h-screen">
-      <HeaderPatient class="p-6 sticky top-0 mt-16" />
+      <div class="p-6 sticky top-0 mt-16"> </div>
       <div class="m-6">
         <div class="bg-white rounded-2xl p-4 shadow-md mb-32">
           <div class="feedback-charts">

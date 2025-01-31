@@ -235,6 +235,7 @@ export default {
           alert(
             `Herzlichen Glückwunsch! Du hast ${newBadges.length} neue Badges verdient! 🎉`
           );
+          this.$router.push("/patient-dashboard");
         } else {
           this.$router.push("/patient-dashboard");
           alert("Workout erfolgreich abgeschlossen! 🎉");

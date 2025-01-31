@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col bg-gray-200 overflow-y-hidden min-h-screen">
-    <HeaderPatient class="p-6 sticky top-0 mt-16" />
+    <div class="p-6 sticky top-0 mt-8"> </div>
 
     <div class="m-6">
       <div class="flex justify-center mb-6">
