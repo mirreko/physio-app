@@ -89,7 +89,7 @@ export default {
 
   }
   100% {
-    transform: scale(50); /* Groß genug, um den gesamten Bildschirm zu bedecken */
+    transform: scale(120); /* Groß genug, um den gesamten Bildschirm zu bedecken */
  
   }
 }
