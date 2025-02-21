@@ -153,6 +153,9 @@ const store = createStore({
   },
 
   actions: {
+    selectPatient({ commit }, patient) {
+      commit("setSelectedPatient", patient);
+    },
     // Hole den aktuellen Trainingsplan direkt aus der DB
     async fetchCurrentTrainingPlan({ commit }) {
       const patientId = localStorage.getItem("patientId");
@@ -231,7 +234,6 @@ const store = createStore({
           console.log("Neue Badges erhalten:", data.newBadges);
           await dispatch("fetchNewBadges", patientId);
           console.log("Badges aktualisiert");
-          // Hier könnte eine Benachrichtigung an den Benutzer ausgelöst werden
         }
       } catch (error) {
         console.error("Fehler beim Abschließen des Workouts:", error);
@@ -280,7 +282,6 @@ const store = createStore({
           .then((response) => {
             if (!response.ok)
               throw new Error("Fehler beim Aktualisieren der Punkte");
-            console.log("Punkte erfolgreich auf dem Server aktualisiert");
           })
           .catch((error) => {
             console.error("Fehler beim Synchronisieren der Punkte", error);
@@ -381,7 +382,6 @@ const store = createStore({
         }
 
         const data = await response.json();
-        console.log("Feedback erfolgreich gespeichert:", data);
 
         commit("addFeedback", feedback); // Füge Feedback zum Vuex-Store hinzu (optional)
       } catch (error) {
@@ -448,7 +448,6 @@ const store = createStore({
     
         const { newBadges } = await response.json();
         if (newBadges && newBadges.length > 0) {
-          console.log("Neue Badges erhalten:", newBadges);  // Logge die neuen Badges zur Überprüfung
           commit("SET_BADGES", newBadges);  // Badges im Store speichern
           return newBadges;
         }

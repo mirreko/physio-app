@@ -26,13 +26,7 @@
     </div>
     <div class="flex items-center justify-center w-full md:w-2/3 rounded-2xl">
       <div class="flex flex-col justify-center w-full rounded-2xl">
-        <div v-if="!trainingPlan" class="text-gray-600 text-center p-6">
-          <strong>Kein Trainingsplan gefunden.</strong> <br />
-          Ihr Physio hat Ihnen wahrscheinlich noch keinen Trainingsplan
-          zugewiesen.
-        </div>
-
-        <div v-else class="flex flex-col justify-center align-center mt-4">
+        <div v-if="trainingPlan" class="flex flex-col justify-center align-center mt-4">
           <h2
             class="text-xl md:text-2xl font-nunito pt-8 text-center text-white"
           >
@@ -57,9 +51,12 @@
               :key="exercise._id"
               class="flex flex-col align-center justify-center text-start bg-white shadow-md rounded-2xl p-4 mb-6 gap-6"
             >
-              <img :src="`${baseUrl}${exercise.exerciseId.imgUrl}`" alt="Exercise Image" />
+              <img
+                :src="`${baseUrl}${exercise.exerciseId.imgUrl}`"
+                alt="Exercise Image"
+              />
               <div>
-                <h3 class="text-lg font-semibold mb-2">
+                <h3 class="text-lg font-semibold mt-4 mb-2">
                   {{ exercise.exerciseId.title }}
                 </h3>
                 <p class="text-sm text-gray-600 mb-4">
@@ -82,10 +79,11 @@
                   Geschafft! 🎉
                 </h2>
                 <p class="text-white mt-6">Wie war dein Workout?</p>
-                <div class="workout-slider mt-4">
-                  <label for="workout-rating" class="text-sm text-white">
+                <div class="mt-4 w-full">
+                  <label for="workout-rating" class="text-sm text-white font-bold">
                     Schwierigkeit:
                   </label>
+
                   <div
                     class="flex justify-between text-xs text-white mt-2 mb-2"
                   >
@@ -93,22 +91,26 @@
                     <span>Angemessen</span>
                     <span>Sehr Schwer</span>
                   </div>
-                  <input
-                    id="workout-rating"
-                    type="range"
-                    v-model="workoutRating"
-                    :min="0"
-                    :max="4"
-                    step="1"
-                    class="w-full mt-2"
-                  />
+
+                  <div class="w-full">
+                    <input
+                      id="workout-rating"
+                      type="range"
+                      v-model="workoutRating"
+                      min="0"
+                      max="4"
+                      step="1"
+                      class="w-full mt-2 color-primary range-slider"
+                    />
+                  </div>
+
                   <div class="text-center text-sm text-white">
                     {{ workoutLabels[workoutRating] }}
                   </div>
                 </div>
 
-                <div class="pain-slider mt-6">
-                  <label for="pain-rating" class="text-sm text-white"
+                <div class="mt-6">
+                  <label for="pain-rating" class="text-sm text-white font-bold"
                     >Schmerzintensität (0 bis 10):</label
                   >
                   <input
@@ -118,7 +120,7 @@
                     min="0"
                     max="10"
                     step="1"
-                    class="w-full mt-2"
+                    class="w-full mt-2 range-slider"
                   />
                   <div class="text-center text-sm text-white">
                     {{ painRating }}
@@ -136,6 +138,10 @@
               </div>
             </swiper-slide>
           </swiper>
+        </div>
+        <div v-else class="text-gray-600 text-center p-6">
+          <!-- Ladeanzeige -->
+          Lade Trainingsplan...
         </div>
       </div>
     </div>
@@ -158,14 +164,22 @@ const trainingPlan = ref(null);
 const currentExerciseIndex = ref(1);
 const workoutRating = ref(2);
 const painRating = ref(0);
-const workoutLabels = ref(["Sehr Leicht", "Leicht", "Angemessen", "Schwer", "Sehr Schwer"]);
+const workoutLabels = ref([
+  "Sehr Leicht",
+  "Leicht",
+  "Angemessen",
+  "Schwer",
+  "Sehr Schwer",
+]);
 const router = useRouter();
 
 // Swiper Module
 const modules = [EffectCards];
 
 // Computed für den aktuellen Trainingsplan
-const getCurrentTrainingPlan = computed(() => store.getters.getCurrentTrainingPlan);
+const getCurrentTrainingPlan = computed(
+  () => store.getters.getCurrentTrainingPlan
+);
 
 // Methoden
 const updateCurrentExercise = (swiper) => {
@@ -174,7 +188,6 @@ const updateCurrentExercise = (swiper) => {
 };
 
 const goToDashboard = () => {
-  console.log("Go to Dashboard");
   router.push("/patient-dashboard");
 };
 
@@ -196,8 +209,7 @@ const completeWorkout = async () => {
     await store.dispatch("updatePoints", 10);
 
     const patientId = localStorage.getItem("patientId");
-    const newStreak = store.state.streak + 1;
-    await store.dispatch("updateStreak", { patientId, newStreak });
+    await store.dispatch("updateStreak", { patientId, newStreak: store.state.streak});
 
     const response = await fetch(
       `${baseUrl}/api/users/${patientId}/check-badges`,
@@ -207,11 +219,12 @@ const completeWorkout = async () => {
     const { newBadges } = await response.json();
 
     if (newBadges && newBadges.length > 0) {
-      alert(`Herzlichen Glückwunsch! Du hast ${newBadges.length} neue Badges verdient! 🎉`);
+      alert(
+        `Herzlichen Glückwunsch! Du hast ${newBadges.length} neue Badges verdient! 🎉`
+      );
       router.push("/patient-dashboard");
     } else {
       router.push("/patient-dashboard");
-      alert("Workout erfolgreich abgeschlossen! 🎉");
     }
   } catch (error) {
     console.error("Fehler beim Abschließen des Workouts:", error);
@@ -252,3 +265,37 @@ onMounted(async () => {
   }
 });
 </script>
+
+<style scoped>
+.range-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #ddd; /* Hintergrundfarbe der Leiste */
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: theme('colors.primary'); 
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s;
+}
+
+.range-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4f46e5; /* Farbe des Schiebereglers */
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s;
+}
+</style>

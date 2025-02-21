@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 bg-background rounded-2xl mt-6 w-full">
-    <h1 class="text-2xl font-bold mb-4">Ihr Trainingsplan</h1>
+    <h1 class="text-2xl font-bold mb-4">Dein Trainingsplan</h1>
     <div v-if="!trainingPlan" class="text-gray-600">
       Kein Trainingsplan gefunden.
     </div>
@@ -34,7 +34,6 @@ export default {
   async created() {
     // Holen der aktuellen patientId aus localStorage
     const patientId = localStorage.getItem("patientId");
-    console.log("Patient ID:", patientId); // Debugging-Zeile
 
     
     // Abfragen des Trainingsplans mit der patientId

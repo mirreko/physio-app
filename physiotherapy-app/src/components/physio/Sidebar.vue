@@ -24,21 +24,21 @@
         <a href="#" class="text-lg font-semibold hover:text-gray-400"
           >Extremität</a
         >
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="oEx"
             v-model="selectedExtremities"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           Obere Extremität
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="uEx"
             v-model="selectedExtremities"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           Untere Extremität
         </label>
@@ -48,57 +48,57 @@
         <a href="#" class="text-lg font-semibold hover:text-gray-400"
           >Krankheitsbilder</a
         >
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="bsv"
             v-model="selectedDiseases"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           Bandscheiben&shy;vorfall
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="vkb"
             v-model="selectedDiseases"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           VKB-Ruptur
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="spg"
             v-model="selectedDiseases"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           Sprunggelenks&shy;distorsion
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="h-tep"
             v-model="selectedDiseases"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           Hüft-TEP
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="k-tep"
             v-model="selectedDiseases"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           Knie-TEP
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="rad-fraktur"
             v-model="selectedDiseases"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           Distale Radiusfraktur
         </label>
@@ -108,39 +108,39 @@
         <a href="#" class="text-lg font-semibold hover:text-gray-400"
           >Woche post OP</a
         >
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="1"
             v-model="selectedPostOpWeeks"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           1. Woche post OP
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="2"
             v-model="selectedPostOpWeeks"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           2. Woche post OP
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="3"
             v-model="selectedPostOpWeeks"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           3. Woche post OP
         </label>
-        <label class="block pt-4">
+        <label class="block pt-4 flex items-center">
           <input
             type="checkbox"
             value="4"
             v-model="selectedPostOpWeeks"
-            class="mr-2"
+            class="mr-4 w-4 h-4"
           />
           4. bis 8. Woche post OP
         </label>

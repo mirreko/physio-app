@@ -20,7 +20,6 @@ router.get("/", async (req, res) => {
 
 router.get("/user", auth, async (req, res) => {
   try {
-    console.log("Fetching user for ID:", req.user?.id); // Log to verify if `req.user` is set
     const user = await User.findById(req.user.id).select("-password");
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
@@ -233,7 +232,6 @@ router.get("/feedbacks", async (req, res) => {
 });
 
 router.post("/:id/check-badges", async (req, res) => {
-  console.log("Badge-Überprüfung gestartet", req.params);
   const { id: patientId } = req.params;
   
   try {
@@ -262,8 +260,6 @@ router.post("/:id/check-badges", async (req, res) => {
       user.badges.push(...newBadges);
       await user.save();
     }
-
-    console.log("Neue Badges:", newBadges);
     res.status(200).json({ newBadges });
   } catch (error) {
     console.error("Fehler bei der Badge-Überprüfung:", error);

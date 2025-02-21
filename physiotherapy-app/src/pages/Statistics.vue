@@ -4,7 +4,7 @@
       <div class="m-6">
         <div class="bg-white md:w-2/3 left-0 right-0 mx-auto rounded-2xl p-4 shadow-md mb-32">
           <div class="feedback-charts">
-            <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center  text-gray-800">Ihre Fortschritte</h2>
+            <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center  text-gray-800">Deine Fortschritte</h2>
   
             <!-- Kombiniertes Diagramm für Wohlbefinden und Schmerzintensität -->
             <div class="mt-4 h-96">
@@ -33,7 +33,6 @@
     LinearScale,
   } from "chart.js";
   
-  // Registriere alle notwendigen Chart.js-Komponenten
   ChartJS.register(
     Title,
     Tooltip,
@@ -105,16 +104,16 @@
             x: {
               ticks: {
                 autoSkip: true,
-                maxRotation: 0, // Verhindert die Rotation der Labels
+                maxRotation: 0,
                 minRotation: 0,
               },
             },
             y: {
-              min: 0, // Setzt den minimalen Wert der Y-Achse auf 0
-              max: 10, // Setzt den maximalen Wert der Y-Achse auf 10
+              min: 0,
+              max: 10,
               reverse: true,
               ticks: {
-                stepSize: 1, // Die Y-Achse zeigt Werte von 0 bis 10 in Schritten von 1
+                stepSize: 1,
 
               },
             },
@@ -123,7 +122,6 @@
       },
     },
     async created() {
-    // Feedbacks aus der Datenbank laden
     await this.$store.dispatch('fetchFeedbacks');
   },
   };

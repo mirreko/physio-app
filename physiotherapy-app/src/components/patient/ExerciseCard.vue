@@ -6,11 +6,11 @@
       </h2>
       <div v-if="!trainingPlan" class="text-gray-600 text-center p-6">
         <strong>Kein Trainingsplan gefunden.</strong> <br />
-        Ihr Physio hat Ihnen wahrscheinlich noch keinen Trainingsplan
+        Dein Physio hat dir wahrscheinlich noch keinen Trainingsplan
         zugewiesen.
       </div>
       <div v-else class="text-gray-800 p-6 space-y-6">
-        <p class="text-sm text-gray-600">
+        <p class="text-sm text-gray-600 md:text-center">
               Hier ist eine Übersicht über die Übungen, die dich heute erwarten.
             </p>
         <ul class="exercise-overview space-y-4">
@@ -103,7 +103,7 @@ export default {
   background-color: #0ff2b2;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  animation: spreadOut 0.25s ease-out forwards;
+  animation: spreadOut 1s ease-out forwards;
   z-index: 1000;
 }
 

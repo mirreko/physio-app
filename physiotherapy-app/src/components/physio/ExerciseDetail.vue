@@ -171,7 +171,6 @@ export default {
           }
 
           const result = await response.json();
-          console.log("Erstellter Trainingsplan:", result); // Debug
           this.$store.commit("setTrainingPlanId", result.trainingPlanId);
 
           alert("Trainingsplan erfolgreich erstellt und Übung hinzugefügt!");

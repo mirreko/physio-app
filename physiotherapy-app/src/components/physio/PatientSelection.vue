@@ -92,8 +92,8 @@ export default {
     },
     ...mapActions(["selectPatient"]),
     handleSelectPatient(patient) {
-      this.selectPatient(patient); // Den Patienten im Store speichern
-      this.selectedPatient = patient; // Setze den ausgewählten Patienten lokal
+      this.selectPatient(patient); 
+      this.selectedPatient = patient;
     },
     getInitials(name) {
       const names = name.split(" ");

@@ -166,7 +166,6 @@ export default {
   methods: {
     openBadgeDetail(badge, showAwardedAt) {
       this.selectedBadge = badge;
-      console.log(this.selectedBadge);
       this.showAwardedAt = showAwardedAt;
     },
     closeBadgeDetail() {

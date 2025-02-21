@@ -31,7 +31,6 @@ async function checkAndAssignBadges(userId) {
   if (newBadges.length > 0) {
     user.badges.push(...newBadges);
     await user.save();
-    console.log(`Neue Badges für Nutzer ${userId}:`, newBadges);
   }
 }
 
