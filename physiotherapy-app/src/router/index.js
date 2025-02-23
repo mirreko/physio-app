@@ -14,7 +14,7 @@ import WorkoutPage from '../pages/WorkoutPage.vue';
 const routes = [
   {
     path: '/',
-    redirect: '/login' // Weiterleitung von / auf /login
+    redirect: '/login' 
   },
   {
     path: '/login',
@@ -55,7 +55,7 @@ const routes = [
     path: '/trainingplans', 
     name: 'Trainingplans',
     component: Trainingplans,
-    meta: { requiresAuth: true }, // Diese Route benötigt Authentifizierung
+    meta: { requiresAuth: true }, 
   },
   {
     path: '/badges',
@@ -88,7 +88,6 @@ const router = createRouter({
   routes,
 });
 
-// Navigation Guard
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem('token');
   

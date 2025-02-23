@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Exercise = require("./models/Exercise");
 require("dotenv").config();
 
-// Verbindungsaufbau zur MongoDB
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
@@ -13,7 +12,6 @@ const connectDB = async () => {
   }
 };
 
-// Übungen in die DB importieren
 const importExercises = async () => {
   const exercises = [
     {
@@ -46,7 +44,6 @@ const importExercises = async () => {
   ];
 
   try {
-    // Übungen aus der JSON-Datei importieren
     await Exercise.insertMany(exercises);
     console.log("Übungen erfolgreich importiert!");
     process.exit(0);
@@ -56,5 +53,4 @@ const importExercises = async () => {
   }
 };
 
-// Import-Skript ausführen
 connectDB().then(importExercises);

@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Badge = require("./models/Badges");
 require("dotenv").config();
 
-// Verbindungsaufbau zur MongoDB
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
@@ -107,9 +106,9 @@ const seedBadges = async () => {
   try {
     for (const badge of badges) {
       await Badge.updateOne(
-        { name: badge.name }, // Suche Badge per Name
-        { $set: badge },      // Aktualisiere oder füge hinzu
-        { upsert: true }      // Insert, wenn nicht vorhanden
+        { name: badge.name }, 
+        { $set: badge },      
+        { upsert: true }      
       );
     }
     console.log("Badges erfolgreich migriert!");

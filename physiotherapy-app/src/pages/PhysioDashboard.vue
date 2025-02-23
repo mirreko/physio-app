@@ -72,8 +72,6 @@ export default {
       this.filteredExercises = this.exercises.filter(exercise => {
         const matchesSearch = exercise.name.toLowerCase().includes(this.searchQuery.toLowerCase());
         const matchesDifficulty = this.selectedDifficulty ? exercise.difficulty === this.selectedDifficulty : true;
-        
-        // Weitere Filterbedingungen hier hinzufügen
 
         return matchesSearch && matchesDifficulty;
       });
@@ -92,10 +90,10 @@ export default {
       }
     },
     showExerciseDetail(exerciseId) {
-      this.selectedExercise = exerciseId; // Setzt die ausgewählte Übung
+      this.selectedExercise = exerciseId; 
     },
     closeExerciseDetail() {
-      this.selectedExercise = null; // Setzt die ausgewählte Übung zurück
+      this.selectedExercise = null;
     },
   },
 };

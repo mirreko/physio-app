@@ -7,7 +7,6 @@
         <div
           class="bg-white shadow-lg rounded-full w-full max-w-[400px] flex relative"
         >
-          <!-- Highlighter, der sowohl die Hintergrundfarbe als auch den Text mitbewegt -->
           <div
             class="absolute top-0 left-0 w-1/2 h-full bg-secondary transition-transform duration-300 flex justify-center items-center rounded-full"
             :style="{
@@ -25,7 +24,6 @@
             </span>
           </div>
 
-          <!-- Tab-Buttons -->
           <button
             :class="{
               'bg-secondary text-white': activeTab === 'user',
@@ -49,7 +47,6 @@
         </div>
       </div>
 
-      <!-- User Badges -->
       <div
         v-show="activeTab === 'user'"
         class="bg-white md:w-1/3 left-0 right-0 mx-auto rounded-2xl p-4 shadow-md mb-32"
@@ -86,7 +83,6 @@
         </div>
       </div>
 
-      <!-- All Badges -->
       <div
         v-show="activeTab === 'all'"
         class="bg-white md:w-1/3 left-0 right-0 mx-auto rounded-2xl p-4 shadow-md mb-32"
@@ -122,7 +118,6 @@
 
     <NavBar />
 
-    <!-- Badge Detail Modal -->
     <BadgeDetail
       v-if="selectedBadge"
       :badge="selectedBadge"
@@ -150,9 +145,9 @@ export default {
   },
   data() {
     return {
-      activeTab: "user", // Default tab
-      selectedBadge: null, // Speichert das ausgewählte Badge
-      showAwardedAt: true, // Steuerung, ob "Erhalten am" angezeigt wird
+      activeTab: "user", 
+      selectedBadge: null, 
+      showAwardedAt: true, 
     };
   },
   computed: {

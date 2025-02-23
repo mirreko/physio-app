@@ -22,11 +22,11 @@ export default {
   },
   data() {
     return {
-      trainingPlans: [], // Array für die Trainingspläne
+      trainingPlans: [], 
     };
   },
   async created() {
-    await this.fetchTrainingPlans(); // Trainingspläne abrufen, wenn die Komponente erstellt wird
+    await this.fetchTrainingPlans(); 
   },
   methods: {
     async fetchTrainingPlans() {
@@ -39,11 +39,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchTrainingPlans(); // Lade die Trainingspläne beim ersten Laden der Komponente
+    this.fetchTrainingPlans();
   },
 };
 </script>
-
-<style scoped>
-/* Custom Styles */
-</style>

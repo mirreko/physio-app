@@ -39,7 +39,6 @@
           </button>
         </div>
       </div>
-      <!-- Start-Animation -->
       <div v-if="isTransitioning" class="start-animation"></div>
     </div>
   </div>
@@ -56,7 +55,7 @@ export default {
   data() {
     return {
       trainingPlan: null,
-      isWorkoutActive: false, // Zustand für das Workout
+      isWorkoutActive: false, 
       isTransitioning: false,
     };
   },
@@ -65,7 +64,7 @@ export default {
     this.isTransitioning = true;
     setTimeout(() => {
       this.$router.push("/workout");
-    }, 1000); // Wartezeit für die Animation
+    }, 1000); 
   },
 
   },
@@ -82,15 +81,12 @@ export default {
 </script>
 
 <style scoped>
-/* Custom Styles */
 @keyframes spreadOut {
   0% {
     transform: scale(0);
-
   }
   100% {
-    transform: scale(120); /* Groß genug, um den gesamten Bildschirm zu bedecken */
- 
+    transform: scale(120); 
   }
 }
 

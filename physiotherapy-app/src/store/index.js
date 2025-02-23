@@ -55,11 +55,10 @@ const store = createStore({
         const { weeklyWorkoutsRemaining, lastResetDate, streak } =
           JSON.parse(savedData);
     
-        // Prüfen, ob die Woche gewechselt hat
         if (!savedStartOfWeek || currentStartOfWeek > savedStartOfWeek) {
           state.weeklyWorkoutsRemaining = trainingPlan.frequency;
           state.lastResetDate = new Date();
-          state.streak = streak || 0; // Sicherstellen, dass streak definiert ist
+          state.streak = streak || 0; 
           
           localStorage.setItem(
             `startOfWeek_${patientId}`,
@@ -68,13 +67,12 @@ const store = createStore({
         } else {
           state.weeklyWorkoutsRemaining = weeklyWorkoutsRemaining;
           state.lastResetDate = lastResetDate;
-          state.streak = streak || 0; // Streak aus gespeicherten Daten laden
+          state.streak = streak || 0; 
         }
       } else if (trainingPlan.frequency) {
         state.weeklyWorkoutsRemaining = trainingPlan.frequency;
         state.lastResetDate = new Date();
     
-        // Überprüfen, ob ein anderer Fallback für streak existiert
         const fallbackStreak = state.streak || 0;
         state.streak = fallbackStreak;
     
@@ -96,10 +94,9 @@ const store = createStore({
       const data = {
         weeklyWorkoutsRemaining: state.weeklyWorkoutsRemaining,
         lastResetDate: state.lastResetDate,
-        streak: state.streak, // Speichern des Streaks
+        streak: state.streak, 
       };
 
-      // Speichern in localStorage
       localStorage.setItem(`workoutData_${patientId}`, JSON.stringify(data));
     },
 
@@ -130,7 +127,7 @@ const store = createStore({
     },
     UPDATE_STREAK(state, newStreak) {
       state.streak = newStreak;
-      this.commit("SAVE_WORKOUT_DATA"); // Streak auch in localStorage speichern
+      this.commit("SAVE_WORKOUT_DATA"); 
     },
     addFeedback(state, feedback) {
       state.feedbacks.push(feedback);
@@ -156,7 +153,6 @@ const store = createStore({
     selectPatient({ commit }, patient) {
       commit("setSelectedPatient", patient);
     },
-    // Hole den aktuellen Trainingsplan direkt aus der DB
     async fetchCurrentTrainingPlan({ commit }) {
       const patientId = localStorage.getItem("patientId");
       if (!patientId) {
@@ -182,7 +178,7 @@ const store = createStore({
 
         const data = await response.json();
         commit("SET_CURRENT_TRAINING_PLAN", data[0]);
-        commit("SET_POINTS", data[0].points || 0); // Punkte aus DB setzen
+        commit("SET_POINTS", data[0].points || 0); 
       } catch (error) {
         console.error("Fehler beim Abrufen des Trainingsplans:", error);
       }
@@ -200,7 +196,6 @@ const store = createStore({
       }
 
       try {
-        // Workout-Counter aktualisieren
         await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/api/trainingplans/${trainingPlanId}/workouts`,
           {
@@ -213,11 +208,9 @@ const store = createStore({
           }
         );
 
-        // Streak erhöhen und speichern
         const newStreak = state.streak + 1;
         await dispatch("updateStreak", { patientId, newStreak });
 
-        // Badges überprüfen
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/check-badges`,
           {
@@ -240,7 +233,6 @@ const store = createStore({
       }
     },
 
-    // Fetch-Punkte des Benutzers aus der DB
     async fetchUserPoints({ commit }) {
       const patientId = localStorage.getItem("patientId");
       try {
@@ -265,10 +257,8 @@ const store = createStore({
         console.error("Fehler beim Abrufen der Punkte:", error);
       }
     },
-    // Update die Punkte des Benutzers
     updatePoints({ commit, state }, points) {
       commit("SET_POINTS", points);
-      // Update auf dem Server
       const patientId = localStorage.getItem("patientId");
       if (patientId) {
         fetch(`${import.meta.env.VITE_API_BASE_URL}/api/users/${patientId}/points`, {
@@ -316,7 +306,6 @@ const store = createStore({
         console.error("Fehler beim Abrufen des Streaks:", error);
       }
     },
-    // Die updateStreak Aktion sorgt dafür, dass der Streak auch in der Datenbank gespeichert wird
     async updateStreak({ commit }, { patientId, newStreak }) {
       try {
         const response = await fetch(
@@ -335,7 +324,7 @@ const store = createStore({
           throw new Error("Fehler beim Aktualisieren der Streak.");
 
         const data = await response.json();
-        commit("SET_STREAK", data.streak); // Streak im Vuex-Store aktualisieren
+        commit("SET_STREAK", data.streak); 
       } catch (error) {
         console.error("Fehler beim Aktualisieren der Streak:", error);
       }
@@ -360,8 +349,6 @@ const store = createStore({
       }
     },
 
-    // In deinem Vuex-Store
-
     async submitFeedback({ commit }, feedback) {
       try {
         const response = await fetch(
@@ -370,7 +357,7 @@ const store = createStore({
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // Authentifizierung
+              Authorization: `Bearer ${localStorage.getItem("token")}`, 
             },
             body: JSON.stringify(feedback),
           }
@@ -383,7 +370,7 @@ const store = createStore({
 
         const data = await response.json();
 
-        commit("addFeedback", feedback); // Füge Feedback zum Vuex-Store hinzu (optional)
+        commit("addFeedback", feedback); 
       } catch (error) {
         console.error("Fehler beim Senden des Feedbacks:", error);
       }
@@ -412,11 +399,11 @@ const store = createStore({
             "Benutzer-Badges sind in keinem gültigen Array-Format:",
             badges
           );
-          commit("SET_USER_BADGES", []); // Fallback
+          commit("SET_USER_BADGES", []); 
         }
       } catch (error) {
         console.error("Fehler beim Laden der Benutzer-Badges:", error);
-        commit("SET_USER_BADGES", []); // Fehlerfall
+        commit("SET_USER_BADGES", []);
       }
     },
 
@@ -424,7 +411,7 @@ const store = createStore({
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/badges`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Falls nötig
+            Authorization: `Bearer ${localStorage.getItem("token")}`, 
           },
         });
 
@@ -436,7 +423,7 @@ const store = createStore({
         commit("SET_ALL_BADGES", badges);
       } catch (error) {
         console.error("Fehler beim Abrufen aller Badges:", error.message);
-        commit("SET_ALL_BADGES", []); // Fallback bei Fehler
+        commit("SET_ALL_BADGES", []); 
       }
     },
 
@@ -448,7 +435,7 @@ const store = createStore({
     
         const { newBadges } = await response.json();
         if (newBadges && newBadges.length > 0) {
-          commit("SET_BADGES", newBadges);  // Badges im Store speichern
+          commit("SET_BADGES", newBadges);  
           return newBadges;
         }
       } catch (error) {

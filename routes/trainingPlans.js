@@ -10,11 +10,9 @@ router.post("/", async (req, res) => {
   const { patientId, patientName, exerciseId, title, repetitions, duration, sets } = req.body;
 
   try {
-    // Überprüfen, ob der Trainingsplan bereits existiert
     let trainingPlan = await TrainingPlan.findOne({ patientId });
 
     if (!trainingPlan) {
-      // Wenn kein Trainingsplan existiert, neuen Trainingsplan erstellen
       trainingPlan = new TrainingPlan({
         patientId,
         patientName,
@@ -31,7 +29,6 @@ router.post("/", async (req, res) => {
       await trainingPlan.save();
       return res.status(201).json({ success: true, trainingPlanId: trainingPlan._id });
     } else {
-      // Andernfalls die neue Übung zum bestehenden Trainingsplan hinzufügen
       trainingPlan.exercises.push({
         exerciseId,
         title,
@@ -55,7 +52,7 @@ router.get("/:patientId", async (req, res) => {
   try {
     const trainingPlans = await TrainingPlan.find({
       patientId: req.params.patientId,
-    }).populate("exercises.exerciseId"); // Populiert die Übungsdetails
+    }).populate("exercises.exerciseId");
 
     res.json(trainingPlans);
   } catch (err) {
@@ -77,7 +74,6 @@ router.put("/:id/exercises", async (req, res) => {
       return res.status(404).json({ msg: "Trainingsplan nicht gefunden" });
     }
 
-    // Neue Übung zum bestehenden Trainingsplan hinzufügen
     trainingPlan.exercises.push({
       exerciseId,
       title,
@@ -99,7 +95,7 @@ router.put("/:id/exercises", async (req, res) => {
 // @access   Öffentlich
 router.get("/", async (req, res) => {
   try {
-    const trainingPlans = await TrainingPlan.find().populate("exercises.exerciseId"); // Populiert die Übungsdetails
+    const trainingPlans = await TrainingPlan.find().populate("exercises.exerciseId"); 
     res.json(trainingPlans);
   } catch (err) {
     console.error(err.message);
@@ -131,7 +127,6 @@ router.delete("/:id", async (req, res) => {
 router.get("/:id", authMiddleware, async (req, res) => {
   const patientId = req.params.id; // ID aus der URL extrahieren
   
-  // Überprüfen, ob die ID gültig ist
   if (!mongoose.Types.ObjectId.isValid(patientId)) {
     return res.status(400).json({ msg: "Ungültige Benutzer-ID" });
   }
@@ -156,20 +151,18 @@ router.get("/:id", authMiddleware, async (req, res) => {
 // @desc     Trainingsplan für einen bestimmten Patienten abrufen
 // @access   Privat
 router.put('/:id/workouts', async (req, res) => {
-  const { id } = req.params; // Trainingsplan-ID aus der URL
-  const { frequency } = req.body; // Neuer Wert für den Workout-Counter
+  const { id } = req.params; 
+  const { frequency } = req.body; 
 
-  // Validierung des Werts
   if (typeof frequency !== 'number' || frequency < 0) {
     return res.status(400).json({ message: 'Die Häufigkeit (frequency) muss eine positive Zahl sein.' });
   }
 
   try {
-    // Trainingsplan in der Datenbank finden und das Feld frequency aktualisieren
     const trainingPlan = await TrainingPlan.findByIdAndUpdate(
       id,
-      { frequency }, // Setze den neuen Wert für frequency
-      { new: true } // Rückgabe des aktualisierten Dokuments
+      { frequency }, 
+      { new: true } 
     );
 
     if (!trainingPlan) {

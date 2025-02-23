@@ -8,14 +8,12 @@
       Keine Trainingspläne gefunden.
     </div>
     <div v-else class="mb-6">
-      <!-- Grid Container: 1 Spalte auf kleinen, 2 auf mittleren, 3 auf großen Bildschirmen -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
           v-for="plan in trainingPlans"
           :key="plan._id"
           class="bg-white border rounded-lg p-4 flex flex-col justify-between"
         >
-          <!-- Patient Name und Übungen -->
           <div>
             <h2 class="font-medium mb-2">Patient*in: {{ plan.patientName }}</h2>
             <ul class="exercise-overview space-y-4">
@@ -40,7 +38,6 @@
               </li>
             </ul>
           </div>
-          <!-- Buttons -->
           <div class="flex items-center justify-center gap-4 mt-4">
             <button
               class="bg-primary text-white p-btn rounded-full"
@@ -85,7 +82,6 @@ export default {
         if (!response.ok) {
           throw new Error("Fehler beim Löschen des Trainingsplans");
         }
-        // Emitiere ein Event, damit der übergeordnete Container die Liste aktualisiert
         this.$emit("plan-deleted", planId);
         alert("Trainingsplan erfolgreich gelöscht!");
       } catch (error) {
@@ -95,7 +91,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Hier kannst du zusätzliche Styles definieren */
-</style>

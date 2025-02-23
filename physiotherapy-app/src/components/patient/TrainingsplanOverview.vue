@@ -32,11 +32,8 @@ export default {
     };
   },
   async created() {
-    // Holen der aktuellen patientId aus localStorage
     const patientId = localStorage.getItem("patientId");
-
     
-    // Abfragen des Trainingsplans mit der patientId
     if (patientId) {
       await this.$store.dispatch('fetchCurrentTrainingPlan', patientId);
       this.trainingPlan = this.getCurrentTrainingPlan;

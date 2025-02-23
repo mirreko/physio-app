@@ -24,5 +24,4 @@ const FeedbackSchema = new mongoose.Schema({
   }
 });
 
-// Modell exportieren, damit es in der DB genutzt werden kann
 module.exports = mongoose.model('Feedback', FeedbackSchema);

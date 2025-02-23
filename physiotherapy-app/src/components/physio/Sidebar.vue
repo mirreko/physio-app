@@ -189,7 +189,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Custom Styles */
-</style>

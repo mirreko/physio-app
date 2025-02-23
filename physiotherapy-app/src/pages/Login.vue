@@ -82,7 +82,6 @@ export default {
         const data = await response.json();
         localStorage.setItem("token", data.token);
 
-        // Um Benutzerrolle abfragen
         const userResponse = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/api/authRoutes/user`,
           {
@@ -113,15 +112,11 @@ export default {
 
     redirectToDashboard(isPhysiotherapist) {
       if (isPhysiotherapist) {
-        this.$router.push("/physio-dashboard"); // Weiterleitung zum Physiotherapie-Dashboard
+        this.$router.push("/physio-dashboard"); 
       } else {
-        this.$router.push("/patient-dashboard"); // Weiterleitung zum Patienten-Dashboard
+        this.$router.push("/patient-dashboard"); 
       }
     },
   },
 };
 </script>
-
-<style scoped>
-/* Optional: Weitere Styles für das Login-Formular */
-</style>

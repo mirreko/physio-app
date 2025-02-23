@@ -4,10 +4,8 @@
       Zurück
     </button>
     <div class="p-6 bg-background rounded-2xl mt-6 mb-4">
-      <!-- Titel -->
       <h1 class="text-2xl font-bold mb-4">{{ exercise.title }}</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Bild -->
       <img
         :src="exercise.imgUrl ? `${baseUrl}${exercise.imgUrl}` : 'https://placehold.co/600x400'"
         alt="Exercise Image"
@@ -66,7 +64,6 @@
   </div>
       </div>
       
-      <!-- Buttons -->
       <div class="flex justify-start mt-4">
         <button
           @click="saveToTrainingPlan"
@@ -102,8 +99,8 @@ export default {
         repetitions: 0,
         duration: 0,
         sets: 0,
-        frequency: 0, // Neues Feld für Häufigkeit
-        durationWeeks: 0, // Neues Feld für Dauer in Wochen
+        frequency: 0, 
+        durationWeeks: 0, 
       },
     };
   },
@@ -119,7 +116,6 @@ export default {
       this.editedExercise.repetitions = this.exercise.repetitions || 0;
       this.editedExercise.duration = this.exercise.duration || 0;
       this.editedExercise.sets = this.exercise.sets || 0;
-      // Initialisieren der neuen Felder, falls sie Teil der Übungsdaten sind
       this.editedExercise.frequency = this.exercise.frequency || 0;
       this.editedExercise.durationWeeks = this.exercise.durationWeeks || 0;
     } catch (error) {
@@ -150,11 +146,10 @@ export default {
         repetitions: this.editedExercise.repetitions,
         duration: this.editedExercise.duration,
         sets: this.editedExercise.sets,
-        frequency: this.editedExercise.frequency, // Neues Feld hinzufügen
-        durationWeeks: this.editedExercise.durationWeeks, // Neues Feld hinzufügen
+        frequency: this.editedExercise.frequency, 
+        durationWeeks: this.editedExercise.durationWeeks, 
       };
 
-      // Falls kein Trainingsplan existiert, erstelle einen neuen
       if (!trainingPlanId) {
         try {
           const response = await fetch(
@@ -180,7 +175,6 @@ export default {
           console.error("Fehler beim Speichern des Trainingsplans:", error);
         }
       } else {
-        // Falls ein Trainingsplan bereits existiert, füge die Übung hinzu
         try {
           const response = await fetch(
             `${import.meta.env.VITE_API_BASE_URL}/api/trainingplans/${trainingPlanId}/exercises`,

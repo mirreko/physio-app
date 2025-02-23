@@ -22,8 +22,8 @@ const UserSchema = new mongoose.Schema(
     badges: {
       type: [
         {
-          badgeId: { type: mongoose.Schema.Types.ObjectId, ref: "Badge" }, // Badge ID
-          awardedAt: { type: Date, required: true }, // Datum der Vergabe
+          badgeId: { type: mongoose.Schema.Types.ObjectId, ref: "Badge" },
+          awardedAt: { type: Date, required: true },
         },
       ],
       default: [],

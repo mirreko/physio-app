@@ -36,14 +36,12 @@ router.get("/:id/points", async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Benutzer aus der Datenbank holen
     const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden" });
     }
 
-    // Punkte des Benutzers zurückgeben
     res.json({ points: user.points });
   } catch (error) {
     console.error("Fehler beim Abrufen der Punkte:", error);
@@ -53,19 +51,18 @@ router.get("/:id/points", async (req, res) => {
 
 // Route: PUT /api/users/:id/points
 router.put("/:id/points", async (req, res) => {
-  const { id } = req.params; // Benutzer-ID aus der URL
-  const { points } = req.body; // Neue Punkte aus der Anfrage
+  const { id } = req.params; 
+  const { points } = req.body; 
 
   if (typeof points !== "number") {
     return res.status(400).json({ message: "Punkte müssen eine Zahl sein." });
   }
 
   try {
-    // Benutzer in der Datenbank finden und Punkte aktualisieren
     const user = await User.findByIdAndUpdate(
       id,
-      { $inc: { points: points } }, // Punkte inkrementieren
-      { new: true } // Rückgabe des aktualisierten Dokuments
+      { $inc: { points: points } }, 
+      { new: true } 
     );
 
     if (!user) {
@@ -136,7 +133,7 @@ router.put("/:id/streak", async (req, res) => {
 // Route: PUT /api/users/:id/workouts
 router.put("/:id/workouts", async (req, res) => {
   const { id } = req.params;
-  const { workoutDate } = req.body; // Datum des erledigten Workouts
+  const { workoutDate } = req.body; 
 
   if (!workoutDate) {
     return res.status(400).json({ message: "Workout-Datum ist erforderlich." });
@@ -149,24 +146,20 @@ router.put("/:id/workouts", async (req, res) => {
       return res.status(404).json({ message: "Benutzer nicht gefunden." });
     }
 
-    // Füge das erledigte Workout-Datum hinzu
     user.workouts.push(new Date(workoutDate));
 
-    // Aktualisiere den Streak
     const currentDate = new Date();
     let newStreak = user.streak;
 
-    // Wenn der Tag des erledigten Workouts heute ist, erhöhe den Streak
     if (
       user.workouts[user.workouts.length - 1].toDateString() ===
       currentDate.toDateString()
     ) {
       newStreak += 1;
     } else {
-      newStreak = 1; // Streak zurücksetzen, wenn es ein neues Workout ist
+      newStreak = 1; 
     }
 
-    // Speichere die Änderungen
     user.streak = newStreak;
     await user.save();
 
@@ -188,7 +181,6 @@ router.post("/feedback", async (req, res) => {
   try {
     const { workoutRating, painRating, completedAt, patientId } = req.body;
 
-    // Neues Feedback-Dokument erstellen
     const newFeedback = new Feedback({
       workoutRating,
       painRating,
@@ -196,7 +188,6 @@ router.post("/feedback", async (req, res) => {
       patientId,
     });
 
-    // Speichern in der DB
     await newFeedback.save();
 
     res
@@ -214,18 +205,15 @@ router.post("/feedback", async (req, res) => {
 // GET-Route zum Abrufen der Feedbacks
 router.get("/feedbacks", async (req, res) => {
   try {
-    // Holen der Feedback-Daten aus der Datenbank
+    
     const feedbacks = await Feedback.find();
 
-    // Wenn keine Feedbacks gefunden werden, sende eine leere Liste
     if (!feedbacks || feedbacks.length === 0) {
       return res.status(404).json({ message: "Keine Feedbacks gefunden." });
     }
 
-    // Feedback-Daten als Antwort zurückgeben
     res.status(200).json(feedbacks);
   } catch (err) {
-    // Fehlerbehandlung, wenn etwas schiefgeht
     console.error(err);
     res.status(500).json({ error: "Interner Serverfehler" });
   }
@@ -272,7 +260,7 @@ router.get("/:id/badges", async (req, res) => {
   const { id: userId } = req.params;
 
   try {
-    const user = await User.findById(userId).populate("badges.badgeId"); // `populate` sorgt dafür, dass Badge-Details geladen werden
+    const user = await User.findById(userId).populate("badges.badgeId"); 
     if (!user) {
       return res.status(404).json({ error: "Benutzer nicht gefunden" });
     }

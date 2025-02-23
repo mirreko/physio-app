@@ -6,7 +6,6 @@
           <div class="feedback-charts">
             <h2 class="text-xl md:text-2xl font-nunito pt-6 text-center  text-gray-800">Deine Fortschritte</h2>
   
-            <!-- Kombiniertes Diagramm für Wohlbefinden und Schmerzintensität -->
             <div class="mt-4 h-96">
                 <LineChart class="" :data="combinedChartData" :options="chartOptions" />
               </div>
@@ -53,7 +52,6 @@
     computed: {
       ...mapGetters(["getFeedbacks"]),
   
-      // Kombinierte Daten für das Diagramm
       combinedChartData() {
         const labels = this.getFeedbacks.map((feedback) =>
           new Date(feedback.completedAt).toLocaleDateString()
@@ -80,8 +78,7 @@
           ],
         };
       },
-  
-      // Diagramm-Optionen
+
       chartOptions() {
         return {
           
@@ -125,8 +122,5 @@
   },
   };
   </script>
-  
-  <style scoped>
- 
-  </style>
+
   

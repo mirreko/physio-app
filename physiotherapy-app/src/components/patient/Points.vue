@@ -17,16 +17,15 @@ export default {
   name: "Points",
   data() {
     return {
-      points: null, // Punkte hier initialisieren
+      points: null, 
     };
   },
   async created() {
     const patientId = localStorage.getItem("patientId");
     if (patientId) {
       try {
-        // Lade die Punkte vom Server
         await this.$store.dispatch("fetchUserPoints");
-        this.points = this.$store.getters.getPoints; // Punkte aus dem Store holen
+        this.points = this.$store.getters.getPoints; 
       } catch (error) {
         console.error("Fehler beim Laden der Punkte:", error);
       }

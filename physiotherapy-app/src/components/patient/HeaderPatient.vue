@@ -26,17 +26,12 @@ export default {
   },
   methods: {
     getInitials(name) {
-      // Teile den Namen in Worte und nimm die ersten Buchstaben der ersten und zweiten Worte
       return name
         .split(' ')
         .map(word => word.charAt(0).toUpperCase())
         .join('')
-        .substring(0, 2); // nur die ersten zwei Initialen
+        .substring(0, 2);
     },
   },
 };
 </script>
-
-<style scoped>
-/* Custom Styles */
-</style>

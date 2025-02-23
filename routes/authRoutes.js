@@ -6,7 +6,7 @@ const User = require("../models/User");
 const router = express.Router();
 const auth = require("../middleware/auth");
 
-// Registrierung
+// register
 router.post('/register', async (req, res) => {
   const { name, email, password, isPhysiotherapist } = req.body;
 
@@ -15,26 +15,26 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    // Überprüfen, ob der Benutzer bereits existiert
+    // check if user exists
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ message: 'Benutzer existiert bereits' });
     }
 
-    // Passwort hashen
+    // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Neuen Benutzer erstellen
+    // create new user
     user = new User({
       name,
       email,
       password: hashedPassword,
-      isPhysiotherapist, // isPhysiotherapist speichern
+      isPhysiotherapist, 
     });
 
     await user.save();
 
-    // Token generieren
+    // create jwt token
     const token = jwt.sign({ id: user._id, isPhysiotherapist: user.isPhysiotherapist }, 'dein_jwt_geheimnis', {
       expiresIn: '1h',
     });
@@ -49,7 +49,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login
+// login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -89,7 +89,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Geschützte Route, um den aktuellen Benutzer zu erhalten
+// get user
 router.get("/user", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.user.id);

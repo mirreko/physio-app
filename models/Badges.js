@@ -11,10 +11,10 @@ const BadgeSchema = new mongoose.Schema({
     required: true,
   },
   criteria: {
-    type: Object, // Z. B. { streak: 7, points: 100 }
+    type: Object, 
     default: {},
   },
-  imageUrl: { // URL oder Dateipfad des Badge-Bilds
+  imageUrl: { 
     type: String,
     required: true,
   },

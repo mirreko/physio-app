@@ -54,12 +54,10 @@ export default {
   computed: {
     ...mapGetters(['getCurrentTrainingPlan', 'getBadges']),
     
-    // Zugang zu den Trainingsplan-Daten
     trainingPlan() {
       return this.getCurrentTrainingPlan;
     },
     
-    // Berechnung der aktuellen Woche seit Erstellung
     calculatedCurrentWeek() {
       if (!this.trainingPlan || !this.trainingPlan.createdAt) return 0;
       
@@ -77,7 +75,6 @@ export default {
     },
   },
   created() {
-    // Lade Trainingsplan-Daten beim Initialisieren der Komponente
     this.$store.dispatch('fetchCurrentTrainingPlan');
   },
 };

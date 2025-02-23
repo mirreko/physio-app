@@ -18,12 +18,12 @@ const ExerciseSchema = new mongoose.Schema({
     required: true,
   },
   duration: {
-    type: Number, // Dauer in Sekunden oder Minuten
+    type: Number, 
     required: true,
   },
   difficulty: {
     type: String,
-    enum: ["Leicht", "Mittel", "Schwierig"], // Schwierigkeitsgrad
+    enum: ["Leicht", "Mittel", "Schwierig"], 
     default: "Mittel",
   },
   createdAt: {

@@ -9,8 +9,8 @@ const TrainingPlan = require("../models/TrainingPlan");
 // @access   Öffentlich (alle können die Übungen sehen)
 router.get("/", async (req, res) => {
   try {
-    const exercises = await Exercise.find(); // Alle Übungen aus der DB abrufen
-    res.json(exercises); // Die Übungen als JSON zurückgeben
+    const exercises = await Exercise.find(); 
+    res.json(exercises); 
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Serverfehler");
@@ -63,25 +63,22 @@ router.post("/complete", async (req, res) => {
 
     const completedDateObj = new Date(completedDate);
 
-    // 1. Punkte vergeben
-    const pointsEarned = 10; // Beispielpunkte
+    const pointsEarned = 10; 
     user.points += pointsEarned;
 
-    // 2. Streak aktualisieren
     const lastWorkoutDate = new Date(user.lastWorkoutDate);
     const isNextDay = (completedDateObj - lastWorkoutDate) / (1000 * 60 * 60 * 24) === 1;
 
     if (isNextDay) {
       user.streak += 1;
     } else if (completedDateObj > lastWorkoutDate) {
-      user.streak = 1; // Streak zurücksetzen
+      user.streak = 1; 
     }
 
     user.lastWorkoutDate = completedDateObj;
 
-    // 3. Badges prüfen
     const newBadges = [];
-    const allBadges = await Badge.find(); // Lade alle Badge-Definitionen
+    const allBadges = await Badge.find(); 
 
     allBadges.forEach((badge) => {
       const condition = badge.condition;
@@ -100,7 +97,6 @@ router.post("/complete", async (req, res) => {
       }
     });
 
-    // Speichere Änderungen
     await user.save();
 
     res.json({

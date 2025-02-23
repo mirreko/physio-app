@@ -140,7 +140,6 @@
           </swiper>
         </div>
         <div v-else class="text-gray-600 text-center p-6">
-          <!-- Ladeanzeige -->
           Lade Trainingsplan...
         </div>
       </div>
@@ -157,7 +156,6 @@ import { useRouter } from "vue-router";
 import "swiper/swiper-bundle.css";
 import confetti from "canvas-confetti";
 
-// Daten und Computed Properties
 const store = useStore();
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const trainingPlan = ref(null);
@@ -173,15 +171,12 @@ const workoutLabels = ref([
 ]);
 const router = useRouter();
 
-// Swiper Module
 const modules = [EffectCards];
 
-// Computed für den aktuellen Trainingsplan
 const getCurrentTrainingPlan = computed(
   () => store.getters.getCurrentTrainingPlan
 );
 
-// Methoden
 const updateCurrentExercise = (swiper) => {
   const maxExercises = trainingPlan.value.exercises.length;
   currentExerciseIndex.value = Math.min(swiper.realIndex + 1, maxExercises);
@@ -202,7 +197,6 @@ const completeWorkout = async () => {
   try {
     launchConfetti();
 
-    // Hier sendest du die Daten an die DB
     await store.dispatch("markWorkoutCompleted", workoutResult);
     await store.dispatch("submitFeedback", workoutResult);
 
@@ -271,7 +265,7 @@ onMounted(async () => {
     -webkit-appearance: none;
     width: 100%;
     height: 8px;
-    background: #ddd; /* Hintergrundfarbe der Leiste */
+    background: #ddd; 
     border-radius: 5px;
     outline: none;
     transition: background 0.3s;
@@ -293,7 +287,7 @@ onMounted(async () => {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #4f46e5; /* Farbe des Schiebereglers */
+    background: #4f46e5; 
     cursor: pointer;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     transition: background 0.3s;

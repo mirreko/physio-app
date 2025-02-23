@@ -61,7 +61,6 @@ export default {
         previousMilestone = milestone;
       }
 
-      // Falls der Streak höher als alle Meilensteine ist, verwende den letzten
       return {
         current: this.getStreak - previousMilestone,
         max: previousMilestone,

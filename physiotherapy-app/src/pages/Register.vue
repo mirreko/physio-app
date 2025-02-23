@@ -79,7 +79,6 @@
           const data = await response.json();
           alert('Registrierung erfolgreich!');
   
-          // Token speichern und zum passenden Dashboard weiterleiten
           localStorage.setItem('authToken', data.token);
           this.redirectToDashboard(this.isPhysiotherapist);
         } catch (error) {
@@ -97,8 +96,5 @@
     },
   };
   </script>
-  
-  <style scoped>
-  /* CSS für die Registrierungsseite */
-  </style>
+
   

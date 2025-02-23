@@ -14,10 +14,10 @@ async function migrateUsers() {
       { $or: [{ workouts: { $exists: false } }, { points: { $exists: false } }, { streak: { $exists: false } }] }, // Nutzer ohne neue Felder
       {
         $set: {
-          workouts: [],      // Standardwert für Workouts
-          badges: [],        // Standardwert für Badges
-          points: 0,         // Standardwert für Punkte
-          streak: 0,         // Standardwert für Streak
+          workouts: [],      
+          badges: [],       
+          points: 0,         
+          streak: 0,        
         },
       }
     );

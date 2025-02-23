@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-col bg-gray-200">
     <div class="m-6 mt-16 mb-32 content-center">
-      <!-- Inhalt -->
       <div
         class="flex flex-col bg-white rounded-2xl xl:w-1/3 lg:w-2/3 md:w-2/3 sm:2/3 left-0 right-0 mx-auto p-4 shadow-md p-6 h-full"
       >
@@ -81,10 +80,8 @@
         </button>
       </div>
     </div>
-    <!-- Navigationsleiste -->
     <NavBar />
 
-    <!-- Recovery Tip Detail Modal -->
     <div
       v-if="selectedTip !== null"
       class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"

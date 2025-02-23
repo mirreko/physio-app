@@ -2,7 +2,6 @@
   <div class="p-6 bg-background rounded-2xl">
     <div class="text-xl font-nunito mb-4">Bitte wählen Sie eine Person aus</div>
 
-    <!-- Buchstaben Filter -->
     <div class="mb-4">
       <span
         v-for="letter in alphabet"
@@ -14,7 +13,6 @@
       </span>
     </div>
 
-    <!-- Reset Button -->
     <button
       v-if="selectedLetter"
       class="mb-4 p-btn bg-primary text-white rounded-full"
@@ -62,33 +60,32 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      patients: [], // Array für die Patienten
-      selectedPatient: null, // Der aktuell ausgewählte Patient
-      selectedLetter: "", // Der aktuell ausgewählte Buchstabe
+      patients: [],
+      selectedPatient: null,
+      selectedLetter: "", 
       alphabet: Array.from(Array(26)).map((_, i) => String.fromCharCode(i + 65)), // A-Z
     };
   },
   computed: {
     filteredPatients() {
-    // Zuerst alle Benutzer ausschließen, bei denen isPhysiotherapist true ist
+    
     let nonPhysioPatients = this.patients.filter(
       (patient) => patient.isPhysiotherapist === false
     );
-    // Falls ein Buchstabe ausgewählt wurde, filtern wir anhand des Namens
+   
     if (this.selectedLetter) {
       nonPhysioPatients = nonPhysioPatients.filter(
         (patient) =>
           patient.name.charAt(0).toUpperCase() === this.selectedLetter
       );
     } else {
-      // Wenn kein Buchstabe ausgewählt wurde, werden die letzten 6 Patienten angezeigt
       nonPhysioPatients = nonPhysioPatients.slice(-6).reverse();
     }
     return nonPhysioPatients;
   },
   },
   async created() {
-    await this.fetchPatients(); // Patienten abrufen, wenn die Komponente erstellt wird
+    await this.fetchPatients(); 
   },
   methods: {
     async fetchPatients() {
@@ -110,15 +107,11 @@ export default {
       return initials;
     },
     filterPatientsByLetter(letter) {
-      this.selectedLetter = letter; // Setze den aktuell ausgewählten Buchstaben
+      this.selectedLetter = letter; 
     },
     resetFilter() {
-      this.selectedLetter = ""; // Setze den ausgewählten Buchstaben zurück
+      this.selectedLetter = ""; 
     },
   },
 };
 </script>
-
-<style scoped>
-/* Hier können deine Styles für das Dashboard sein */
-</style>

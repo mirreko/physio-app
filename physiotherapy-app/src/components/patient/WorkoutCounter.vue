@@ -18,7 +18,7 @@ export default {
     ...mapGetters(['getRemainingWorkouts']),
     
     remainingWorkouts() {
-      return this.getRemainingWorkouts || 0; // Fallback auf 0, falls undefined
+      return this.getRemainingWorkouts || 0;
     },
   },
   methods: {
@@ -26,7 +26,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Füge hier ggf. eigene Styles hinzu */
-</style>

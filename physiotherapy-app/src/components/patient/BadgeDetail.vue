@@ -11,7 +11,6 @@
       <h3 class="text-xl font-bold text-center mb-2">{{ badge.name }}</h3>
       <p class="text-sm text-gray-600 text-center mb-4">{{ badge.description }}</p>
 
-      <!-- Optional: Anzeige des Datums, wenn es vorhanden ist -->
       <p
         v-if="showAwardedAt && badge.awardedAt"
         class="text-sm text-gray-500 text-center"
@@ -46,7 +45,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Modal Styling bleibt in Tailwind */
-</style>
