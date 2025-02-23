@@ -53,7 +53,7 @@
             >
               <img
                 :src="`${baseUrl}${exercise.exerciseId.imgUrl}`"
-                alt="Exercise Image"
+                alt="Exercise Image" class="w-full"
               />
               <div>
                 <h3 class="text-lg font-semibold mt-4 mb-2">
@@ -154,7 +154,7 @@ import { useStore } from "vuex";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { EffectCards } from "swiper/modules";
 import { useRouter } from "vue-router";
-import "swiper/swiper-bundle.css"; // Swiper Styles importieren
+import "swiper/swiper-bundle.css";
 import confetti from "canvas-confetti";
 
 // Daten und Computed Properties

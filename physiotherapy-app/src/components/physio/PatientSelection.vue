@@ -70,13 +70,22 @@ export default {
   },
   computed: {
     filteredPatients() {
-      // Filter Patienten basierend auf dem ausgewählten Buchstaben
-      if (this.selectedLetter) {
-        return this.patients.filter(patient => patient.name.charAt(0).toUpperCase() === this.selectedLetter);
-      }
-      // Wenn kein Buchstabe ausgewählt ist, die letzten 6 Patienten zurückgeben
-      return this.patients.slice(-6).reverse();
-    },
+    // Zuerst alle Benutzer ausschließen, bei denen isPhysiotherapist true ist
+    let nonPhysioPatients = this.patients.filter(
+      (patient) => patient.isPhysiotherapist === false
+    );
+    // Falls ein Buchstabe ausgewählt wurde, filtern wir anhand des Namens
+    if (this.selectedLetter) {
+      nonPhysioPatients = nonPhysioPatients.filter(
+        (patient) =>
+          patient.name.charAt(0).toUpperCase() === this.selectedLetter
+      );
+    } else {
+      // Wenn kein Buchstabe ausgewählt wurde, werden die letzten 6 Patienten angezeigt
+      nonPhysioPatients = nonPhysioPatients.slice(-6).reverse();
+    }
+    return nonPhysioPatients;
+  },
   },
   async created() {
     await this.fetchPatients(); // Patienten abrufen, wenn die Komponente erstellt wird

@@ -111,7 +111,6 @@
             y: {
               min: 0,
               max: 10,
-              reverse: true,
               ticks: {
                 stepSize: 1,
 

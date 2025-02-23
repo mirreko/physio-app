@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6 p-6 bg-background rounded-2xl">
+  <div class="mt-6 mb-4 p-6 bg-background rounded-2xl">
     <h2 class="text-xl font-nunito mb-4">Übungen</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
@@ -9,8 +9,8 @@
         @click="viewDetails(exercise)"
       >
         <img
-          src="https://placehold.co/600x400"
-          alt="Uebung Bild"
+          :src="exercise.imgUrl ? `${baseUrl}${exercise.imgUrl}` : 'https://placehold.co/600x400'"
+          alt="Übung Bild"
           class="w-full h-auto object-cover rounded-2xl mb-4"
         />
         <h3 class="text-lg font-semibold mb-2">{{ exercise.title }}</h3>
@@ -31,6 +31,11 @@ export default {
     exercises: Array,
     searchQuery: String,
     selectedDifficulty: String,
+  },
+  data() {
+    return {
+      baseUrl: import.meta.env.VITE_API_BASE_URL
+    };
   },
   computed: {
     filteredExercises() {

@@ -8,7 +8,7 @@
         @update:selected-difficulty="updateSelectedDifficulty"
       />
       <main class="flex-1 sm:pr-4 pr-4 lg:pr-6 min-h-screen">
-        <div class="text-2xl mt-4 font-nunito mb-4">Willkommen, Physio!</div>
+        <div class="text-2xl m-6 font-nunito mb-4">Willkommen, Physio!</div>
         <PatientSelection :patients="patients" />
         <template v-if="!selectedExercise">
           <ExerciseList

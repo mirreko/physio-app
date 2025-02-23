@@ -1,4 +1,4 @@
-# Physiotherapy App
+# Recover Buddy
 
 This is the documentation for the **Physiotherapy App**, an application developed as part of a Bachelor's thesis. The app is designed to support physiotherapists and patients by enabling the creation of personalized home exercise plans and implementing gamified elements to enhance patient motivation.
 
