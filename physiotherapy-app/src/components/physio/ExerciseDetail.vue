@@ -9,60 +9,61 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Bild -->
       <img
-        src="https://placehold.co/600x400"
+        :src="exercise.imgUrl ? `${baseUrl}${exercise.imgUrl}` : 'https://placehold.co/600x400'"
         alt="Exercise Image"
         class="w-full h-auto object-cover rounded-2xl mb-4"
       />
       
-      <!-- Beschreibung und Eingabefelder -->
-      <p class="text-gray-700 mb-4">{{ exercise.description }}</p>
-    </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+      <p class="text-gray-700 mb-4 h-fit">{{ exercise.description }}</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="mb-4">
-          <label for="repetitions" class="block text-gray-600">Wiederholungen:</label>
+          <label for="repetitions" class="ml-[5px] block text-gray-600">Wiederholungen:</label>
           <input
             id="repetitions"
             type="number"
             v-model="editedExercise.repetitions"
-            class="border rounded p-2 w-full"
+            class="border rounded-full p-2 w-full"
           />
         </div>
         <div class="mb-4">
-          <label for="duration" class="block text-gray-600">Dauer (in Minuten):</label>
+          <label for="duration" class="ml-[5px] block text-gray-600">Dauer:</label>
           <input
             id="duration"
             type="number"
             v-model="editedExercise.duration"
-            class="border rounded p-2 w-full"
+            class="border rounded-full p-2 w-full"
           />
         </div>
         <div class="mb-4">
-          <label for="sets" class="block text-gray-600">Sätze:</label>
+          <label for="sets" class="ml-[5px] block text-gray-600">Sätze:</label>
           <input
             id="sets"
             type="number"
             v-model="editedExercise.sets"
-            class="border rounded p-2 w-full"
+            class="border rounded-full p-2 w-full"
           />
         </div>
         <div class="mb-4">
-          <label for="frequency" class="block text-gray-600">Häufigkeit (pro Woche):</label>
+          <label for="frequency" class="ml-[5px] block text-gray-600">Häufigkeit:</label>
           <input
             id="frequency"
             type="number"
             v-model="editedExercise.frequency"
-            class="border rounded p-2 w-full"
+            class="border rounded-full p-2 w-full"
           />
         </div>
         <div class="mb-4">
-          <label for="durationWeeks" class="block text-gray-600">Dauer (in Wochen):</label>
+          <label for="durationWeeks" class="ml-[5px] block text-gray-600">Anzahl Wochen:</label>
           <input
             id="durationWeeks"
             type="number"
             v-model="editedExercise.durationWeeks"
-            class="border rounded p-2 w-full"
+            class="border rounded-full p-2 p w-full"
           />
         </div>
+    </div>
+  </div>
       </div>
       
       <!-- Buttons -->
@@ -95,6 +96,7 @@ export default {
   },
   data() {
     return {
+      baseUrl: import.meta.env.VITE_API_BASE_URL,
       exercise: {},
       editedExercise: {
         repetitions: 0,

@@ -2,7 +2,7 @@
   <div class="p-6 bg-background rounded-2xl m-6 w-full">
     <h1 class="text-2xl font-bold mb-4">Alle Trainingspläne</h1>
     <p class="mb-4 text-md text-gray-600 md:text-start">
-              Hier erhalten Sie eine Übersicht aller Trainingspläne, die Sie für Ihre Patienten erstellt haben.
+              Hier erhalten Sie eine Übersicht aller Trainingspläne, die Sie für Ihre Patient*innen erstellt haben.
             </p>
     <div v-if="trainingPlans.length === 0" class="text-gray-600">
       Keine Trainingspläne gefunden.
@@ -17,7 +17,7 @@
         >
           <!-- Patient Name und Übungen -->
           <div>
-            <h2 class="font-medium mb-2">Patient: {{ plan.patientName }}</h2>
+            <h2 class="font-medium mb-2">Patient*in: {{ plan.patientName }}</h2>
             <ul class="exercise-overview space-y-4">
               <li
                 v-for="exercise in plan.exercises"
