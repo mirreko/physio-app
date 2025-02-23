@@ -16,7 +16,7 @@
         >
           <div>
             <h2 class="font-medium mb-2">Patient*in: {{ plan.patientName }}</h2>
-            <ul class="exercise-overview space-y-4">
+            <ul class="exercise-overview grid grid-cols-1 2xl:grid-cols-2 gap-2">
               <li
                 v-for="exercise in plan.exercises"
                 :key="exercise.exerciseId"
